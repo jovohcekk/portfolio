@@ -19,8 +19,8 @@ export function SkillsSection() {
   const { translate } = useLanguage();
 
   return (
-    <section id="skills" className="section-surface py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section id="skills" className="section-surface w-full max-w-full overflow-hidden py-16 xs:py-20 md:py-32">
+      <div className="section-container">
         <SectionHeading
           title={translate("skills.title")}
           subtitle={translate("skills.subtitle")}
@@ -31,13 +31,13 @@ export function SkillsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          className="grid w-full min-w-0 grid-cols-1 gap-4 xs:gap-6 sm-lg:grid-cols-2 lg:grid-cols-3"
         >
           {skillGroups.map((group) => (
             <motion.div
               key={group.id}
               variants={scaleIn}
-              className="glass-card rounded-2xl p-6 hover-accent-highlight"
+              className="glass-card w-full min-w-0 max-w-full rounded-2xl p-4 xs:p-6 hover-accent-highlight"
             >
               <h3 className="mb-4 text-lg font-semibold text-[#2563EB]">
                 {translate(groupLabelKeys[group.id] ?? "skills.programming")}
@@ -51,7 +51,7 @@ export function SkillsSection() {
                     transition={{ delay: index * 0.05 }}
                     viewport={{ once: true }}
                     whileHover={{ scale: 1.05, y: -2 }}
-                    className="rounded-lg surface-chip px-3 py-1.5 text-sm font-medium text-primary-content"
+                    className="max-w-full break-words rounded-lg surface-chip px-3 py-1.5 text-sm font-medium text-primary-content"
                   >
                     {skill}
                   </motion.span>

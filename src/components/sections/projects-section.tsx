@@ -14,9 +14,9 @@ export function ProjectsSection() {
   const { translate } = useLanguage();
 
   return (
-    <section id="projects" className="section-surface relative py-24 md:py-32">
+    <section id="projects" className="section-surface relative w-full max-w-full overflow-hidden py-16 xs:py-20 md:py-32">
       <div className="pointer-events-none absolute inset-0 bg-accent-deco opacity-40" />
-      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
+      <div className="section-container relative">
         <SectionHeading
           title={translate("projects.title")}
           subtitle={translate("projects.subtitle")}
@@ -27,11 +27,11 @@ export function ProjectsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid gap-8 md:grid-cols-2"
+          className="grid w-full min-w-0 grid-cols-1 gap-6 xs:gap-8 md:grid-cols-2"
         >
           {projects.map((project) => (
-            <motion.div key={project.id} variants={fadeInUp}>
-              <Card className="group overflow-hidden hover-accent-highlight">
+            <motion.div key={project.id} variants={fadeInUp} className="min-w-0 w-full max-w-full">
+              <Card className="group w-full min-w-0 max-w-full overflow-hidden hover-accent-highlight">
                 <div className="relative aspect-video overflow-hidden surface-media">
                   <Image
                     src={project.image}
@@ -57,8 +57,8 @@ export function ProjectsSection() {
                     </div>
                   </div>
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-primary-content transition group-hover:text-[#2563EB]">
+                <CardContent className="p-4 xs:p-6">
+                  <h3 className="break-words text-lg font-semibold text-primary-content transition group-hover:text-[#2563EB] xs:text-xl">
                     {project.title}
                   </h3>
                   <p className="mt-2 text-sm text-secondary-content line-clamp-3">
@@ -74,7 +74,7 @@ export function ProjectsSection() {
                       </span>
                     ))}
                   </div>
-                  <div className="mt-6 flex gap-3 md:hidden">
+                  <div className="mt-6 flex w-full flex-wrap gap-2 xs:gap-3 md:hidden">
                     <Button size="sm" variant="outline" asChild className="flex-1">
                       <a href={project.github} target="_blank" rel="noopener noreferrer">
                         <Github className="h-4 w-4" />

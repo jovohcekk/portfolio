@@ -15,10 +15,10 @@ import { ContactSection } from "@/components/sections/contact-section";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen page-background">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden page-background">
       <LoadingScreen />
       <Navbar />
-      <main>
+      <main className="w-full max-w-full overflow-x-hidden">
         <HeroSection />
         <AboutSection />
         <SkillsSection />

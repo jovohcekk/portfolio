@@ -16,10 +16,10 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="surface-footer py-12 transition-colors duration-300">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="text-center md:text-left">
+    <footer className="surface-footer w-full max-w-full overflow-hidden py-10 xs:py-12 transition-colors duration-300">
+      <div className="section-container">
+        <div className="flex w-full min-w-0 flex-col items-center justify-between gap-6 md:flex-row">
+          <div className="min-w-0 text-center md:text-left">
             <p className="font-semibold text-primary-content">{personalInfo.name}</p>
             <p className="text-sm text-secondary-content">{personalInfo.role}</p>
           </div>
@@ -40,11 +40,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-[var(--border-subtle)] pt-8 text-sm text-secondary-content md:flex-row">
-          <p className="text-primary-content">
+        <div className="mt-8 flex w-full min-w-0 flex-col items-center justify-between gap-2 border-t border-[var(--border-subtle)] pt-8 text-center text-sm text-secondary-content md:flex-row md:text-left">
+          <p className="break-words text-primary-content">
             © {year} {personalInfo.name}. {translate("footer.rights")}
           </p>
-          <p>{translate("footer.made")}</p>
+          <p className="break-words">{translate("footer.made")}</p>
         </div>
       </div>
     </footer>

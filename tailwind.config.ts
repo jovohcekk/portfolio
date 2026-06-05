@@ -14,6 +14,16 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      xs: "320px",
+      "sm-min": "375px",
+      "sm-lg": "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1440px",
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

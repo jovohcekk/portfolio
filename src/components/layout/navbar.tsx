@@ -26,9 +26,9 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 surface-header transition-colors duration-300">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-6">
-        <button onClick={() => handleNav("home")} className="text-lg font-bold text-gradient-brand">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full max-w-[100vw] surface-header transition-colors duration-300">
+      <nav className="section-container flex items-center justify-between gap-2 py-3 sm:py-4 min-w-0">
+        <button onClick={() => handleNav("home")} className="shrink-0 text-base font-bold text-gradient-brand sm:text-lg">
           {personalInfo.name.split(" ")[0]}
         </button>
 
@@ -50,7 +50,7 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <div className="hidden sm:flex items-center rounded-lg surface-chip p-0.5">
             {locales.map((loc) => (
               <button
@@ -86,7 +86,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-[var(--border-subtle)] glass-card rounded-none border-x-0 md:hidden"
+            className="w-full border-t border-[var(--border-subtle)] glass-card rounded-none border-x-0 md:hidden overflow-hidden"
           >
             <ul className="flex flex-col gap-1 p-4">
               {navSections.map((section) => (

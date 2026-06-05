@@ -33,7 +33,7 @@ export function TypingText({ text, speed = 50, className = "" }: TypingTextProps
   }, [text, speed]);
 
   return (
-    <span className={className}>
+    <span className={`break-words ${className}`}>
       {displayed}
       {!done && (
         <span className="ml-0.5 inline-block h-[1em] w-0.5 animate-pulse bg-brand-blue align-middle" />
