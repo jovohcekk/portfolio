@@ -1,0 +1,60 @@
+/* =====================================
+   THEME VARIABLES — faqat CSS o'zgaruvchilar
+   Klasslar: globals.css @layer components
+   ===================================== */
+
+:root {
+  --brand-blue: 37 99 235;
+  --brand-navy: 21 47 142;
+  --accent-pink: 236 72 153;
+  --accent-red: 239 68 68;
+  --radius: 0.75rem;
+
+  /* LIGHT */
+  --bg-start: #f5f7fb;
+  --bg-end: #eef2ff;
+  --surface-rgb: 255 255 255;
+  --surface-opacity: 0.88;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.12);
+  --shadow-soft: 0 8px 32px rgba(21, 47, 142, 0.08);
+
+  --background: 220 33% 97%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 220 33% 97%;
+  --muted-foreground: 215 16% 40%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 221 83% 53%;
+}
+
+.dark {
+  /* DARK */
+  --bg-start: #020617;
+  --bg-end: #0b1220;
+  --surface-rgb: 15 23 42;
+  --surface-opacity: 0.75;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 8px 40px rgba(37, 99, 235, 0.12);
+
+  --background: 222 47% 4%;
+  --foreground: 0 0% 100%;
+  --card: 222 47% 11%;
+  --card-foreground: 0 0% 100%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 222 47% 11%;
+  --muted-foreground: 214 32% 84%;
+  --border: 217 33% 18%;
+  --input: 217 33% 18%;
+  --ring: 221 83% 53%;
+}
