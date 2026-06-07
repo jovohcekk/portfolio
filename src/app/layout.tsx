@@ -30,15 +30,18 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
 	metadataBase: new URL(seoConfig.siteUrl),
-	title: seoConfig.title,
+	title: {
+		default: seoConfig.title,
+		template: '%s',
+	},
 	description: seoConfig.description,
 	keywords: [...seoConfig.keywords],
 	authors: [{ name: seoConfig.author }],
 	creator: seoConfig.author,
 	icons: {
-		icon: '/logo.png',
-		shortcut: '/logo.png',
-		apple: '/logo.png',
+		icon: '/logo.png?v=2',
+		shortcut: '/logo.png?v=2',
+		apple: '/logo.png?v=2',
 	},
 	manifest: '/manifest.json',
 	openGraph: {
