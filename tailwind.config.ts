@@ -52,14 +52,12 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          blue: "hsl(var(--brand-blue))",
-          navy: "hsl(var(--brand-navy))",
-          white: "hsl(var(--white))",
-          black: "hsl(var(--black))",
+          blue: "rgb(var(--brand-blue))",
+          navy: "rgb(var(--brand-navy))",
         },
         highlight: {
-          red: "hsl(var(--accent-red))",
-          pink: "hsl(var(--accent-pink))",
+          red: "rgb(var(--accent-red))",
+          pink: "rgb(var(--accent-pink))",
         },
       },
       borderRadius: {
@@ -72,13 +70,22 @@ const config: Config = {
         mono: ["var(--font-geist-mono)", "monospace"],
       },
       boxShadow: {
-        brand: "0 8px 32px hsl(var(--brand-blue) / 0.2)",
-        "brand-lg": "0 12px 40px hsl(var(--brand-blue) / 0.25)",
+        brand: "0 4px 20px rgb(var(--accent-primary) / 0.12)",
+        "brand-lg": "0 8px 28px rgb(var(--accent-primary) / 0.16)",
+        soft: "var(--shadow-soft)",
       },
       animation: {
         float: "float 6s ease-in-out infinite",
+        "float-slow": "float 8s ease-in-out infinite",
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
         gradient: "gradient 8s ease infinite",
+        shimmer: "shimmer 2.5s ease-in-out infinite",
+        "spin-slow": "spin 12s linear infinite",
+        "fade-in": "fadeIn 0.6s ease-out forwards",
+        "slide-up": "slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+        ripple: "ripple 0.6s ease-out forwards",
+        "glow-pulse": "glowPulse 2.5s ease-in-out infinite",
+        "ambient-shift": "ambientShift 18s ease-in-out infinite",
       },
       keyframes: {
         float: {
@@ -86,10 +93,33 @@ const config: Config = {
           "50%": { transform: "translateY(-20px)" },
         },
         "pulse-glow": {
-          "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "0.8" },
+          "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+          "50%": { opacity: "0.75", transform: "scale(1.05)" },
         },
         gradient: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        fadeIn: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        slideUp: {
+          from: { opacity: "0", transform: "translateY(24px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        ripple: {
+          to: { width: "300px", height: "300px", opacity: "0" },
+        },
+        glowPulse: {
+          "0%, 100%": { boxShadow: "0 0 20px rgb(var(--accent-primary) / 0.2)" },
+          "50%": { boxShadow: "0 0 32px rgb(var(--accent-primary) / 0.45)" },
+        },
+        ambientShift: {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },

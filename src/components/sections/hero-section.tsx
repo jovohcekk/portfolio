@@ -2,28 +2,56 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { MapPin, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TypingText } from "@/components/shared/typing-text";
+import { MagneticButton } from "@/components/shared/magnetic-button";
+import { ParallaxLayer } from "@/components/shared/parallax-layer";
+import { FloatingShapes } from "@/components/shared/floating-shapes";
+import { ParticleField } from "@/components/shared/particle-field";
 import { useLanguage } from "@/hooks/use-language";
 import { personalInfo, floatingTechIcons } from "@/config/portfolio";
-import { fadeInLeft, fadeInRight, staggerContainer } from "@/lib/animations";
+import { fadeInLeft, fadeInRight, staggerContainer, blurIn } from "@/lib/animations";
 import { scrollToSection } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export function HeroSection() {
   const { translate } = useLanguage();
+  const reducedMotion = useReducedMotion();
   const [profileError, setProfileError] = useState(false);
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 400], [1, reducedMotion ? 1 : 0.3]);
+  const heroY = useTransform(scrollY, [0, 400], [0, reducedMotion ? 0 : 80]);
 
   return (
     <section
       id="home"
-      className="section-surface relative flex min-h-screen w-full max-w-full items-center overflow-hidden pt-20 pb-12 xs:pt-24 xs:pb-16"
+      className="section-surface relative flex min-h-[100dvh] w-full max-w-full items-center overflow-hidden pt-20 pb-12 xs:pt-24 xs:pb-16"
     >
+      <div
+        className={`pointer-events-none absolute inset-0 ambient-gradient-layer opacity-80 ${reducedMotion ? "" : "animate-ambient-shift"}`}
+        aria-hidden
+      />
+      <FloatingShapes />
+      <ParticleField count={reducedMotion ? 0 : 20} variant="hero" />
+
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 h-48 w-48 rounded-full bg-[#2563EB]/10 blur-[80px] animate-pulse-glow xs:h-64 xs:w-64 xs:blur-[100px] md:h-96 md:w-96 md:blur-[120px] dark:bg-[#2563EB]/15" />
-        <div className="absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#152F8E]/10 blur-[80px] animate-pulse-glow xs:h-64 xs:w-64 xs:blur-[100px] md:h-96 md:w-96 md:blur-[120px] dark:bg-[#152F8E]/15" />
-        <div className="absolute inset-0 bg-grid-pattern" />
+        <ParallaxLayer speed={0.2} className="absolute top-1/4 left-1/4">
+          <motion.div
+            className="glow-orb-primary h-48 w-48 rounded-full blur-[80px] xs:h-64 xs:w-64 xs:blur-[100px] md:h-96 md:w-96 md:blur-[120px]"
+            animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.08, 1] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </ParallaxLayer>
+        <ParallaxLayer speed={0.15} className="absolute bottom-1/4 right-1/4">
+          <motion.div
+            className="glow-orb-secondary h-48 w-48 rounded-full blur-[80px] xs:h-64 xs:w-64 xs:blur-[100px] md:h-96 md:w-96 md:blur-[120px]"
+            animate={{ opacity: [0.3, 0.65, 0.3], scale: [1, 1.06, 1] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+          />
+        </ParallaxLayer>
+        <div className="absolute inset-0 bg-grid-pattern opacity-40 dark:opacity-60" />
       </div>
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden max-w-full">
@@ -35,11 +63,19 @@ export function HeroSection() {
               left: `${Math.min(10 + (i * 11) % 80, 72)}%`,
               top: `${15 + (i * 17) % 65}%`,
             }}
-            animate={{ y: [0, -15, 0], opacity: [0.5, 1, 0.5] }}
+            animate={
+              reducedMotion
+                ? undefined
+                : {
+                    y: [0, -22, 0],
+                    opacity: [0.35, 1, 0.35],
+                    rotate: [0, i % 2 === 0 ? 3 : -3, 0],
+                  }
+            }
             transition={{
               duration: 4 + (i % 3),
-              repeat: Infinity,
-              delay: i * 0.3,
+              repeat: reducedMotion ? 0 : Infinity,
+              delay: i * 0.25,
             }}
           >
             {tech}
@@ -47,7 +83,10 @@ export function HeroSection() {
         ))}
       </div>
 
-      <div className="section-container relative z-10 grid w-full min-w-0 gap-8 sm:gap-10 md:grid-cols-2 md:items-center lg:gap-16">
+      <motion.div
+        style={{ opacity: heroOpacity, y: heroY }}
+        className="section-container relative z-10 grid w-full min-w-0 gap-8 sm:gap-10 md:grid-cols-2 md:items-center lg:gap-16"
+      >
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -56,31 +95,30 @@ export function HeroSection() {
         >
           <motion.div
             variants={fadeInLeft}
-            className="mb-4 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-[#2563EB]/30 bg-[#2563EB]/10 px-3 py-1.5 text-xs text-[#2563EB] xs:px-4 xs:text-sm"
+            className="badge-accent mb-4 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full px-3 py-1.5 text-xs backdrop-blur-sm xs:px-4 xs:text-sm"
           >
-            <Sparkles className="h-4 w-4" />
+            <motion.span
+              animate={reducedMotion ? undefined : { rotate: [0, 15, -15, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Sparkles className="h-4 w-4" />
+            </motion.span>
             {translate("hero.available")}
           </motion.div>
 
-          <motion.p variants={fadeInLeft} className="text-sm font-medium text-[#2563EB]">
+          <motion.p variants={fadeInLeft} className="text-sm font-medium tracking-wide text-accent">
             {personalInfo.role}
           </motion.p>
 
-          <motion.h1
-            variants={fadeInLeft}
-            className="mt-2 break-words text-3xl font-bold tracking-tight xs:text-4xl sm-min:text-[2.25rem] md:text-5xl lg:text-6xl"
-          >
+          <motion.h1 variants={blurIn} className="heading-display mt-3 break-words font-bold">
             <TypingText text={translate("hero.headline")} className="text-gradient-brand" />
           </motion.h1>
 
-          <motion.p
-            variants={fadeInLeft}
-            className="mt-4 text-base text-secondary-content sm-min:text-lg md:text-xl"
-          >
+          <motion.p variants={fadeInLeft} className="body-lg mt-5 text-secondary-content">
             {translate("hero.subheadline")}
           </motion.p>
 
-          <motion.p variants={fadeInLeft} className="mt-4 max-w-xl text-secondary-content">
+          <motion.p variants={fadeInLeft} className="mt-4 max-w-xl text-secondary-content leading-relaxed">
             {translate("hero.description")}
           </motion.p>
 
@@ -88,17 +126,32 @@ export function HeroSection() {
             variants={fadeInLeft}
             className="mt-4 flex items-center gap-2 text-sm text-secondary-content"
           >
-            <MapPin className="h-4 w-4 text-[#2563EB]" />
-            {personalInfo.location} · {personalInfo.age} {translate("years.old")}
+            <MapPin className="h-4 w-4 shrink-0 text-accent" />
+            <span className="break-words">
+              {personalInfo.location} · {personalInfo.age} {translate("years.old")}
+            </span>
           </motion.div>
 
-          <motion.div variants={fadeInLeft} className="mt-6 flex w-full flex-wrap gap-3 xs:mt-8 xs:gap-4">
-            <Button size="lg" className="w-full xs:w-auto" onClick={() => scrollToSection("projects")}>
-              {translate("hero.cta.projects")}
-            </Button>
-            <Button size="lg" variant="outline" className="w-full xs:w-auto" onClick={() => scrollToSection("contact")}>
-              {translate("hero.cta.contact")}
-            </Button>
+          <motion.div variants={fadeInLeft} className="mt-8 flex w-full flex-wrap gap-3 xs:gap-4">
+            <MagneticButton className="w-full xs:w-auto" strength={0.4}>
+              <Button
+                size="lg"
+                className="btn-glow-pulse w-full xs:w-auto"
+                onClick={() => scrollToSection("projects")}
+              >
+                {translate("hero.cta.projects")}
+              </Button>
+            </MagneticButton>
+            <MagneticButton className="w-full xs:w-auto" strength={0.4}>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full xs:w-auto"
+                onClick={() => scrollToSection("contact")}
+              >
+                {translate("hero.cta.contact")}
+              </Button>
+            </MagneticButton>
           </motion.div>
         </motion.div>
 
@@ -108,33 +161,43 @@ export function HeroSection() {
           animate="visible"
           className="order-1 flex w-full min-w-0 justify-center md:order-2"
         >
-          <div className="relative w-full max-w-[16rem] xs:max-w-[18rem] sm-min:max-w-[20rem] md:max-w-none">
-            <div className="absolute -inset-4 rounded-full bg-gradient-primary opacity-20 blur-2xl animate-pulse-glow dark:opacity-30 dark:shadow-[0_0_60px_rgba(236,72,153,0.12)]" />
-            <div className="relative mx-auto aspect-square w-full max-w-[16rem] overflow-hidden rounded-3xl border-2 border-[#2563EB]/40 glass-card p-1 shadow-brand xs:max-w-[18rem] sm-min:max-w-[20rem] md:h-80 md:w-80 md:max-w-[20rem] lg:h-96 lg:w-96 lg:max-w-[24rem]">
-              <div className="relative h-full w-full overflow-hidden rounded-[1.4rem] surface-media">
-                {!profileError ? (
-                  <Image
-                    src={personalInfo.profileImage}
-                    alt={personalInfo.name}
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 768px) 256px, 384px"
-                    onError={() => setProfileError(true)}
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-[#2563EB]">
-                    {personalInfo.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </div>
-                )}
-              </div>
+          <ParallaxLayer speed={0.25}>
+            <div className="relative w-full max-w-[16rem] xs:max-w-[18rem] sm-min:max-w-[20rem] md:max-w-none">
+              <motion.div
+                className={`absolute -inset-4 rounded-full bg-gradient-animated opacity-25 blur-2xl dark:opacity-35 ${reducedMotion ? "" : "animate-gradient"}`}
+                animate={reducedMotion ? undefined : { scale: [1, 1.05, 1] }}
+                transition={{ duration: 6, repeat: Infinity }}
+              />
+              <motion.div
+                whileHover={reducedMotion ? undefined : { scale: 1.03 }}
+                transition={{ duration: 0.4 }}
+                className="relative mx-auto aspect-square w-full max-w-[16rem] overflow-hidden rounded-3xl border-2 border-accent glass-card-premium p-1 shadow-brand xs:max-w-[18rem] sm-min:max-w-[20rem] md:h-80 md:w-80 md:max-w-[20rem] lg:h-96 lg:w-96 lg:max-w-[24rem]"
+              >
+                <div className="relative h-full w-full overflow-hidden rounded-[1.4rem] surface-media">
+                  {!profileError ? (
+                    <Image
+                      src={personalInfo.profileImage}
+                      alt={personalInfo.name}
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 768px) 256px, 384px"
+                      onError={() => setProfileError(true)}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-accent">
+                      {personalInfo.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
             </div>
-          </div>
+          </ParallaxLayer>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

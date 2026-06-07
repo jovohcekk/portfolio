@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/hooks/use-language";
+import { withThemeTransition } from "@/lib/theme-transition";
 import { cn } from "@/lib/utils";
 
 export function ThemeToggle({ className }: { className?: string }) {
@@ -15,7 +16,11 @@ export function ThemeToggle({ className }: { className?: string }) {
     setMounted(true);
   }, []);
 
-  const isDark = (resolvedTheme ?? theme) === "dark";
+  const isDark = mounted ? (resolvedTheme ?? theme) === "dark" : true;
+
+  const handleToggle = () => {
+    withThemeTransition(() => setTheme(isDark ? "light" : "dark"));
+  };
 
   if (!mounted) {
     return <div className={cn("h-10 w-10 rounded-lg surface-chip", className)} aria-hidden />;
@@ -24,7 +29,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <button
       type="button"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={handleToggle}
       className={cn(
         "flex h-10 w-10 items-center justify-center rounded-lg surface-chip text-primary-content hover-accent-highlight",
         className
@@ -32,9 +37,9 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={isDark ? translate("theme.light") : translate("theme.dark")}
     >
       {isDark ? (
-        <Sun className="h-4 w-4 text-[#2563EB]" />
+        <Sun className="h-4 w-4 text-accent-secondary" />
       ) : (
-        <Moon className="h-4 w-4 text-[#152F8E]" />
+        <Moon className="h-4 w-4 text-accent" />
       )}
     </button>
   );

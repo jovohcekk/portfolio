@@ -1,60 +1,301 @@
 /* =====================================
-   THEME VARIABLES — faqat CSS o'zgaruvchilar
-   Klasslar: globals.css @layer components
+
+   THEME VARIABLES — Premium Dual Palette
+
+   Light: Soft slate / blue-cyan premium aesthetic
+
+   Dark:  Deep black / soft red cyber aesthetic
+
    ===================================== */
 
+
+
 :root {
-  --brand-blue: 37 99 235;
-  --brand-navy: 21 47 142;
-  --accent-pink: 236 72 153;
-  --accent-red: 239 68 68;
-  --radius: 0.75rem;
 
-  /* LIGHT */
-  --bg-start: #f5f7fb;
-  --bg-end: #eef2ff;
-  --surface-rgb: 255 255 255;
-  --surface-opacity: 0.88;
-  --text-primary: #0f172a;
+  --radius: 0.875rem;
+
+
+
+  /* ── LIGHT: Soft premium tech palette ── */
+
+  --bg-deep: #e2e8f0;
+
+  --bg-start: #edf2f7;
+
+  --bg-end: #e2e8f0;
+
+  --bg-surface: #edf2f7;
+
+
+
+  --card-bg: #f1f5f9;
+
+  --card-elevated: #f8fafc;
+
+
+
+  --bg-mesh-1: rgba(59, 130, 246, 0.06);
+
+  --bg-mesh-2: rgba(6, 182, 212, 0.05);
+
+  --bg-mesh-3: rgba(20, 184, 166, 0.04);
+
+  --bg-mesh-4: rgba(237, 242, 247, 0.92);
+
+
+
+  --surface-rgb: 241 245 249;
+
+  --surface-secondary-rgb: 226 232 240;
+
+  --surface-elevated-rgb: 248 250 252;
+
+  --surface-opacity: 0.92;
+
+
+
+  --accent-primary: 59 130 246;
+
+  --accent-secondary: 6 182 212;
+
+  --accent-tertiary: 20 184 166;
+
+  --accent-glow: rgba(59, 130, 246, 0.12);
+
+  --accent-glow-secondary: rgba(6, 182, 212, 0.1);
+
+  --accent-glow-tertiary: rgba(20, 184, 166, 0.08);
+
+
+
+  --text-primary: #1e293b;
+
   --text-secondary: #475569;
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --border-strong: rgba(15, 23, 42, 0.12);
-  --shadow-soft: 0 8px 32px rgba(21, 47, 142, 0.08);
 
-  --background: 220 33% 97%;
-  --foreground: 222 47% 11%;
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --primary: 221 83% 53%;
+  --text-muted: #64748b;
+
+
+
+  --border-subtle: rgba(15, 23, 42, 0.08);
+
+  --border-strong: rgba(15, 23, 42, 0.12);
+
+  --border-glow: rgba(59, 130, 246, 0.22);
+
+
+
+  --shadow-soft: 0 2px 12px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.04);
+
+  --shadow-elevated: 0 8px 32px rgba(15, 23, 42, 0.07), 0 2px 8px rgba(59, 130, 246, 0.05);
+
+  --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.1);
+
+  --shadow-inset: inset 0 1px 0 rgba(248, 250, 252, 0.7);
+
+
+
+  --gradient-brand: linear-gradient(135deg, #3b82f6 0%, #06b6d4 55%, #14b8a6 100%);
+
+  --gradient-brand-text: linear-gradient(135deg, #3b82f6 0%, #0891b2 50%, #0d9488 100%);
+
+  --gradient-animated: linear-gradient(270deg, #3b82f6, #06b6d4, #14b8a6, #3b82f6);
+
+  --gradient-surface: linear-gradient(
+
+    145deg,
+
+    rgb(248 250 252 / 0.96) 0%,
+
+    rgb(241 245 249 / 0.9) 100%
+
+  );
+
+  --gradient-button: linear-gradient(135deg, #3b82f6 0%, #2563eb 40%, #0891b2 100%);
+
+
+
+  --hover-glow: 0 8px 28px rgba(59, 130, 246, 0.1), 0 2px 8px rgba(6, 182, 212, 0.06);
+
+  --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.18);
+
+
+
+  /* Legacy / shadcn tokens */
+
+  --brand-blue: 59 130 246;
+
+  --brand-navy: 30 64 175;
+
+  --accent-pink: 6 182 212;
+
+  --accent-red: 239 68 68;
+
+
+
+  --background: 214 32% 94%;
+
+  --foreground: 215 28% 17%;
+
+  --card: 210 40% 96%;
+
+  --card-foreground: 215 28% 17%;
+
+  --primary: 217 91% 60%;
+
   --primary-foreground: 0 0% 100%;
-  --muted: 220 33% 97%;
+
+  --muted: 214 32% 91%;
+
   --muted-foreground: 215 16% 40%;
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 221 83% 53%;
+
+  --border: 214 20% 88%;
+
+  --input: 214 25% 90%;
+
+  --ring: 217 91% 60%;
+
 }
+
+
 
 .dark {
-  /* DARK */
-  --bg-start: #020617;
-  --bg-end: #0b1220;
-  --surface-rgb: 15 23 42;
-  --surface-opacity: 0.75;
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --shadow-soft: 0 8px 40px rgba(37, 99, 235, 0.12);
 
-  --background: 222 47% 4%;
-  --foreground: 0 0% 100%;
-  --card: 222 47% 11%;
-  --card-foreground: 0 0% 100%;
-  --primary: 221 83% 53%;
+  /* ── DARK: Luxury black + red cyber aesthetic ── */
+
+  --bg-deep: #050505;
+
+  --bg-start: #050505;
+
+  --bg-end: #0a0a0a;
+
+  --bg-surface: #111111;
+
+
+
+  --card-bg: #111111;
+
+  --card-elevated: #171717;
+
+
+
+  --bg-mesh-1: rgba(239, 68, 68, 0.07);
+
+  --bg-mesh-2: rgba(220, 38, 38, 0.05);
+
+  --bg-mesh-3: rgba(17, 17, 17, 0.95);
+
+  --bg-mesh-4: rgba(10, 10, 10, 0.8);
+
+
+
+  --surface-rgb: 17 17 17;
+
+  --surface-secondary-rgb: 10 10 10;
+
+  --surface-elevated-rgb: 23 23 23;
+
+  --surface-opacity: 0.78;
+
+
+
+  --accent-primary: 239 68 68;
+
+  --accent-secondary: 248 113 113;
+
+  --accent-tertiary: 220 38 38;
+
+  --accent-glow: rgba(239, 68, 68, 0.18);
+
+  --accent-glow-secondary: rgba(248, 113, 113, 0.12);
+
+  --accent-glow-tertiary: rgba(220, 38, 38, 0.1);
+
+
+
+  --text-primary: #f8fafc;
+
+  --text-secondary: #94a3b8;
+
+  --text-muted: #64748b;
+
+
+
+  --border-subtle: rgba(255, 255, 255, 0.07);
+
+  --border-strong: rgba(255, 255, 255, 0.12);
+
+  --border-glow: rgba(239, 68, 68, 0.35);
+
+
+
+  --shadow-soft: 0 8px 40px rgba(0, 0, 0, 0.55), 0 0 1px rgba(239, 68, 68, 0.08);
+
+  --shadow-elevated: 0 24px 64px rgba(0, 0, 0, 0.65), 0 0 32px rgba(239, 68, 68, 0.08);
+
+  --shadow-glow: 0 0 56px rgba(239, 68, 68, 0.15);
+
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+
+
+  --gradient-brand: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%);
+
+  --gradient-brand-text: linear-gradient(135deg, #f87171 0%, #ef4444 45%, #dc2626 100%);
+
+  --gradient-animated: linear-gradient(270deg, #ef4444, #dc2626, #f87171, #ef4444);
+
+  --gradient-surface: linear-gradient(
+
+    145deg,
+
+    rgb(17 17 17 / 0.92) 0%,
+
+    rgb(10 10 10 / 0.88) 100%
+
+  );
+
+  --gradient-button: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%);
+
+
+
+  --hover-glow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 36px rgba(239, 68, 68, 0.14);
+
+  --focus-ring: 0 0 0 3px rgba(239, 68, 68, 0.3), 0 0 20px rgba(239, 68, 68, 0.12);
+
+
+
+  --brand-blue: 239 68 68;
+
+  --brand-navy: 185 28 28;
+
+  --accent-pink: 248 113 113;
+
+  --accent-red: 239 68 68;
+
+
+
+  --background: 0 0% 2%;
+
+  --foreground: 0 0% 98%;
+
+  --card: 0 0% 7%;
+
+  --card-foreground: 0 0% 98%;
+
+  --primary: 0 72% 51%;
+
   --primary-foreground: 0 0% 100%;
-  --muted: 222 47% 11%;
-  --muted-foreground: 214 32% 84%;
-  --border: 217 33% 18%;
-  --input: 217 33% 18%;
-  --ring: 221 83% 53%;
+
+  --muted: 0 0% 7%;
+
+  --muted-foreground: 215 16% 65%;
+
+  --border: 0 0% 12%;
+
+  --input: 0 0% 12%;
+
+  --ring: 0 72% 51%;
+
 }
+
+

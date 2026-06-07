@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" fill="none">
+  <rect width="1280" height="720" fill="#0a0a0a"/>
+  <rect x="60" y="60" width="1160" height="600" rx="12" fill="#111" stroke="#dc2626" stroke-width="2"/>
+  <rect x="100" y="200" width="400" height="225" rx="4" fill="#dc2626" opacity="0.2"/>
+  <text x="640" y="380" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="42" font-weight="700">THUMBNAIL</text>
+  <text x="640" y="430" text-anchor="middle" fill="#888" font-family="system-ui,sans-serif" font-size="18">YouTube / Video Cover</text>
+</svg>

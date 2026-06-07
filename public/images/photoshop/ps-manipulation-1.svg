@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" fill="none">
+  <rect width="900" height="1200" fill="#0a0a0a"/>
+  <rect x="50" y="50" width="800" height="1100" rx="8" fill="#111" stroke="#dc2626" stroke-width="2"/>
+  <ellipse cx="450" cy="500" rx="200" ry="250" fill="#dc2626" opacity="0.12"/>
+  <ellipse cx="350" cy="450" rx="80" ry="100" fill="#333" opacity="0.5"/>
+  <text x="450" y="900" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="36" font-weight="700">PHOTO</text>
+  <text x="450" y="950" text-anchor="middle" fill="#dc2626" font-family="system-ui,sans-serif" font-size="36" font-weight="700">MANIPULATION</text>
+</svg>

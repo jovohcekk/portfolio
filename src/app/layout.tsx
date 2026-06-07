@@ -3,11 +3,11 @@
 // body: page-background + text-primary-content (theme.css)
 // =====================================
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/providers/app-providers";
-import { seoConfig } from "@/config/portfolio";
+import { seoConfig, personalInfo } from "@/config/portfolio";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +18,15 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#edf2f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#050505" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(seoConfig.siteUrl),
@@ -57,7 +66,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uz" suppressHydrationWarning className="overflow-x-hidden w-full">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t==='dark'||(!t&&'dark'==='dark')){document.documentElement.classList.add('dark')}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans overflow-x-hidden w-full max-w-[100vw]`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: seoConfig.author,
+              url: seoConfig.siteUrl,
+              jobTitle: "Full Stack Developer",
+              email: personalInfo.email,
+              address: { "@type": "PostalAddress", addressLocality: "Tashkent", addressCountry: "UZ" },
+            }),
+          }}
+        />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

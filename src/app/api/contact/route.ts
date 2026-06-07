@@ -1,10 +1,3 @@
-// =====================================
-// ALOQA API ROUTE
-// Kontakt formasidan kelgan xabarlarni qabul qiladi.
-// Production uchun: Resend, SendGrid yoki Nodemailer ulang.
-// O'zgartirish mumkin: email yuborish logikasi
-// =====================================
-
 import { NextResponse } from "next/server";
 import { socialLinks } from "@/config/portfolio";
 
@@ -12,45 +5,83 @@ interface ContactBody {
   name: string;
   email: string;
   message: string;
+  website?: string;
+}
+
+const MAX_NAME = 120;
+const MAX_EMAIL = 254;
+const MAX_MESSAGE = 5000;
+
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 5;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > RATE_LIMIT_MAX;
 }
 
 export async function POST(request: Request) {
   try {
+    const contentType = request.headers.get("content-type") ?? "";
+    if (!contentType.includes("application/json")) {
+      return NextResponse.json({ error: "Invalid content type" }, { status: 415 });
+    }
+
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      request.headers.get("x-real-ip") ??
+      "unknown";
+
+    if (isRateLimited(ip)) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+
     const body = (await request.json()) as ContactBody;
 
-    if (!body.name?.trim() || !body.email?.trim() || !body.message?.trim()) {
-      return NextResponse.json(
-        { error: "Barcha maydonlar to'ldirilishi shart" },
-        { status: 400 }
-      );
+    if (body.website?.trim()) {
+      return NextResponse.json({ success: true, message: "Received" });
+    }
+
+    const name = body.name?.trim() ?? "";
+    const email = body.email?.trim() ?? "";
+    const message = body.message?.trim() ?? "";
+
+    if (!name || !email || !message) {
+      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+    }
+
+    if (name.length > MAX_NAME || email.length > MAX_EMAIL || message.length > MAX_MESSAGE) {
+      return NextResponse.json({ error: "Input too long" }, { status: 400 });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(body.email)) {
-      return NextResponse.json({ error: "Email noto'g'ri" }, { status: 400 });
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
 
-    // =========================
-    // O'ZGARTIRISH MUMKIN
-    // Bu yerda haqiqiy email xizmatini ulang (Resend, SendGrid, va h.k.)
-    // Hozircha server logiga yoziladi — development uchun yetarli
-    // =========================
-    console.log("[Portfolio Contact]", {
-      to: socialLinks.email,
-      from: body.email,
-      name: body.name,
-      message: body.message,
-      timestamp: new Date().toISOString(),
-    });
+  // Production: connect Resend, SendGrid, or Nodemailer here.
+    if (process.env.NODE_ENV === "development") {
+      console.log("[Portfolio Contact]", {
+        to: socialLinks.email,
+        from: email,
+        name,
+        messageLength: message.length,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     return NextResponse.json({
       success: true,
-      message: "Xabar qabul qilindi",
+      message: "Message received",
     });
   } catch {
-    return NextResponse.json(
-      { error: "Server xatosi" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

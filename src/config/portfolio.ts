@@ -19,10 +19,23 @@ export interface ProjectItem {
 	image: string;
 }
 
+/** Photoshop loyiha kategoriyalari */
+export type PhotoshopCategory = 'poster' | 'thumbnail' | 'social' | 'banner' | 'manipulation' | 'artwork';
+
+/** Photoshop loyiha kartochkasi */
+export interface PhotoshopProject {
+	id: string;
+	title: string;
+	category: PhotoshopCategory;
+	description: string;
+	image: string;
+}
+
 /** Ko'nikma guruhi */
 export interface SkillGroup {
 	id: string;
 	items: string[];
+	level?: number;
 }
 
 // =========================
@@ -62,9 +75,21 @@ export const navSections = [
 	{ id: 'about', labelKey: 'nav.about' },
 	{ id: 'skills', labelKey: 'nav.skills' },
 	{ id: 'projects', labelKey: 'nav.projects' },
+	{ id: 'photoshop', labelKey: 'nav.photoshop' },
 	{ id: 'experience', labelKey: 'nav.experience' },
 	{ id: 'contact', labelKey: 'nav.contact' },
 ] as const;
+
+/** Photoshop kategoriya kalitlari (i18n) */
+export const photoshopCategories: { id: PhotoshopCategory | 'all'; labelKey: string }[] = [
+	{ id: 'all', labelKey: 'photoshop.filter.all' },
+	{ id: 'poster', labelKey: 'photoshop.category.poster' },
+	{ id: 'thumbnail', labelKey: 'photoshop.category.thumbnail' },
+	{ id: 'social', labelKey: 'photoshop.category.social' },
+	{ id: 'banner', labelKey: 'photoshop.category.banner' },
+	{ id: 'manipulation', labelKey: 'photoshop.category.manipulation' },
+	{ id: 'artwork', labelKey: 'photoshop.category.artwork' },
+];
 
 // =========================
 // O'ZGARTIRISH MUMKIN — KO'NIKMALAR
@@ -73,25 +98,62 @@ export const navSections = [
 export const skillGroups: SkillGroup[] = [
 	{
 		id: 'programming',
+		level: 92,
 		items: ['Python', 'Django', 'JavaScript', 'HTML5', 'CSS3'],
 	},
 	{
 		id: 'devTools',
+		level: 88,
 		items: ['Git', 'Linux', 'REST API'],
 	},
 	{
 		id: 'linux',
+		level: 85,
 		items: ['Arch Linux', 'BlackArch', 'Kali Linux', 'Ubuntu'],
 	},
 	{
 		id: 'creative',
+		level: 82,
 		items: ['Adobe Photoshop', 'Blender'],
 	},
 	{
 		id: 'cybersecurity',
+		level: 78,
 		items: ['Security Fundamentals', 'Linux Security Basics'],
 	},
 ];
+
+/** Shared social/contact link entries */
+export const socialLinkItems = [
+	{
+		id: 'telegram',
+		label: 'Telegram',
+		value: socialLinks.telegramHandle,
+		href: socialLinks.telegram,
+		copyValue: socialLinks.telegramHandle,
+	},
+	{
+		id: 'instagram',
+		label: 'Instagram',
+		value: socialLinks.instagramHandle,
+		href: socialLinks.instagram,
+		copyValue: socialLinks.instagramHandle,
+	},
+	{
+		id: 'github',
+		label: 'GitHub',
+		value: socialLinks.githubHandle,
+		href: socialLinks.github,
+		copyValue: socialLinks.github,
+	},
+	{
+		id: 'email',
+		label: 'Email',
+		value: socialLinks.email,
+		href: `mailto:${socialLinks.email}`,
+		copyValue: socialLinks.email,
+	},
+] as const;
 
 // =========================
 // O'ZGARTIRISH MUMKIN — LOYIHALAR
@@ -117,6 +179,70 @@ export const projects: ProjectItem[] = [
 		github: 'https://github.com/jovohcekk',
 		demo: 'https://example.com',
 		image: '/images/projects/project-2.svg',
+	},
+];
+
+// =========================
+// O'ZGARTIRISH MUMKIN — PHOTOSHOP LOYIHALARI
+// Yangi dizayn qo'shish: massivga obyekt qo'shing va rasmni public/images/photoshop/ ga joylang
+// =========================
+
+export const photoshopProjects: PhotoshopProject[] = [
+	{
+		id: 'ps-poster-1',
+		title: 'Kino poster dizayni (tahrirlang)',
+		category: 'poster',
+		description: 'Kino yoki tadbir uchun yaratilgan poster dizayni. Qalin tipografiya va dramatik kompozitsiya.',
+		image: '/images/photoshop/ps-poster-1.svg',
+	},
+	{
+		id: 'ps-poster-2',
+		title: 'Tadbir posteri (tahrirlang)',
+		category: 'poster',
+		description: "Tadbir e'lonlari uchun zamonaviy poster dizayni.",
+		image: '/images/photoshop/ps-poster-2.svg',
+	},
+	{
+		id: 'ps-thumbnail-1',
+		title: 'YouTube thumbnail (tahrirlang)',
+		category: 'thumbnail',
+		description: 'Diqqatni tortadigan video muqovasi — yuqori CTR uchun optimallashtirilgan.',
+		image: '/images/photoshop/ps-thumbnail-1.svg',
+	},
+	{
+		id: 'ps-social-1',
+		title: 'Instagram post (tahrirlang)',
+		category: 'social',
+		description: 'Ijtimoiy tarmoq uchun kvadrat formatdagi post dizayni.',
+		image: '/images/photoshop/ps-social-1.svg',
+	},
+	{
+		id: 'ps-social-2',
+		title: 'Story dizayni (tahrirlang)',
+		category: 'social',
+		description: 'Instagram/Telegram story formatida vertikal dizayn.',
+		image: '/images/photoshop/ps-social-2.svg',
+	},
+	{
+		id: 'ps-banner-1',
+		title: 'Veb banner (tahrirlang)',
+		category: 'banner',
+		description: 'Sayt yoki reklama kampaniyasi uchun keng format banner.',
+		image: '/images/photoshop/ps-banner-1.svg',
+	},
+	{
+		id: 'ps-manipulation-1',
+		title: 'Foto manipulyatsiya (tahrirlang)',
+		category: 'manipulation',
+		description: 'Bir nechta tasvirlarni birlashtirgan kreativ foto kompozitsiya.',
+		image: '/images/photoshop/ps-manipulation-1.svg',
+	},
+	{
+		id: 'ps-artwork-1',
+		title: 'Kreativ artwork (tahrirlang)',
+		category: 'artwork',
+		description: 'Erkin ijodiy kompozitsiya — abstrakt va geometrik elementlar.',
+		image: '/images/photoshop/ps-artwork-1.svg',
 	},
 ];
 

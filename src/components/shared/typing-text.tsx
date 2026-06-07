@@ -1,10 +1,7 @@
 "use client";
 
-// =====================================
-// TYPING ANIMATSIYA — primary brand rang
-// =====================================
-
 import { useEffect, useState } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface TypingTextProps {
   text: string;
@@ -13,10 +10,17 @@ interface TypingTextProps {
 }
 
 export function TypingText({ text, speed = 50, className = "" }: TypingTextProps) {
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const [displayed, setDisplayed] = useState(reducedMotion ? text : "");
+  const [done, setDone] = useState(reducedMotion);
 
   useEffect(() => {
+    if (reducedMotion) {
+      setDisplayed(text);
+      setDone(true);
+      return;
+    }
+
     setDisplayed("");
     setDone(false);
     let index = 0;
@@ -30,13 +34,16 @@ export function TypingText({ text, speed = 50, className = "" }: TypingTextProps
       }
     }, speed);
     return () => clearInterval(interval);
-  }, [text, speed]);
+  }, [text, speed, reducedMotion]);
 
   return (
-    <span className={`break-words ${className}`}>
-      {displayed}
+    <span className={`break-words ${className}`} aria-label={text}>
+      <span aria-hidden="true">{displayed}</span>
       {!done && (
-        <span className="ml-0.5 inline-block h-[1em] w-0.5 animate-pulse bg-brand-blue align-middle" />
+        <span
+          className="ml-0.5 inline-block h-[1em] w-0.5 animate-pulse bg-[rgb(var(--accent-primary))] align-middle"
+          aria-hidden
+        />
       )}
     </span>
   );
