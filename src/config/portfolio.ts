@@ -263,7 +263,7 @@ export const statistics = [
 
 export const seoConfig = {
 	siteUrl: 'https://jovohirbek.dev',
-	title: 'Jovohirbek Isoyev | Full Stack Developer',
+	title: 'Jovohirbek Isoyev',
 	description:
 		'Full Stack Developer — Python, Django, JavaScript, Linux. 4 yillik tajriba, real mijozlar bilan freelance.',
 	keywords: ['Full Stack Developer', 'Python', 'Django', 'JavaScript', 'Tashkent', 'Freelance', 'Web Developer'],

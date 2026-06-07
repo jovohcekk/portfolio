@@ -1,0 +1,21 @@
+{
+	"name": "Jovohirbek Isoyev",
+	"short_name": "Jovohirbek",
+	"description": "Portfolio of Jovohirbek Isoyev",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#edf2f7",
+	"theme_color": "#050505",
+	"icons": [
+		{
+			"src": "/logo.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "/logo.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		}
+	]
+}
