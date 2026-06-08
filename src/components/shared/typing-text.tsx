@@ -21,8 +21,9 @@ export function TypingText({ text, speed = 50, className = "" }: TypingTextProps
       return;
     }
 
-    setDisplayed("");
-    setDone(false);
+    // Show instantly on language switch to avoid disappearing text
+    setDisplayed(text);
+    setDone(true);
     let index = 0;
     const interval = setInterval(() => {
       if (index < text.length) {

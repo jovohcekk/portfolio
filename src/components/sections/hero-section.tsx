@@ -4,6 +4,7 @@ import { FloatingShapes } from '@/components/shared/floating-shapes';
 import { MagneticButton } from '@/components/shared/magnetic-button';
 import { ParallaxLayer } from '@/components/shared/parallax-layer';
 import { ParticleField } from '@/components/shared/particle-field';
+import { TextReveal } from '@/components/shared/text-reveal';
 import { TypingText } from '@/components/shared/typing-text';
 import { Button } from '@/components/ui/button';
 import { floatingTechIcons, personalInfo } from '@/config/portfolio';
@@ -104,16 +105,16 @@ export function HeroSection() {
 						{personalInfo.role}
 					</motion.p>
 
-					<motion.h1 variants={blurIn} className='heading-display mt-3 break-words font-bold'>
+				<motion.h1 variants={blurIn} className='heading-display mt-3 break-words font-bold'>
 						<TypingText text={translate('hero.headline')} className='text-gradient-brand' />
 					</motion.h1>
 
 					<motion.p variants={fadeInLeft} className='body-lg mt-5 text-secondary-content'>
-						{translate('hero.subheadline')}
+						<TextReveal text={translate('hero.subheadline')} />
 					</motion.p>
 
 					<motion.p variants={fadeInLeft} className='mt-4 max-w-xl text-secondary-content leading-relaxed'>
-						{translate('hero.description')}
+						<TextReveal text={translate('hero.description')} />
 					</motion.p>
 
 					<motion.div variants={fadeInLeft} className='mt-4 flex items-center gap-2 text-sm text-secondary-content'>

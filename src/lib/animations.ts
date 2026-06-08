@@ -159,3 +159,16 @@ export const glowPulse = {
     ease: "easeInOut" as const,
   },
 };
+
+export const gradientSweep: Variants = {
+  hidden: {
+    backgroundPosition: "200% 0",
+  },
+  visible: {
+    backgroundPosition: "-200% 0",
+    transition: {
+      duration: 3,
+      ease: "easeInOut" as const,
+    },
+  },
+};
