@@ -1,7 +1,7 @@
 'use client';
 
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { motion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import { motion } from 'framer-motion'
 
 interface LetterRevealProps {
 	text: string;
@@ -31,15 +31,15 @@ export function LetterReveal({ text, className = '', as: Tag = 'span' }: LetterR
 	const letters = Array.from(text);
 
 	return (
-		<Tag className={className} aria-label={text}>
+		<Tag className={className} aria-label={text} key={text}>
 			<motion.span
 				variants={container}
 				initial='hidden'
 				whileInView='visible'
-				viewport={{ once: true, margin: '-60px' }}
+				viewport={{ once: false, margin: '-60px' }}
 				className='inline-flex flex-wrap'>
 				{letters.map((char, i) => (
-					<span key={`${char}-${i}`} className='inline-block overflow-hidden'>
+					<span key={`${text}-${i}-${char}`} className='inline-block overflow-hidden'>
 						<motion.span variants={letter} className='inline-block'>
 							{char === ' ' ? '\u00A0' : char}
 						</motion.span>

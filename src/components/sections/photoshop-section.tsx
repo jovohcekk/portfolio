@@ -1,32 +1,32 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react'
 
-import Image from 'next/image';
+import Image from 'next/image'
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion'
 
-import { Layers, ZoomIn } from 'lucide-react';
+import { Layers, ZoomIn } from 'lucide-react'
 
-import { useIsDark } from '@/hooks/use-is-dark';
+import { useIsDark } from '@/hooks/use-is-dark'
 
-import { SectionHeading } from '@/components/shared/section-heading';
+import { SectionHeading } from '@/components/shared/section-heading'
 
-import { Lightbox } from '@/components/shared/lightbox';
+import { Lightbox } from '@/components/shared/lightbox'
 
-import { FloatingShapes } from '@/components/shared/floating-shapes';
+import { FloatingShapes } from '@/components/shared/floating-shapes'
 
-import { GlowCard } from '@/components/shared/glow-card';
+import { GlowCard } from '@/components/shared/glow-card'
 
-import { useLanguage } from '@/hooks/use-language';
+import { useLanguage } from '@/hooks/use-language'
 
-import { photoshopProjects } from '@/config/portfolio';
+import { photoshopProjects } from '@/config/portfolio'
 
-import { slideInScale, staggerContainerFast } from '@/lib/animations';
+import { slideInScale, staggerContainerFast } from '@/lib/animations'
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'
 
-import type { TranslationKey } from '@/lib/i18n/translations';
+import type { TranslationKey } from '@/lib/i18n/translations'
 
 export function PhotoshopSection() {
 	const { translate } = useLanguage();

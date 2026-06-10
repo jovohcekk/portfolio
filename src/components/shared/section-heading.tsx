@@ -1,8 +1,8 @@
 'use client';
 
-import { LetterReveal } from '@/components/shared/letter-reveal';
-import { blurIn, fadeInUp } from '@/lib/animations';
-import { motion } from 'framer-motion';
+import { LetterReveal } from '@/components/shared/letter-reveal'
+import { blurIn, fadeInUp } from '@/lib/animations'
+import { motion } from 'framer-motion'
 
 interface SectionHeadingProps {
 	title: string;
@@ -18,7 +18,8 @@ export function SectionHeading({ title, subtitle, align = 'center', dark = false
 			initial='hidden'
 			whileInView='visible'
 			viewport={{ once: true, margin: '-80px' }}
-			className={`mb-8 w-full min-w-0 xs:mb-12 md:mb-16 ${align === 'center' ? 'text-center' : 'text-left'}`}>
+			className={`mb-8 w-full min-w-0 xs:mb-12 md:mb-16 ${align === 'center' ? 'text-center' : 'text-left'}`}
+			key={`heading-${title}`}>
 			<h2 className='heading-section break-words font-bold tracking-tight'>
 				<LetterReveal text={title} className={dark ? 'text-white' : 'text-gradient-brand'} as='span' />
 			</h2>
@@ -28,7 +29,8 @@ export function SectionHeading({ title, subtitle, align = 'center', dark = false
 					initial='hidden'
 					whileInView='visible'
 					viewport={{ once: true }}
-					className={`body-lg mt-4 break-words transition-colors duration-300 ${dark ? 'text-white/60' : 'text-secondary-content'}`}>
+					className={`body-lg mt-4 break-words transition-colors duration-300 ${dark ? 'text-white/60' : 'text-secondary-content'}`}
+					key={`subtitle-${subtitle}`}>
 					{subtitle}
 				</motion.p>
 			)}
