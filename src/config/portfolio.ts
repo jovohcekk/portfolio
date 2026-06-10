@@ -36,6 +36,10 @@ export interface SkillGroup {
 	id: string;
 	items: string[];
 	level?: number;
+	detailedSkills?: Array<{
+		name: string;
+		level: number;
+	}>;
 }
 
 // =========================
@@ -100,26 +104,52 @@ export const skillGroups: SkillGroup[] = [
 		id: 'programming',
 		level: 92,
 		items: ['Python', 'Django', 'JavaScript', 'HTML5', 'CSS3'],
+		detailedSkills: [
+			{ name: 'HTML5', level: 96 },
+			{ name: 'CSS3', level: 95 },
+			{ name: 'JavaScript', level: 87 },
+			{ name: 'Python', level: 70 },
+			{ name: 'Django', level: 70 },
+		],
 	},
 	{
 		id: 'devTools',
 		level: 88,
 		items: ['Git', 'Linux', 'REST API'],
+		detailedSkills: [
+			{ name: 'Git', level: 50 },
+			{ name: 'Linux', level: 30 },
+			{ name: 'REST API', level: 43 },
+		],
 	},
 	{
 		id: 'linux',
 		level: 85,
 		items: ['Arch Linux', 'BlackArch', 'Kali Linux', 'Ubuntu'],
+		detailedSkills: [
+			{ name: 'Arch Linux', level: 92 },
+			{ name: 'BlackArch', level: 88 },
+			{ name: 'Kali Linux', level: 85 },
+			{ name: 'Ubuntu', level: 0 },
+		],
 	},
 	{
 		id: 'creative',
 		level: 82,
 		items: ['Adobe Photoshop', 'Blender'],
+		detailedSkills: [
+			{ name: 'Adobe Photoshop', level: 69 },
+			{ name: 'Blender', level: 12 },
+		],
 	},
 	{
 		id: 'cybersecurity',
 		level: 78,
 		items: ['Security Fundamentals', 'Linux Security Basics'],
+		detailedSkills: [
+			{ name: 'Security Fundamentals', level: 8 },
+			{ name: 'Linux Security Basics', level: 3 },
+		],
 	},
 ];
 

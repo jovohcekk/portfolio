@@ -1,8 +1,8 @@
 'use client';
 
-import { useReducedMotion } from '@/hooks/use-reduced-motion'
-import { textRevealContainer, textRevealWord } from '@/lib/animations'
-import { motion } from 'framer-motion'
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { textRevealContainer, textRevealWord } from '@/lib/animations';
+import { motion } from 'framer-motion';
 
 interface TextRevealProps {
 	text: string;

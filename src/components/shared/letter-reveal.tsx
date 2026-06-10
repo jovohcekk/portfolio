@@ -1,7 +1,7 @@
 'use client';
 
-import { useReducedMotion } from '@/hooks/use-reduced-motion'
-import { motion } from 'framer-motion'
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { motion } from 'framer-motion';
 
 interface LetterRevealProps {
 	text: string;

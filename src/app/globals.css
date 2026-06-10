@@ -13,6 +13,8 @@
 
 	* {
 		@apply border-border;
+		/* Hide default cursor globally - CustomCursor will provide the replacement */
+		cursor: none !important;
 	}
 
 	html {

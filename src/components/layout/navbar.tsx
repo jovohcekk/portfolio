@@ -1,15 +1,15 @@
 'use client';
 
-import { ThemeToggle } from '@/components/shared/theme-toggle';
-import { navSections, personalInfo, type Locale } from '@/config/portfolio';
-import { useLanguage } from '@/hooks/use-language';
-import { useScrollSpy } from '@/hooks/use-scroll-spy';
-import type { TranslationKey } from '@/lib/i18n/translations';
-import { localeLabels } from '@/lib/i18n/translations';
-import { cn, scrollToSection } from '@/lib/utils';
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { LanguageDropdown } from '@/components/shared/language-dropdown'
+import { ThemeToggle } from '@/components/shared/theme-toggle'
+import { navSections, personalInfo, type Locale } from '@/config/portfolio'
+import { useLanguage } from '@/hooks/use-language'
+import { useScrollSpy } from '@/hooks/use-scroll-spy'
+import type { TranslationKey } from '@/lib/i18n/translations'
+import { cn, scrollToSection } from '@/lib/utils'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
+import { Menu, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 const locales: Locale[] = ['uz', 'en', 'ru'];
 
@@ -61,43 +61,38 @@ export function Navbar() {
 				</motion.button>
 
 				<ul className='hidden items-center gap-0.5 lg:flex xl:gap-1'>
-					{navSections.filter(s => s.id !== 'photoshop').map(section => (
-						<li key={section.id}>
-							<button
-								onClick={() => handleNav(section.id)}
-								aria-current={activeId === section.id ? 'true' : undefined}
-								className={cn(
-									'relative nav-hover rounded-lg px-2.5 py-2 text-xs font-medium transition-colors duration-300 xl:px-3.5 xl:text-sm',
-									activeId === section.id ? 'nav-active-text' : 'text-secondary-content hover:text-primary-content',
-								)}>
-								{activeId === section.id && (
-									<motion.span
-										layoutId='nav-active'
-										className='nav-active-pill absolute inset-0 rounded-lg'
-										transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-									/>
-								)}
-								<span className='relative'>{translate(section.labelKey as TranslationKey)}</span>
-							</button>
-						</li>
-					))}
+					{navSections
+						.filter(s => s.id !== 'photoshop')
+						.map(section => (
+							<li key={section.id}>
+								<button
+									onClick={() => handleNav(section.id)}
+									aria-current={activeId === section.id ? 'true' : undefined}
+									className={cn(
+										'relative nav-hover rounded-lg px-2.5 py-2 text-xs font-medium transition-colors duration-300 xl:px-3.5 xl:text-sm',
+										activeId === section.id ? 'nav-active-text' : 'text-secondary-content hover:text-primary-content',
+									)}>
+									{activeId === section.id && (
+										<motion.span
+											layoutId='nav-active'
+											className='nav-active-pill absolute inset-0 rounded-lg'
+											transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+										/>
+									)}
+									<span className='relative'>{translate(section.labelKey as TranslationKey)}</span>
+								</button>
+							</li>
+						))}
 				</ul>
 
 				<div className='flex shrink-0 items-center gap-1.5 sm:gap-2'>
-					<div className='hidden sm:flex items-center rounded-lg surface-chip p-0.5' role='group' aria-label='Language'>
-						{locales.map(loc => (
-							<button
-								key={loc}
-								onClick={() => setLocale(loc)}
-								aria-pressed={locale === loc}
-								className={cn(
-									'rounded-md px-2.5 py-1 text-xs font-medium transition-colors duration-300',
-									locale === loc ? 'locale-active' : 'text-secondary-content hover:text-primary-content',
-								)}>
-								{localeLabels[loc]}
-							</button>
-						))}
-					</div>
+					{/* Desktop Language Dropdown */}
+					<LanguageDropdown
+						currentLocale={locale}
+						locales={locales}
+						onLocaleChange={setLocale}
+						className='hidden sm:block'
+					/>
 
 					<ThemeToggle />
 
@@ -123,36 +118,32 @@ export function Navbar() {
 						transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
 						className='w-full border-t border-[var(--border-subtle)] glass-card rounded-none border-x-0 lg:hidden overflow-hidden'>
 						<ul className='flex flex-col gap-1 p-4'>
-							{navSections.filter(s => s.id !== 'photoshop').map((section, i) => (
-								<motion.li
-									key={section.id}
-									initial={{ opacity: 0, x: -12 }}
-									animate={{ opacity: 1, x: 0 }}
-									transition={{ delay: i * 0.04 }}>
-									<button
-										onClick={() => handleNav(section.id)}
-										aria-current={activeId === section.id ? 'true' : undefined}
-										className={cn(
-											'w-full rounded-lg px-4 py-3 text-left text-sm transition-colors duration-300',
-											activeId === section.id ? 'locale-active' : 'text-secondary-content',
-										)}>
-										{translate(section.labelKey as TranslationKey)}
-									</button>
-								</motion.li>
-							))}
-							<li className='flex gap-2 pt-2' role='group' aria-label='Language'>
-								{locales.map(loc => (
-									<button
-										key={loc}
-										onClick={() => setLocale(loc)}
-										aria-pressed={locale === loc}
-										className={cn(
-											'flex-1 rounded-lg py-2 text-xs font-medium surface-chip',
-											locale === loc && 'locale-active',
-										)}>
-										{localeLabels[loc]}
-									</button>
+							{navSections
+								.filter(s => s.id !== 'photoshop')
+								.map((section, i) => (
+									<motion.li
+										key={section.id}
+										initial={{ opacity: 0, x: -12 }}
+										animate={{ opacity: 1, x: 0 }}
+										transition={{ delay: i * 0.04 }}>
+										<button
+											onClick={() => handleNav(section.id)}
+											aria-current={activeId === section.id ? 'true' : undefined}
+											className={cn(
+												'w-full rounded-lg px-4 py-3 text-left text-sm transition-colors duration-300',
+												activeId === section.id ? 'locale-active' : 'text-secondary-content',
+											)}>
+											{translate(section.labelKey as TranslationKey)}
+										</button>
+									</motion.li>
 								))}
+							<li className='pt-3 border-t border-[var(--border-subtle)]'>
+								<LanguageDropdown
+									currentLocale={locale}
+									locales={locales}
+									onLocaleChange={setLocale}
+									className='w-full'
+								/>
 							</li>
 						</ul>
 					</motion.div>

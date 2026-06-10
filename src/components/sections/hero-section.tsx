@@ -1,26 +1,25 @@
 'use client';
 
-import { FloatingShapes } from '@/components/shared/floating-shapes';
-import { MagneticButton } from '@/components/shared/magnetic-button';
-import { ParallaxLayer } from '@/components/shared/parallax-layer';
-import { ParticleField } from '@/components/shared/particle-field';
-import { TextReveal } from '@/components/shared/text-reveal';
-import { TypingText } from '@/components/shared/typing-text';
-import { Button } from '@/components/ui/button';
-import { floatingTechIcons, personalInfo } from '@/config/portfolio';
-import { useLanguage } from '@/hooks/use-language';
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { blurIn, fadeInLeft, fadeInRight, staggerContainer } from '@/lib/animations';
-import { scrollToSection } from '@/lib/utils';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { MapPin, Sparkles } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react';
+import { FloatingShapes } from '@/components/shared/floating-shapes'
+import { MagneticButton } from '@/components/shared/magnetic-button'
+import { ParallaxLayer } from '@/components/shared/parallax-layer'
+import { ParticleField } from '@/components/shared/particle-field'
+import { CreativeProfileComposition } from '@/components/shared/creative-profile-composition'
+import { TextReveal } from '@/components/shared/text-reveal'
+import { TypingText } from '@/components/shared/typing-text'
+import { Button } from '@/components/ui/button'
+import { floatingTechIcons, personalInfo } from '@/config/portfolio'
+import { useLanguage } from '@/hooks/use-language'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import { blurIn, fadeInLeft, fadeInRight, staggerContainer } from '@/lib/animations'
+import { scrollToSection } from '@/lib/utils'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { MapPin, Sparkles } from 'lucide-react'
+import { memo } from 'react'
 
-export function HeroSection() {
+export function HeroSectionComponent() {
 	const { translate } = useLanguage();
 	const reducedMotion = useReducedMotion();
-	const [profileError, setProfileError] = useState(false);
 	const { scrollY } = useScroll();
 	const heroOpacity = useTransform(scrollY, [0, 400], [1, reducedMotion ? 1 : 0.3]);
 	const heroY = useTransform(scrollY, [0, 400], [0, reducedMotion ? 0 : 80]);
@@ -105,7 +104,7 @@ export function HeroSection() {
 						{personalInfo.role}
 					</motion.p>
 
-				<motion.h1 variants={blurIn} className='heading-display mt-3 break-words font-bold'>
+					<motion.h1 variants={blurIn} className='heading-display mt-3 break-words font-bold'>
 						<TypingText text={translate('hero.headline')} className='text-gradient-brand' />
 					</motion.h1>
 
@@ -148,41 +147,18 @@ export function HeroSection() {
 					animate='visible'
 					className='order-1 flex w-full min-w-0 justify-center md:order-2'>
 					<ParallaxLayer speed={0.25} className='w-full'>
-						<div className='relative w-full max-w-[16rem] xs:max-w-[18rem] sm-min:max-w-[20rem] md:max-w-none'>
-							<motion.div
-								className={`absolute -inset-4 rounded-full bg-gradient-animated opacity-25 blur-2xl dark:opacity-35 ${reducedMotion ? '' : 'animate-gradient'}`}
-								animate={reducedMotion ? undefined : { scale: [1, 1.05, 1] }}
-								transition={{ duration: 6, repeat: Infinity }}
-							/>
-							<motion.div
-								whileHover={reducedMotion ? undefined : { scale: 1.03 }}
-								transition={{ duration: 0.4 }}
-								className='relative mx-auto aspect-square w-full max-w-[16rem] overflow-hidden rounded-3xl border-2 border-accent glass-card-premium p-1 shadow-brand xs:max-w-[18rem] sm-min:max-w-[20rem] md:h-80 md:w-80 md:max-w-[20rem] lg:h-96 lg:w-96 lg:max-w-[24rem]'>
-								<div className='relative h-full w-full overflow-hidden rounded-[1.4rem] surface-media'>
-									{!profileError ? (
-										<Image
-											src={personalInfo.profileImage}
-											alt={personalInfo.name}
-											fill
-											className='object-cover'
-											priority
-											sizes='(max-width: 768px) 256px, 384px'
-											onError={() => setProfileError(true)}
-										/>
-									) : (
-										<div className='absolute inset-0 flex items-center justify-center text-6xl font-bold text-accent'>
-											{personalInfo.name
-												.split(' ')
-												.map(n => n[0])
-												.join('')}
-										</div>
-									)}
-								</div>
-							</motion.div>
-						</div>
+						<CreativeProfileComposition
+							src={personalInfo.profileImage}
+							alt={personalInfo.name}
+							reducedMotion={reducedMotion}
+							priority
+						/>
 					</ParallaxLayer>
 				</motion.div>
 			</motion.div>
 		</section>
 	);
 }
+
+// OPTIMIZATION: Memoize to prevent re-renders when parent updates but props don't change
+export const HeroSection = memo(HeroSectionComponent)

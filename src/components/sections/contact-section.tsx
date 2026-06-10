@@ -1,16 +1,17 @@
 'use client';
 
-import { SectionHeading } from '@/components/shared/section-heading';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { socialLinkItems } from '@/config/portfolio';
-import { useLanguage } from '@/hooks/use-language';
-import { fadeInUp, scaleIn, staggerContainer } from '@/lib/animations';
-import { copyToClipboard } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { ArrowDown, Check, Copy, Github, Instagram, Mail, Phone, RotateCcw, Send, type LucideIcon } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { LetterReveal } from '@/components/shared/letter-reveal'
+import { SectionHeading } from '@/components/shared/section-heading'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { socialLinkItems } from '@/config/portfolio'
+import { useLanguage } from '@/hooks/use-language'
+import { fadeInUp, scaleIn, staggerContainer } from '@/lib/animations'
+import { copyToClipboard } from '@/lib/utils'
+import { motion } from 'framer-motion'
+import { ArrowDown, Check, Copy, Github, Instagram, Mail, Phone, RotateCcw, Send, type LucideIcon } from 'lucide-react'
+import { useEffect, useRef, useState, memo } from 'react'
 
 const contactIcons: Record<string, LucideIcon> = {
 	telegram: Send,
@@ -19,18 +20,47 @@ const contactIcons: Record<string, LucideIcon> = {
 	email: Mail,
 };
 
-const floatingArrowVariants = {
-	animate: {
-		y: [0, 12, 0],
+const premiumHeadingVariants = {
+	hidden: { opacity: 0, y: 20 },
+	visible: {
+		opacity: 1,
+		y: 0,
 		transition: {
-			duration: 2.5,
+			duration: 0.7,
+			ease: [0.22, 1, 0.36, 1],
+		},
+	},
+};
+
+const glowPulseVariants = {
+	initial: { textShadow: '0 0 0px rgba(rgb(var(--accent-primary)), 0)' },
+	whileInView: {
+		textShadow: [
+			'0 0 0px rgba(rgb(var(--accent-primary)), 0)',
+			'0 0 20px rgba(rgb(var(--accent-primary)), 0.5)',
+			'0 0 0px rgba(rgb(var(--accent-primary)), 0)',
+		],
+		transition: {
+			duration: 3,
 			ease: 'easeInOut',
 			repeat: Infinity,
 		},
 	},
 };
 
-export function ContactSection() {
+const floatingArrowVariants = {
+	animate: {
+		y: [0, 8, 0],
+		opacity: [0.7, 1, 0.7],
+		transition: {
+			duration: 3,
+			ease: 'easeInOut',
+			repeat: Infinity,
+		},
+	},
+};
+
+export function ContactSectionComponent() {
 	const { translate } = useLanguage();
 	const [copiedId, setCopiedId] = useState<string | null>(null);
 	const [formState, setFormState] = useState({ name: '', phone: '', email: '', message: '', website: '' });
@@ -87,12 +117,13 @@ export function ContactSection() {
 				<SectionHeading title={translate('contact.title')} subtitle={translate('contact.subtitle')} />
 
 				<div className='grid w-full min-w-0 grid-cols-1 gap-8 xs:gap-12 lg:grid-cols-2'>
+					{/* Left Column: Contact Cards */}
 					<motion.div
 						variants={staggerContainer}
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='w-full min-w-0 space-y-3 xs:space-y-4'>
+						className='w-full min-w-0 space-y-3 xs:space-y-4 lg:flex lg:flex-col lg:justify-center'>
 						{socialLinkItems.map(item => {
 							const Icon = contactIcons[item.id] ?? Mail;
 							return (
@@ -134,18 +165,29 @@ export function ContactSection() {
 						whileInView='visible'
 						viewport={{ once: true }}
 						className='w-full min-w-0'>
-						{/* Form Heading with Animated Arrow */}
+						{/* Form Heading with Animated Arrow - Premium Version */}
 						<motion.div
-							className='flex items-center gap-3 mb-6'
-							initial={{ opacity: 0, y: -20 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.6, delay: 0.2 }}>
-							<h3 className='text-lg xs:text-xl font-semibold text-gradient-brand'>
-								{translate('contact.form.heading')}
-							</h3>
-							<motion.div variants={floatingArrowVariants} animate='animate' className='inline-flex'>
-								<ArrowDown className='h-5 w-5 text-accent' />
+							variants={premiumHeadingVariants}
+							initial='hidden'
+							whileInView='visible'
+							viewport={{ once: true, margin: '-40px' }}
+							className='mb-8 flex items-center gap-2 xs:gap-3'
+							onHoverStart={() => {}}
+							onHoverEnd={() => {}}>
+							<motion.div
+								className='text-xl xs:text-2xl md:text-3xl font-bold bg-gradient-to-r from-[rgb(var(--accent-primary))] via-[rgb(var(--accent-secondary))] to-[rgb(var(--accent-primary))] bg-clip-text text-transparent'
+								variants={glowPulseVariants}
+								initial='initial'
+								whileInView='whileInView'
+								viewport={{ once: false, margin: '-40px' }}>
+								<LetterReveal
+									text={translate('contact.form.heading')}
+									as='span'
+									className='text-xl xs:text-2xl md:text-3xl font-bold bg-gradient-to-r from-[rgb(var(--accent-primary))] via-[rgb(var(--accent-secondary))] to-[rgb(var(--accent-primary))] bg-clip-text text-transparent'
+								/>
+							</motion.div>
+							<motion.div variants={floatingArrowVariants} animate='animate' className='inline-flex pt-1 xs:pt-2'>
+								<ArrowDown className='h-5 w-5 xs:h-6 xs:w-6 text-[rgb(var(--accent-primary))] drop-shadow-[0_0_8px_rgba(var(--accent-primary),0.3)]' />
 							</motion.div>
 						</motion.div>
 
@@ -168,7 +210,7 @@ export function ContactSection() {
 										onChange={e => setFormState(s => ({ ...s, website: e.target.value }))}
 									/>
 								</div>
-							<div>
+								<div>
 									<Label htmlFor='name' className='label-premium'>
 										{translate('contact.form.name')}
 									</Label>
@@ -199,7 +241,7 @@ export function ContactSection() {
 										/>
 									</div>
 								</div>
-							<div>
+								<div>
 									<Label htmlFor='email' className='label-premium'>
 										{translate('contact.form.email')}
 									</Label>
@@ -214,7 +256,7 @@ export function ContactSection() {
 										placeholder={translate('contact.form.email.placeholder')}
 									/>
 								</div>
-							<div>
+								<div>
 									<Label htmlFor='message' className='label-premium'>
 										{translate('contact.form.message')}
 									</Label>
@@ -278,3 +320,6 @@ export function ContactSection() {
 		</section>
 	);
 }
+
+// OPTIMIZATION: Memoize to prevent re-renders when parent updates but props don't change
+export const ContactSection = memo(ContactSectionComponent)

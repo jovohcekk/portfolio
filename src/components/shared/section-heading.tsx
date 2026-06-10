@@ -1,8 +1,8 @@
 'use client';
 
-import { LetterReveal } from '@/components/shared/letter-reveal'
-import { blurIn, fadeInUp } from '@/lib/animations'
-import { motion } from 'framer-motion'
+import { LetterReveal } from '@/components/shared/letter-reveal';
+import { blurIn, fadeInUp } from '@/lib/animations';
+import { motion } from 'framer-motion';
 
 interface SectionHeadingProps {
 	title: string;

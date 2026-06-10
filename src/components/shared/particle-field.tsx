@@ -1,8 +1,8 @@
 'use client';
 
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { motion } from 'framer-motion';
-import { useMemo } from 'react';
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import { motion } from 'framer-motion'
+import { useMemo, memo } from 'react'
 
 interface ParticleFieldProps {
 	count?: number;
@@ -10,7 +10,7 @@ interface ParticleFieldProps {
 	variant?: 'default' | 'hero';
 }
 
-export function ParticleField({ count = 24, className = '', variant = 'default' }: ParticleFieldProps) {
+function ParticleFieldComponent({ count = 24, className = '', variant = 'default' }: ParticleFieldProps) {
 	const reducedMotion = useReducedMotion();
 
 	const particles = useMemo(
@@ -60,3 +60,6 @@ export function ParticleField({ count = 24, className = '', variant = 'default' 
 		</div>
 	);
 }
+
+// OPTIMIZATION: Memoize to prevent re-renders when props haven't changed
+export const ParticleField = memo(ParticleFieldComponent)
