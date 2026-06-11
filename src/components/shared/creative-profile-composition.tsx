@@ -97,13 +97,13 @@ function CreativeProfileCompositionComponent({
 
 			{/* Main 3D perspective container */}
 			<motion.div
-						style={
-							reducedMotion
-								? undefined
-								: { perspective: 1200, rotateX: rotateXDeg, rotateY: rotateYDeg, willChange: 'transform' }
-						}
-						transition={{ type: 'spring', stiffness: 100, damping: 30 }}
-						className='relative'>
+				style={
+					reducedMotion
+						? undefined
+						: { perspective: 1200, rotateX: rotateXDeg, rotateY: rotateYDeg, willChange: 'transform' }
+				}
+				transition={{ type: 'spring', stiffness: 100, damping: 30 }}
+				className='relative'>
 				{/* Floating card stack effect - asymmetrical depth */}
 				<div className='relative aspect-[4/5] w-full'>
 					{/* Back layer - offset accent */}
