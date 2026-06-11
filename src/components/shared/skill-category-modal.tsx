@@ -49,14 +49,15 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 			}
 		};
 
-		// Prevent scroll when modal is open
+		// Prevent scroll when modal is open - preserve previous overflow
+		const previousOverflow = document.body.style.overflow;
 		document.body.style.overflow = 'hidden';
 
 		window.addEventListener('keydown', handleEsc);
 		document.addEventListener('mousedown', handleClickOutside);
 
 		return () => {
-			document.body.style.overflow = 'unset';
+			document.body.style.overflow = previousOverflow || '';
 			window.removeEventListener('keydown', handleEsc);
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
@@ -65,7 +66,6 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 	if (!mounted) return null;
 
 	const CategoryIcon = getCategoryIcon(category);
-	const isOddCount = skills.length % 2 === 1;
 
 	return (
 		<AnimatePresence>
@@ -75,15 +75,16 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					transition={{ duration: 0.25 }}
-					className='fixed inset-0 z-50 flex items-center justify-center p-4'>
+					className='fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden'>
 					{/* Premium Backdrop with Blur */}
 					<motion.div
-						initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-						animate={{ opacity: 1, backdropFilter: 'blur(20px)' }}
-						exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-						transition={{ duration: 0.3 }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.25 }}
 						onClick={onClose}
 						className='absolute inset-0 bg-black/50'
+						style={{ backdropFilter: 'blur(20px)' }}
 					/>
 
 					{/* Premium Modal */}
@@ -93,7 +94,7 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 						animate={{ scale: 1, opacity: 1, y: 0 }}
 						exit={{ scale: 0.85, opacity: 0, y: 30 }}
 						transition={{ duration: 0.4, ease: 'easeOut' }}
-						className='relative z-10 w-full max-w-5xl max-h-[85vh] overflow-y-auto rounded-[24px] p-12'
+						className='relative z-10 w-[95vw] sm:w-full max-w-5xl max-h-[85vh] overflow-y-auto overflow-x-hidden rounded-[24px] p-6 sm:p-12'
 						style={{
 							background: 'rgba(10, 10, 10, 0.9)',
 							backdropFilter: 'blur(20px)',
@@ -103,18 +104,20 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 								0 0 60px rgba(220, 38, 38, 0.15),
 								0 25px 50px -12px rgba(0, 0, 0, 0.8)
 							`,
+							willChange: 'transform, opacity',
 						}}>
 						{/* Close Button - Premium Style */}
 						<motion.button
 							onClick={onClose}
-							whileHover={{ scale: 1.1, rotate: 90 }}
+							whileHover={{ scale: 1.05, rotate: 90 }}
 							whileTap={{ scale: 0.95 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-							className='absolute right-8 top-8 rounded-full p-2 text-gray-400 transition-all hover:text-red-500'
+							className='absolute right-2 top-2 sm:right-8 sm:top-8 z-20 rounded-full p-2 text-gray-400 transition-all hover:text-red-500'
 							style={{
 								background: 'rgba(220, 38, 38, 0.05)',
 								border: '1px solid rgba(220, 38, 38, 0.2)',
 								boxShadow: 'inset 0 0 20px rgba(220, 38, 38, 0.05)',
+								willChange: 'transform, opacity',
 							}}>
 							<X className='h-6 w-6' />
 						</motion.button>
@@ -139,7 +142,7 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 									initial={{ opacity: 0, x: -20 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ delay: 0.15, duration: 0.3 }}
-									className='text-5xl font-bold text-white capitalize'>
+									className='text-4xl sm:text-5xl font-bold text-white capitalize'>
 									{category}
 								</motion.h1>
 							</div>
@@ -158,9 +161,9 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ delay: 0.25, duration: 0.3 }}
-							className={`grid gap-8 ${isOddCount ? 'grid-cols-1 xs:grid-cols-2' : 'grid-cols-1 xs:grid-cols-2'}`}>
+							className='grid gap-8 grid-cols-1 sm:grid-cols-2'>
 							{skills.map((skill, index) => (
-								<PremiumSkillCard
+								<MemoizedPremiumSkillCard
 									key={skill.name}
 									skill={skill}
 									index={index}
@@ -185,12 +188,13 @@ function PremiumSkillCard({ skill, index }: { skill: Skill; index: number }) {
 				ease: 'easeOut',
 				delay: 0.35 + index * 0.1,
 			}}
-			className='group rounded-[20px] p-8 transition-all duration-300'
+			className='group w-full rounded-[20px] p-6 sm:p-8 transition-all duration-300'
 			style={{
 				background: 'rgba(30, 30, 30, 0.8)',
 				border: '1px solid rgba(220, 38, 38, 0.2)',
 				backdropFilter: 'blur(10px)',
 				boxShadow: 'inset 0 0 20px rgba(220, 38, 38, 0.05), 0 8px 32px rgba(0, 0, 0, 0.3)',
+				willChange: 'transform, opacity',
 			}}>
 			{/* Icon Section */}
 			<motion.div
@@ -201,13 +205,13 @@ function PremiumSkillCard({ skill, index }: { skill: Skill; index: number }) {
 					ease: 'easeOut',
 					delay: 0.4 + index * 0.1,
 				}}
-				className='mb-6 flex h-14 w-14 items-center justify-center rounded-xl'
+				className='mb-6 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl'
 				style={{
 					background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(220, 38, 38, 0.05))',
 					border: '1px solid rgba(220, 38, 38, 0.3)',
 					boxShadow: 'inset 0 0 15px rgba(220, 38, 38, 0.1)',
 				}}>
-				<svg className='h-7 w-7' fill='currentColor' viewBox='0 0 20 20' style={{ color: '#dc2626' }}>
+				<svg className='h-6 w-6 sm:h-7 sm:w-7' fill='currentColor' viewBox='0 0 20 20' style={{ color: '#dc2626' }}>
 					<path
 						fillRule='evenodd'
 						d='M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z'
@@ -231,7 +235,7 @@ function PremiumSkillCard({ skill, index }: { skill: Skill; index: number }) {
 					animate={{ opacity: 1 }}
 					transition={{ delay: 0.5 + index * 0.1, duration: 0.3 }}
 					className='flex items-baseline gap-2'>
-					<span className='text-4xl font-bold text-red-500'>{skill.level}</span>
+					<span className='text-3xl sm:text-4xl font-bold text-red-500'>{skill.level}</span>
 					<span className='text-gray-400'>%</span>
 				</motion.div>
 			</div>
@@ -239,22 +243,27 @@ function PremiumSkillCard({ skill, index }: { skill: Skill; index: number }) {
 			{/* Progress Bar */}
 			<div className='h-2 overflow-hidden rounded-full' style={{ background: 'rgba(220, 38, 38, 0.1)' }}>
 				<motion.div
-					initial={{ width: 0 }}
-					animate={{ width: `${skill.level}%` }}
+						initial={{ scaleX: 0 }}
+						animate={{ scaleX: skill.level / 100 }}
 					transition={{
-						duration: 1.5,
+							duration: 1.2,
 						ease: 'easeOut',
 						delay: 0.55 + index * 0.1,
 					}}
-					className='h-full rounded-full transition-all duration-500'
+						className='h-full rounded-full origin-left'
 					style={{
-						background: 'linear-gradient(90deg, #dc2626, #ef4444, #fca5a5)',
-						boxShadow: 'inset 0 0 10px rgba(220, 38, 38, 0.5), 0 0 20px rgba(220, 38, 38, 0.3)',
-					}}
-				/>
-			</div>
+							transformOrigin: 'left',
+							background: 'linear-gradient(90deg, #dc2626, #ef4444, #fca5a5)',
+							boxShadow: 'inset 0 0 10px rgba(220, 38, 38, 0.5), 0 0 20px rgba(220, 38, 38, 0.3)',
+							willChange: 'transform, opacity',
+							transform: 'scaleX(0)'
+						}}
+					/>
+				</div>
 		</motion.div>
 	);
 }
+
+const MemoizedPremiumSkillCard = memo(PremiumSkillCard);
 
 export const SkillCategoryModal = memo(SkillCategoryModalComponent);
