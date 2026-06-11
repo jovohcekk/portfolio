@@ -1,8 +1,8 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Database, Terminal, Palette, Shield, X } from 'lucide-react';
-import { useEffect, useState, memo, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion'
+import { Code, Database, Palette, Shield, Terminal, X } from 'lucide-react'
+import { memo, useEffect, useRef, useState } from 'react'
 
 interface Skill {
 	name: string;
@@ -163,11 +163,7 @@ function SkillCategoryModalComponent({ isOpen, category, skills, onClose }: Skil
 							transition={{ delay: 0.25, duration: 0.3 }}
 							className='grid gap-8 grid-cols-1 sm:grid-cols-2'>
 							{skills.map((skill, index) => (
-								<MemoizedPremiumSkillCard
-									key={skill.name}
-									skill={skill}
-									index={index}
-								/>
+								<MemoizedPremiumSkillCard key={skill.name} skill={skill} index={index} />
 							))}
 						</motion.div>
 					</motion.div>
@@ -243,23 +239,23 @@ function PremiumSkillCard({ skill, index }: { skill: Skill; index: number }) {
 			{/* Progress Bar */}
 			<div className='h-2 overflow-hidden rounded-full' style={{ background: 'rgba(220, 38, 38, 0.1)' }}>
 				<motion.div
-						initial={{ scaleX: 0 }}
-						animate={{ scaleX: skill.level / 100 }}
+					initial={{ scaleX: 0 }}
+					animate={{ scaleX: skill.level / 100 }}
 					transition={{
-							duration: 1.2,
+						duration: 1.2,
 						ease: 'easeOut',
 						delay: 0.55 + index * 0.1,
 					}}
-						className='h-full rounded-full origin-left'
+					className='h-full rounded-full origin-left'
 					style={{
-							transformOrigin: 'left',
-							background: 'linear-gradient(90deg, #dc2626, #ef4444, #fca5a5)',
-							boxShadow: 'inset 0 0 10px rgba(220, 38, 38, 0.5), 0 0 20px rgba(220, 38, 38, 0.3)',
-							willChange: 'transform, opacity',
-							transform: 'scaleX(0)'
-						}}
-					/>
-				</div>
+						transformOrigin: 'left',
+						background: 'linear-gradient(90deg, #dc2626, #ef4444, #fca5a5)',
+						boxShadow: 'inset 0 0 10px rgba(220, 38, 38, 0.5), 0 0 20px rgba(220, 38, 38, 0.3)',
+						willChange: 'transform, opacity',
+						transform: 'scaleX(0)',
+					}}
+				/>
+			</div>
 		</motion.div>
 	);
 }
