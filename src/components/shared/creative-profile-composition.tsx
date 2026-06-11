@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
+import { motion, useMotionValue } from 'framer-motion'
 import Image from 'next/image'
 import { memo, useEffect, useRef, useState } from 'react'
 
@@ -33,11 +33,36 @@ function CreativeProfileCompositionComponent({
 			mouseY.set(e.clientY - rect.top - rect.height / 2);
 		};
 
+		const handleMouseLeave = () => {
+			// reset values so the 3D transform returns to neutral when cursor leaves
+			mouseX.set(0);
+			mouseY.set(0);
+		};
+
 		window.addEventListener('mousemove', handleMouseMove);
-		return () => window.removeEventListener('mousemove', handleMouseMove);
+		const el = containerRef.current;
+		el?.addEventListener('mouseleave', handleMouseLeave);
+
+		return () => {
+			window.removeEventListener('mousemove', handleMouseMove);
+			el?.removeEventListener('mouseleave', handleMouseLeave);
+		};
 	}, [mouseX, mouseY, reducedMotion]);
 
-	const rotateX = useMotionTemplate`perspective(1200px) rotateX(calc(${mouseY} * 0.02deg)) rotateY(calc(${mouseX} * -0.02deg))`;
+	// Derive numeric rotation values (degrees) so Framer Motion composes transforms properly
+	const rotateXDeg = useMotionValue(0);
+	const rotateYDeg = useMotionValue(0);
+	useEffect(() => {
+		const unsubX = mouseY.onChange(v => rotateXDeg.set(v * 0.02));
+		const unsubY = mouseX.onChange(v => rotateYDeg.set(v * -0.02));
+		// ensure reset on mount
+		rotateXDeg.set(0);
+		rotateYDeg.set(0);
+		return () => {
+			unsubX();
+			unsubY();
+		};
+	}, [mouseX, mouseY, rotateXDeg, rotateYDeg]);
 
 	return (
 		<div ref={containerRef} className='relative mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg'>
@@ -72,9 +97,13 @@ function CreativeProfileCompositionComponent({
 
 			{/* Main 3D perspective container */}
 			<motion.div
-				style={reducedMotion ? undefined : { transform: rotateX }}
-				transition={{ type: 'spring', stiffness: 100, damping: 30 }}
-				className='relative'>
+						style={
+							reducedMotion
+								? undefined
+								: { perspective: 1200, rotateX: rotateXDeg, rotateY: rotateYDeg, willChange: 'transform' }
+						}
+						transition={{ type: 'spring', stiffness: 100, damping: 30 }}
+						className='relative'>
 				{/* Floating card stack effect - asymmetrical depth */}
 				<div className='relative aspect-[4/5] w-full'>
 					{/* Back layer - offset accent */}
