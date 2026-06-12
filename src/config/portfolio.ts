@@ -17,6 +17,7 @@ export interface ProjectItem {
 	github: string;
 	demo: string;
 	image: string;
+	displaySize?: 'large' | 'medium' | 'small' | 'wide';
 }
 
 /** Photoshop loyiha kategoriyalari */
