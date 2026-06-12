@@ -29,6 +29,8 @@ export interface PhotoshopProject {
 	category: PhotoshopCategory;
 	descriptionKey: string;
 	image: string;
+	width?: number;
+	height?: number;
 	gallery?: string[];
 }
 
@@ -226,6 +228,8 @@ export const photoshopProjects: PhotoshopProject[] = [
 		category: 'poster',
 		descriptionKey: 'photoshop.project.poster.description',
 		image: '/images/event poster.png',
+		width: 1200,
+		height: 1697,
 		gallery: ['/images/poster.png'],
 	},
 	{
@@ -234,6 +238,8 @@ export const photoshopProjects: PhotoshopProject[] = [
 		category: 'social',
 		descriptionKey: 'photoshop.project.social.description',
 		image: '/images/SOCIAL MEDIA.png',
+		width: 736,
+		height: 920,
 		gallery: ['/images/STORY DESIGN.png'],
 	},
 	{
@@ -242,6 +248,8 @@ export const photoshopProjects: PhotoshopProject[] = [
 		category: 'thumbnail',
 		descriptionKey: 'photoshop.project.thumbnail.description',
 		image: '/images/THUMBNAIL.png',
+		width: 1672,
+		height: 941,
 		gallery: [],
 	},
 	{
@@ -250,6 +258,8 @@ export const photoshopProjects: PhotoshopProject[] = [
 		category: 'manipulation',
 		descriptionKey: 'photoshop.project.manipulation.description',
 		image: '/images/PHOTO MANIPULATION.png',
+		width: 669,
+		height: 901,
 		gallery: [],
 	},
 	{
@@ -258,6 +268,8 @@ export const photoshopProjects: PhotoshopProject[] = [
 		category: 'banner',
 		descriptionKey: 'photoshop.project.banner.description',
 		image: '/images/WEB BANNER.png',
+		width: 1200,
+		height: 400,
 		gallery: [],
 	},
 	{
@@ -266,6 +278,8 @@ export const photoshopProjects: PhotoshopProject[] = [
 		category: 'artwork',
 		descriptionKey: 'photoshop.project.artwork.description',
 		image: '/images/CREATIVE ARTWORK.png',
+		width: 467,
+		height: 700,
 		gallery: [],
 	},
 ];

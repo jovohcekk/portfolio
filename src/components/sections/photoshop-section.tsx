@@ -17,6 +17,7 @@ interface GridItem extends PhotoshopProject {
 	gridRow: number;
 	colSpan: number;
 	rowSpan: number;
+	aspectRatio?: number;
 }
 
 // Create fixed grid layout from portfolio projects
@@ -40,12 +41,15 @@ const createFixedGridLayout = (projects: PhotoshopProject[]): GridItem[] => {
 			rowSpan = 2;
 		}
 
+		const aspectRatio = project.width && project.height ? project.width / project.height : undefined;
+
 		const item: GridItem = {
 			...project,
 			gridCol: currentCol,
 			gridRow: currentRow,
 			colSpan,
-			rowSpan
+			rowSpan,
+			aspectRatio
 		};
 
 		layout.push(item);
@@ -177,7 +181,8 @@ export function PhotoshopSection() {
 									)}
 									style={{
 										gridColumn: `${project.gridCol} / span ${project.colSpan}`,
-										gridRow: `${project.gridRow} / span ${project.rowSpan}`
+										gridRow: `${project.gridRow} / span ${project.rowSpan}`,
+										aspectRatio: project.aspectRatio?.toString()
 									}}
 									initial={{ opacity: 0, scale: 0.95 }}
 									animate={{ opacity: 1, scale: 1 }}
@@ -441,7 +446,6 @@ export function PhotoshopSection() {
 					position: relative;
 					width: 100%;
 					height: 100%;
-					min-height: 200px;
 					overflow: hidden;
 					border-radius: 20px;
 					background: var(--bg-secondary);
@@ -691,7 +695,7 @@ export function PhotoshopSection() {
 					}
 
 					.project-card {
-						min-height: 240px;
+						min-height: auto;
 					}
 
 					.category-filters {
@@ -744,7 +748,7 @@ export function PhotoshopSection() {
 					}
 
 					.project-card {
-						min-height: 180px;
+						min-height: auto;
 						border-radius: 16px;
 					}
 
