@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 
-import { SectionHeading } from '@/components/shared/section-heading';
 import { ProjectCard } from './project-card';
 import { useLanguage } from '@/hooks/use-language';
 import { projects } from '@/config/portfolio';
@@ -33,10 +32,24 @@ export function DevelopmentProjectsSection() {
 			</div>
 
 			<div className="section-container relative z-10">
-				<SectionHeading
-					title={translate('projects.dev.title')}
-					subtitle={translate('projects.dev.subtitle')}
-				/>
+				{/* Title Only - No Subtitle */}
+				<motion.div
+					initial={{ opacity: 0, y: 24 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+					className="mb-16 text-center">
+					<h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white">
+						{translate('projects.title')}
+					</h2>
+					<motion.div
+						initial={{ scaleX: 0 }}
+						whileInView={{ scaleX: 1 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+						className="mt-5 h-0.5 w-16 rounded-full bg-gradient-primary mx-auto"
+					/>
+				</motion.div>
 
 				{/* 2-Column Project Cards Grid */}
 				<motion.div

@@ -389,3 +389,211 @@ export const slidingCategoryIndicator: Variants = {
 	},
 	exit: { width: 0, opacity: 0 },
 };
+
+// =====================================
+// PREMIUM MICRO-INTERACTIONS
+// =====================================
+
+/** Magnetic button hover effect */
+export const magneticHover = {
+	scale: [1, 1.02, 1.01],
+	transition: { duration: 0.4, ease: EASE_OUT_EXPO },
+};
+
+/** Ripple effect for buttons */
+export const rippleEffect: Variants = {
+	initial: { scale: 0, opacity: 1 },
+	animate: {
+		scale: 3,
+		opacity: 0,
+		transition: { duration: 0.6, ease: 'easeOut' },
+	},
+};
+
+/** Shine sweep animation */
+export const shineSweep: Variants = {
+	initial: { x: '-100%', opacity: 0 },
+	animate: {
+		x: '100%',
+		opacity: [0, 1, 0],
+		transition: { duration: 1.5, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Icon movement */
+export const iconBounce = {
+	y: [0, -3, 0],
+	transition: { duration: 0.4, ease: EASE_OUT_EXPO },
+};
+
+/** Glow pulse effect */
+export const glowPulseIntense = {
+	boxShadow: [
+		'0 0 10px rgba(255, 45, 45, 0)',
+		'0 0 30px rgba(255, 45, 45, 0.4)',
+		'0 0 10px rgba(255, 45, 45, 0)',
+	],
+	transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+};
+
+/** Hover lift effect */
+export const hoverLift = {
+	y: -8,
+	boxShadow: '0 32px 64px rgba(0, 0, 0, 0.3)',
+	transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+};
+
+/** Tilt effect */
+export const tiltEffect = (x: number, y: number) => ({
+	rotateX: y,
+	rotateY: x,
+	transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+});
+
+/** Border glow animation */
+export const borderGlow: Variants = {
+	initial: {
+		borderColor: 'rgba(255, 45, 45, 0)',
+		boxShadow: '0 0 0px rgba(255, 45, 45, 0)',
+	},
+	hover: {
+		borderColor: 'rgba(255, 45, 45, 0.5)',
+		boxShadow: '0 0 20px rgba(255, 45, 45, 0.3), inset 0 0 20px rgba(255, 45, 45, 0.1)',
+		transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Character reveal animation */
+export const characterReveal: Variants = {
+	hidden: { opacity: 0, y: '100%' },
+	visible: (i: number) => ({
+		opacity: 1,
+		y: 0,
+		transition: {
+			delay: i * 0.04,
+			duration: 0.5,
+			ease: EASE_OUT_EXPO,
+		},
+	}),
+};
+
+/** Word reveal animation */
+export const wordReveal: Variants = {
+	hidden: { opacity: 0, x: -10 },
+	visible: (i: number) => ({
+		opacity: 1,
+		x: 0,
+		transition: {
+			delay: i * 0.08,
+			duration: 0.5,
+			ease: EASE_OUT_EXPO,
+		},
+	}),
+};
+
+/** Parallax scroll animation */
+export const parallaxScroll = (offset: number) => ({
+	y: [0, offset],
+	transition: { duration: 1, ease: 'easeOut' },
+});
+
+/** Scroll reveal with stagger */
+export const scrollRevealStagger: Variants = {
+	hidden: { opacity: 0, y: 40 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			staggerChildren: 0.1,
+			delayChildren: 0.2,
+		},
+	},
+};
+
+/** Smooth color transition */
+export const colorTransition = {
+	transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+};
+
+/** Image zoom effect */
+export const imageZoom = {
+	scale: 1.08,
+	transition: { duration: 0.4, ease: EASE_OUT_EXPO },
+};
+
+/** Floating motion - continuous */
+export const floatingMotion = {
+	y: [0, -20, 0],
+	transition: {
+		duration: 6,
+		repeat: Infinity,
+		ease: 'easeInOut',
+	},
+};
+
+/** Smooth spring animation */
+export const springAnimation = (tension = 100, friction = 20) => ({
+	type: 'spring' as const,
+	stiffness: tension,
+	damping: friction,
+	mass: 1,
+});
+
+/** Carousel slide animation */
+export const carouselSlide: Variants = {
+	enter: { x: 1000, opacity: 0 },
+	center: { zIndex: 1, x: 0, opacity: 1 },
+	exit: { zIndex: 0, x: -1000, opacity: 0 },
+};
+
+/** Modal backdrop blur */
+export const backdropBlur: Variants = {
+	hidden: { backdropFilter: 'blur(0px)', opacity: 0 },
+	visible: {
+		backdropFilter: 'blur(12px)',
+		opacity: 1,
+		transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+	},
+	exit: {
+		backdropFilter: 'blur(0px)',
+		opacity: 0,
+		transition: { duration: 0.2, ease: 'easeOut' },
+	},
+};
+
+/** Slide in from left */
+export const slideInFromLeft: Variants = {
+	hidden: { x: -100, opacity: 0 },
+	visible: {
+		x: 0,
+		opacity: 1,
+		transition: { duration: 0.6, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Slide in from right */
+export const slideInFromRight: Variants = {
+	hidden: { x: 100, opacity: 0 },
+	visible: {
+		x: 0,
+		opacity: 1,
+		transition: { duration: 0.6, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Underline animation */
+export const underlineReveal: Variants = {
+	hidden: { scaleX: 0 },
+	visible: {
+		scaleX: 1,
+		transition: { duration: 0.6, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Gradient animation */
+export const gradientAnimation: Variants = {
+	animate: {
+		backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+		transition: { duration: 6, repeat: Infinity, ease: 'linear' },
+	},
+};

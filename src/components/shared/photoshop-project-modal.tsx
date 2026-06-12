@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { X, Maximize2, Minimize2 } from 'lucide-react';
 
 import { type PhotoshopGalleryItem } from '@/config/portfolio';
-import { useLanguage } from '@/hooks/use-language';
 import { cn } from '@/lib/utils';
 
 interface PhotoshopProjectModalProps {
@@ -47,20 +46,6 @@ const contentVariants = {
 	},
 };
 
-const infoPanelVariants = {
-	hidden: { opacity: 0, x: 32 },
-	visible: {
-		opacity: 1,
-		x: 0,
-		transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-	},
-	exit: {
-		opacity: 0,
-		x: 32,
-		transition: { duration: 0.3, ease: 'easeOut' },
-	},
-};
-
 export function PhotoshopProjectModal({
 	project,
 	isOpen,
@@ -68,8 +53,6 @@ export function PhotoshopProjectModal({
 	isMaximized,
 	onToggleMaximize,
 }: PhotoshopProjectModalProps) {
-	const { translate } = useLanguage();
-
 	// Handle escape key
 	useEffect(() => {
 		if (!isOpen) return;
@@ -119,32 +102,29 @@ export function PhotoshopProjectModal({
 						transition={{ duration: 0.3 }}
 					/>
 
-					{/* Modal Content */}
+					{/* Modal Content - Image Only */}
 					<motion.div
-						className="relative z-20 flex w-full max-w-[1400px] flex-col gap-8 lg:flex-row lg:items-start"
+						className={cn(
+							'relative z-20 overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b]/90 shadow-[0_32px_120px_rgba(255,0,0,0.24)]',
+							isMaximized
+								? 'h-[90vh] w-[90vw] max-w-[95vw] max-h-[95vh]'
+								: 'h-auto w-full max-w-[900px]'
+						)}
 						variants={contentVariants}
+						layoutId={`gallery-image-${project.id}`}
+						transition={{ type: 'spring', stiffness: 120, damping: 18 }}
 						onClick={(e) => e.stopPropagation()}>
-						{/* Left Side: Image */}
-						<motion.div
-							className={cn(
-								'relative mx-auto flex w-full overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b]/90 shadow-[0_32px_120px_rgba(255,0,0,0.24)]',
-								isMaximized ? 'h-[90vh] w-[90vw]' : 'min-h-[420px] lg:max-w-[780px]'
-							)}
-							layoutId={`gallery-image-${project.id}`}
-							transition={{ type: 'spring', stiffness: 120, damping: 18 }}>
-							{/* Image */}
+						{/* Image */}
+						<div className="relative w-full h-full">
 							<Image
 								src={project.image}
 								alt={project.title}
 								fill
-								className="object-cover"
-								sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 90vw"
+								className="object-contain"
+								sizes="(max-width: 768px) 100vw, 90vw"
 								quality={95}
 								priority
 							/>
-
-							{/* Image Gradient Overlay */}
-							<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
 							{/* Header with Controls */}
 							<div className="absolute inset-x-0 top-0 flex justify-between items-center p-4 z-10 bg-gradient-to-b from-black/60 to-transparent">
@@ -183,74 +163,7 @@ export function PhotoshopProjectModal({
 									</motion.button>
 								</div>
 							</div>
-						</motion.div>
-
-						{/* Right Side: Info Panel */}
-						<AnimatePresence>
-							{!isMaximized && (
-								<motion.div
-									initial="hidden"
-									animate="visible"
-									exit="exit"
-									variants={infoPanelVariants}
-									className="flex-1 rounded-[24px] border border-white/10 bg-[#050505]/95 p-6 md:p-8 shadow-[0_32px_90px_rgba(255,20,20,0.15)] backdrop-blur-xl">
-									{/* Category Badge */}
-									<div className="inline-flex items-center px-3 py-1.5 rounded-full border border-red-400/25 bg-red-500/10 text-xs font-semibold uppercase tracking-[0.3em] text-red-300/90 mb-4">
-										{project.category}
-									</div>
-
-									{/* Title */}
-									<h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
-										{project.title}
-									</h2>
-
-									{/* Meta Info */}
-									<div className="flex items-center gap-3 text-sm text-slate-400 mb-6">
-										<span className="font-medium">{project.year}</span>
-										<span className="text-red-300/60">•</span>
-										<span className="capitalize">{project.category}</span>
-									</div>
-
-									{/* Description */}
-									<p className="text-base leading-8 text-slate-300 mb-8">
-										{project.description}
-									</p>
-
-									{/* Tools Used */}
-									<div className="mb-8">
-										<p className="text-sm uppercase tracking-[0.28em] text-red-300/90 font-semibold mb-4">
-											{translate('projects.modal.tools')}
-										</p>
-										<div className="flex flex-wrap gap-2">
-											{project.tools.map((tool) => (
-												<motion.span
-													key={tool}
-													className="inline-flex items-center px-3.5 py-2 rounded-full border border-white/10 bg-white/5 text-xs md:text-sm font-medium text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-200"
-													whileHover={{ scale: 1.08, y: -2 }}>
-													{tool}
-												</motion.span>
-											))}
-										</div>
-									</div>
-
-									{/* Action Buttons */}
-									<div className="flex flex-wrap gap-3">
-										<motion.button
-											className="inline-flex items-center justify-center px-5 py-3 rounded-full border border-red-500/40 bg-red-500/15 text-sm font-semibold text-red-200 transition-all duration-300 hover:border-red-500/60 hover:bg-red-500/25 hover:shadow-[0_0_24px_rgba(255,45,45,0.3)]"
-											whileHover={{ scale: 1.05, y: -2 }}
-											whileTap={{ scale: 0.95 }}>
-											{translate('projects.modal.viewDetails')}
-										</motion.button>
-										<motion.button
-											className="inline-flex items-center justify-center px-5 py-3 rounded-full border border-white/15 bg-white/8 text-sm font-semibold text-white transition-all duration-300 hover:border-red-400/50 hover:bg-red-500/12 hover:text-red-200 hover:shadow-[0_0_20px_rgba(255,45,45,0.25)]"
-											whileHover={{ scale: 1.05, y: -2 }}
-											whileTap={{ scale: 0.95 }}>
-											{translate('projects.modal.livePreview')}
-										</motion.button>
-									</div>
-								</motion.div>
-							)}
-						</AnimatePresence>
+						</div>
 					</motion.div>
 				</motion.div>
 			)}
