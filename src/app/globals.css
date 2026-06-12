@@ -437,6 +437,99 @@
 		background: rgb(var(--surface-rgb) / 0.55);
 	}
 
+	.project-card-tag {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(255, 255, 255, 0.05);
+		color: rgba(255, 120, 120, 0.95);
+		padding: 0.5rem 0.9rem;
+		border-radius: 999px;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		transition:
+			transform 0.35s ease,
+			border-color 0.35s ease,
+			background 0.35s ease,
+			box-shadow 0.35s ease;
+	}
+
+	.project-card-tag:hover {
+		transform: translateY(-2px);
+		border-color: rgba(255, 45, 45, 0.35);
+		background: rgba(255, 45, 45, 0.12);
+	}
+
+	.project-card {
+		position: relative;
+		overflow: hidden;
+		border-radius: 24px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(8, 8, 8, 0.88);
+		backdrop-filter: blur(24px);
+		-webkit-backdrop-filter: blur(24px);
+		box-shadow: 0 28px 90px rgba(255, 45, 45, 0.14);
+		transition:
+			transform 0.35s ease,
+			border-color 0.35s ease,
+			box-shadow 0.35s ease,
+			background 0.35s ease;
+	}
+
+	.project-card:hover {
+		border-color: rgba(255, 45, 45, 0.3);
+		background: rgba(10, 10, 10, 0.94);
+		box-shadow: 0 36px 110px rgba(255, 45, 45, 0.18);
+	}
+
+	.project-card::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(circle at top right, rgba(239, 68, 68, 0.16), transparent 30%);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.35s ease;
+	}
+
+	.project-card:hover::before {
+		opacity: 1;
+	}
+
+	.project-card-image {
+		position: relative;
+		overflow: hidden;
+		border-radius: 24px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(10, 10, 10, 0.4);
+	}
+
+	.project-card-image::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 40%, rgba(0, 0, 0, 0.55));
+		pointer-events: none;
+	}
+
+	.project-card-glow {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background: radial-gradient(circle at top, rgba(239, 68, 68, 0.18), transparent 35%);
+		opacity: 0;
+		transition: opacity 0.35s ease;
+	}
+
+	.project-card:hover .project-card-glow {
+		opacity: 1;
+	}
+
 	.nav-active-pill {
 		background: rgb(var(--accent-primary) / 0.12);
 	}
@@ -1283,212 +1376,267 @@
 .projects-masonry {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	grid-auto-rows: 280px;
+	grid-auto-rows: 300px;
+	grid-auto-flow: dense;
 	gap: 24px;
 	width: 100%;
 }
 
-/* Desktop: 4+ columns with varied sizes */
+.project-card {
+	border: 1px solid rgba(255, 45, 45, 0.16);
+	background: rgba(8, 8, 8, 0.96);
+	box-shadow: 0 22px 80px rgba(255, 45, 45, 0.12);
+	border-radius: 24px;
+	overflow: hidden;
+	transition:
+		transform 0.35s ease,
+		box-shadow 0.35s ease,
+		border-color 0.35s ease,
+		background 0.35s ease;
+}
+
+.project-card:hover {
+	box-shadow: 0 30px 110px rgba(255, 45, 45, 0.18);
+	border-color: rgba(255, 45, 45, 0.3);
+	background: rgba(10, 10, 10, 0.98);
+}
+
+.project-card .surface-media {
+	background: rgba(10, 10, 10, 0.35);
+}
+
+.projects-masonry .card-size-large {
+	grid-column: span 2;
+	grid-row: span 2;
+}
+
+.projects-masonry .card-size-medium {
+	grid-column: span 1;
+	grid-row: span 2;
+}
+
+.projects-masonry .card-size-wide {
+	grid-column: span 2;
+	grid-row: span 1;
+}
+
+.projects-masonry .card-size-small {
+	grid-column: span 1;
+	grid-row: span 1;
+}
+
 @media (min-width: 1400px) {
 	.projects-masonry {
-		grid-template-columns: repeat(4, 1fr);
-		grid-auto-rows: 300px;
-	}
-
-	.card-size-large {
-		grid-column: span 2;
-		grid-row: span 2;
-	}
-
-	.card-size-medium {
-		grid-column: span 1;
-		grid-row: span 2;
-	}
-
-	.card-size-wide {
-		grid-column: span 2;
-		grid-row: span 1;
-	}
-
-	.card-size-small {
-		grid-column: span 1;
-		grid-row: span 1;
+		grid-template-columns: repeat(4, minmax(220px, 1fr));
+		grid-auto-rows: 320px;
 	}
 }
 
-/* Tablet: 2-3 columns */
 @media (min-width: 1024px) and (max-width: 1399px) {
 	.projects-masonry {
-		grid-template-columns: repeat(3, 1fr);
-		grid-auto-rows: 280px;
+		grid-template-columns: repeat(3, minmax(220px, 1fr));
+		grid-auto-rows: 300px;
 		gap: 20px;
-	}
-
-	.card-size-large {
-		grid-column: span 2;
-		grid-row: span 2;
-	}
-
-	.card-size-medium {
-		grid-column: span 1;
-		grid-row: span 2;
-	}
-
-	.card-size-wide {
-		grid-column: span 2;
-		grid-row: span 1;
-	}
-
-	.card-size-small {
-		grid-column: span 1;
-		grid-row: span 1;
 	}
 }
 
-/* Mobile: 2 columns or adaptable */
 @media (min-width: 640px) and (max-width: 1023px) {
 	.projects-masonry {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(2, minmax(180px, 1fr));
 		grid-auto-rows: 240px;
 		gap: 16px;
 	}
 
-	.card-size-large,
-	.card-size-medium,
-	.card-size-wide {
-		grid-column: span 1;
-		grid-row: span 1;
-	}
-
-	.card-size-small {
+	.projects-masonry .card-size-large,
+	.projects-masonry .card-size-medium,
+	.projects-masonry .card-size-wide,
+	.projects-masonry .card-size-small {
 		grid-column: span 1;
 		grid-row: span 1;
 	}
 }
 
-/* Small mobile: 1 column */
 @media (max-width: 639px) {
 	.projects-masonry {
 		grid-template-columns: 1fr;
-		grid-auto-rows: 200px;
+		grid-auto-rows: auto;
 		gap: 12px;
 	}
 
-	.card-size-large,
-	.card-size-medium,
-	.card-size-wide,
-	.card-size-small {
-		grid-column: span 1;
-		grid-row: span 1;
-	}
-}
-
-
-/* ═══════════════════════════════════════════════════════════════════════ */
-/* PROJECTS MASONRY LAYOUT                                                 */
-/* ═══════════════════════════════════════════════════════════════════════ */
-
-.projects-masonry {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	grid-auto-rows: 280px;
-	gap: 24px;
-	width: 100%;
-}
-
-/* Desktop: 4+ columns with varied sizes */
-@media (min-width: 1400px) {
-	.projects-masonry {
-		grid-template-columns: repeat(4, 1fr);
-		grid-auto-rows: 300px;
-	}
-
-	.card-size-large {
-		grid-column: span 2;
-		grid-row: span 2;
-	}
-
-	.card-size-medium {
-		grid-column: span 1;
-		grid-row: span 2;
-	}
-
-	.card-size-wide {
-		grid-column: span 2;
-		grid-row: span 1;
-	}
-
-	.card-size-small {
-		grid-column: span 1;
-		grid-row: span 1;
-	}
-}
-
-/* Tablet: 2-3 columns */
-@media (min-width: 1024px) and (max-width: 1399px) {
-	.projects-masonry {
-		grid-template-columns: repeat(3, 1fr);
-		grid-auto-rows: 280px;
-		gap: 20px;
-	}
-
-	.card-size-large {
-		grid-column: span 2;
-		grid-row: span 2;
-	}
-
-	.card-size-medium {
-		grid-column: span 1;
-		grid-row: span 2;
-	}
-
-	.card-size-wide {
-		grid-column: span 2;
-		grid-row: span 1;
-	}
-
-	.card-size-small {
-		grid-column: span 1;
-		grid-row: span 1;
-	}
-}
-
-/* Mobile: 2 columns or adaptable */
-@media (min-width: 640px) and (max-width: 1023px) {
-	.projects-masonry {
-		grid-template-columns: repeat(2, 1fr);
-		grid-auto-rows: 240px;
-		gap: 16px;
-	}
-
-	.card-size-large,
-	.card-size-medium,
-	.card-size-wide {
-		grid-column: span 1;
-		grid-row: span 1;
-	}
-
-	.card-size-small {
-		grid-column: span 1;
-		grid-row: span 1;
-	}
-}
-
-/* Small mobile: 1 column */
-@media (max-width: 639px) {
-	.projects-masonry {
-		grid-template-columns: 1fr;
-		grid-auto-rows: 200px;
-		gap: 12px;
-	}
-
-	.card-size-large,
-	.card-size-medium,
-	.card-size-wide,
-	.card-size-small {
+	.projects-masonry .card-size-large,
+	.projects-masonry .card-size-medium,
+	.projects-masonry .card-size-wide,
+	.projects-masonry .card-size-small {
 		grid-column: span 1;
 		grid-row: span 1;
 	}
 }
 
 /* ═══════════════════════════════════════════════════════════════════════ */
+/* PREMIUM DEVELOPMENT PROJECTS SECTION */
+/* ═══════════════════════════════════════════════════════════════════════ */
+
+.ease-cubic-custom {
+	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes cardHoverGlow {
+	0% {
+		box-shadow: 0 28px 90px rgba(255, 45, 45, 0.14);
+	}
+	50% {
+		box-shadow: 0 36px 110px rgba(255, 45, 45, 0.22);
+	}
+	100% {
+		box-shadow: 0 36px 110px rgba(255, 45, 45, 0.22);
+	}
+}
+
+@keyframes borderPulse {
+	0% {
+		border-color: rgba(255, 45, 45, 0.16);
+	}
+	50% {
+		border-color: rgba(255, 45, 45, 0.35);
+	}
+	100% {
+		border-color: rgba(255, 45, 45, 0.35);
+	}
+}
+
+/* Tag hover animation */
+@keyframes tagFloat {
+	0% {
+		transform: translateY(0);
+		opacity: 0.85;
+	}
+	50% {
+		transform: translateY(-2px);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(-2px);
+		opacity: 1;
+	}
+}
+
+/* Image zoom on hover */
+@keyframes imageZoom {
+	0% {
+		transform: scale(1);
+	}
+	100% {
+		transform: scale(1.05);
+	}
+}
+
+/* Border glow animation */
+@keyframes borderGlow {
+	0% {
+		border-color: rgba(255, 45, 45, 0.16);
+		box-shadow: 0 28px 90px rgba(255, 45, 45, 0.14);
+	}
+	50% {
+		border-color: rgba(255, 45, 45, 0.4);
+		box-shadow: 0 36px 110px rgba(255, 45, 45, 0.22);
+	}
+	100% {
+		border-color: rgba(255, 45, 45, 0.35);
+		box-shadow: 0 36px 110px rgba(255, 45, 45, 0.22);
+	}
+}
+
+/* Floating animation for ambient orbs */
+@keyframes floatSlow {
+	0%, 100% {
+		transform: translateY(0px) translateX(0px);
+		opacity: 0.75;
+	}
+	50% {
+		transform: translateY(-20px) translateX(10px);
+		opacity: 0.85;
+	}
+}
+
+@keyframes floatMedium {
+	0%, 100% {
+		transform: translateY(0px) translateX(0px);
+		opacity: 0.7;
+	}
+	50% {
+		transform: translateY(-30px) translateX(-15px);
+		opacity: 0.8;
+	}
+}
+
+/* Stagger animation for tech tags */
+@keyframes staggerIn {
+	0% {
+		opacity: 0;
+		transform: translateY(12px) scale(0.95);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+/* Modal maximize animation */
+@keyframes maximizeExpand {
+	0% {
+		width: auto;
+		height: auto;
+	}
+	100% {
+		width: 90vw;
+		height: 90vh;
+	}
+}
+
+/* Modal background blur enter */
+@keyframes backdropBlurIn {
+	0% {
+		backdrop-filter: blur(0px);
+		opacity: 0;
+	}
+	100% {
+		backdrop-filter: blur(24px);
+		opacity: 1;
+	}
+}
+
+/* Masonry image reveal */
+@keyframes masonryReveal {
+	0% {
+		opacity: 0;
+		transform: scale(0.96) translateY(20px);
+		filter: blur(12px);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+		filter: blur(0px);
+	}
+}
+
+/* Premium text fade-in */
+@keyframes premiumFadeIn {
+	0% {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Glow pulse for buttons */
+@keyframes glowPulseButton {
+	0%, 100% {
+		box-shadow: 0 0 12px rgba(255, 45, 45, 0.3);
+	}
+	50% {
+		box-shadow: 0 0 24px rgba(255, 45, 45, 0.5);
+	}
+}

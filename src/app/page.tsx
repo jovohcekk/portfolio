@@ -8,9 +8,6 @@ import { ExperienceSection } from '@/components/sections/experience-section'
 import { HeroSection } from '@/components/sections/hero-section'
 import { ProjectsSection } from '@/components/sections/projects-section'
 import { SkillsSection } from '@/components/sections/skills-section'
-import dynamic from 'next/dynamic'
-
-const PhotoshopSection = dynamic(() => import('@/components/sections/photoshop-section').then(m => m.PhotoshopSection));
 
 export default function HomePage() {
 	return (
@@ -25,7 +22,6 @@ export default function HomePage() {
 				<AboutSection />
 				<SkillsSection />
 				<ProjectsSection />
-				<PhotoshopSection />
 				<ExperienceSection />
 				<ContactSection />
 			</main>

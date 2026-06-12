@@ -35,6 +35,17 @@ export interface PhotoshopProject {
 	gallery?: string[];
 }
 
+export interface PhotoshopGalleryItem {
+	id: string;
+	title: string;
+	category: string;
+	year: string;
+	description: string;
+	tools: string[];
+	image: string;
+	display: 'portrait' | 'square' | 'landscape';
+}
+
 /** Ko'nikma guruhi */
 export interface SkillGroup {
 	id: string;
@@ -197,22 +208,96 @@ export const socialLinkItems = [
 export const projects: ProjectItem[] = [
 	{
 		id: 'project-1',
-		title: 'Loyiha nomi (tahrirlang)',
+		title: 'Photoshop Manipulation Project',
 		description:
-			'Loyiha tavsifini shu yerga yozing. Qanday muammoni hal qilganingiz va natijani qisqacha tushuntiring.',
-		technologies: ['Next.js', 'TypeScript', 'Django', 'PostgreSQL'],
+			'A premium photo manipulation with cinematic lighting, composited textures, and polished color grading for a premium campaign showcase.',
+		technologies: ['Photoshop', 'Illustrator', 'Retouching', 'Color Grading'],
 		github: 'https://github.com/jovohcekk',
 		demo: 'https://example.com',
 		image: '/images/projects/project-1.svg',
 	},
 	{
 		id: 'project-2',
-		title: 'Ikkinchi loyiha (tahrirlang)',
-		description: "Ikkinchi loyihangiz haqida ma'lumot. Texnologiyalar va natijalarni yozing.",
-		technologies: ['Python', 'Django REST', 'React', 'Tailwind CSS'],
+		title: 'Full Stack Web Project',
+		description:
+			'A luxury full-stack web experience built with modern UI motion, sharp glassmorphism, and a premium developer-first interface.',
+		technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
 		github: 'https://github.com/jovohcekk',
 		demo: 'https://example.com',
 		image: '/images/projects/project-2.svg',
+	},
+];
+
+export const photoshopGallery: PhotoshopGalleryItem[] = [
+	{
+		id: 'gallery-1',
+		title: 'Cinematic Manipulation',
+		category: 'Manipulation',
+		year: '2026',
+		description: 'Dramatic Photoshop compositing for a luxury editorial campaign with rich lighting and seamless textures.',
+		tools: ['Photoshop', 'Illustrator', 'Figma'],
+		image: '/images/photoshop/PHOTO MANIPULATION.png',
+		display: 'portrait',
+	},
+	{
+		id: 'gallery-2',
+		title: 'Creative Artwork',
+		category: 'Artwork',
+		year: '2025',
+		description: 'A premium visual story built for high-end brand presentation and social media impact.',
+		tools: ['Photoshop', 'Illustrator', 'Figma'],
+		image: '/images/photoshop/CREATIVE ARTWORK.png',
+		display: 'square',
+	},
+	{
+		id: 'gallery-3',
+		title: 'Web Banner Series',
+		category: 'Banner',
+		year: '2025',
+		description: 'Sleek advertising banners with modern gradients, layered depth, and premium typography.',
+		tools: ['Photoshop', 'Illustrator', 'Figma'],
+		image: '/images/photoshop/WEB BANNER.png',
+		display: 'landscape',
+	},
+	{
+		id: 'gallery-4',
+		title: 'Story Design',
+		category: 'Story Layout',
+		year: '2026',
+		description: 'A cinematic social story design with ambient lighting and premium editorial styling.',
+		tools: ['Photoshop', 'Illustrator', 'Figma'],
+		image: '/images/photoshop/STORY DESIGN.png',
+		display: 'portrait',
+	},
+	{
+		id: 'gallery-5',
+		title: 'Social Media Creative',
+		category: 'Social',
+		year: '2025',
+		description: 'Bold social media artwork created to command attention with premium visual drama.',
+		tools: ['Photoshop', 'Illustrator', 'Figma'],
+		image: '/images/photoshop/SOCIAL MEDIA.png',
+		display: 'square',
+	},
+	{
+		id: 'gallery-6',
+		title: 'Poster Campaign',
+		category: 'Poster',
+		year: '2026',
+		description: 'A cinematic event poster concept with glassmorphism lighting and premium composition.',
+		tools: ['Photoshop', 'Illustrator', 'Figma'],
+		image: '/images/photoshop/poster.png',
+		display: 'landscape',
+	},
+	{
+		id: 'gallery-7',
+		title: 'Event Highlight',
+		category: 'Poster',
+		year: '2026',
+		description: 'Advertising art designed for high-performance visual storytelling and modern campaigns.',
+		tools: ['Photoshop', 'Illustrator', 'Figma'],
+		image: '/images/photoshop/event poster.png',
+		display: 'portrait',
 	},
 ];
 
