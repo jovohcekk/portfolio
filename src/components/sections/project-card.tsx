@@ -12,13 +12,14 @@ interface ProjectCardProps {
 }
 
 const cardVariants: Variants = {
-	hidden: { opacity: 0, y: 48, scale: 0.93 },
+	hidden: { opacity: 0, y: 48, scale: 0.93, filter: 'blur(10px)' },
 	visible: (i: number) => ({
 		opacity: 1,
 		y: 0,
 		scale: 1,
+		filter: 'blur(0px)',
 		transition: {
-			duration: 0.7,
+			duration: 0.8,
 			delay: i * 0.15,
 			ease: [0.22, 1, 0.36, 1],
 		},
@@ -33,12 +34,26 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 			initial="hidden"
 			whileInView="visible"
 			viewport={{ once: true, margin: '-80px' }}
-			className="group relative overflow-hidden rounded-[24px] border border-[rgba(255,45,45,0.16)] bg-[rgba(8,8,8,0.88)] backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[rgba(255,45,45,0.35)] hover:bg-[rgba(10,10,10,0.94)] hover:shadow-[0_36px_110px_rgba(255,45,45,0.22)]"
-			whileHover={{ scale: 1.02, y: -4 }}>
+			className="group relative overflow-hidden rounded-[24px] border border-[rgba(255,45,45,0.16)] bg-[rgba(8,8,8,0.88)] backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[rgba(255,45,45,0.45)]"
+			whileHover={{
+				scale: 1.05,
+				y: -16,
+				boxShadow: '0 48px 120px rgba(255, 45, 45, 0.25)',
+			}}>
 			{/* Card Glow Effect on Hover */}
 			<div className="absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-100">
 				<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(239,68,68,0.16),transparent_30%)]" />
 			</div>
+
+			{/* Premium Shine Effect */}
+			<motion.div
+				className="absolute inset-0 rounded-[24px] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 pointer-events-none"
+				whileHover={{
+					opacity: [0, 0.4, 0],
+					x: [-1000, 1000],
+				}}
+				transition={{ duration: 0.7, ease: 'easeInOut' }}
+			/>
 
 			{/* Image Container */}
 			<motion.div
