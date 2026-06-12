@@ -4,7 +4,7 @@ import { FloatingShapes } from '@/components/shared/floating-shapes'
 import { MagneticButton } from '@/components/shared/magnetic-button'
 import { ParallaxLayer } from '@/components/shared/parallax-layer'
 import { ParticleField } from '@/components/shared/particle-field'
-import { CreativeProfileComposition } from '@/components/shared/creative-profile-composition'
+import { HeroCleanProfile } from '@/components/shared/hero-clean-profile'
 import { TextReveal } from '@/components/shared/text-reveal'
 import { TypingText } from '@/components/shared/typing-text'
 import { Button } from '@/components/ui/button'
@@ -147,7 +147,7 @@ export function HeroSectionComponent() {
 					animate='visible'
 					className='order-1 flex w-full min-w-0 justify-center md:order-2'>
 					<ParallaxLayer speed={0.25} className='w-full'>
-						<CreativeProfileComposition
+						<HeroCleanProfile
 							src={personalInfo.profileImage}
 							alt={personalInfo.name}
 							reducedMotion={reducedMotion}

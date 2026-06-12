@@ -25,10 +25,11 @@ export type PhotoshopCategory = 'poster' | 'thumbnail' | 'social' | 'banner' | '
 /** Photoshop loyiha kartochkasi */
 export interface PhotoshopProject {
 	id: string;
-	title: string;
+	titleKey: string;
 	category: PhotoshopCategory;
-	description: string;
+	descriptionKey: string;
 	image: string;
+	gallery?: string[];
 }
 
 /** Ko'nikma guruhi */
@@ -214,65 +215,58 @@ export const projects: ProjectItem[] = [
 
 // =========================
 // O'ZGARTIRISH MUMKIN — PHOTOSHOP LOYIHALARI
-// Yangi dizayn qo'shish: massivga obyekt qo'shing va rasmni public/images/photoshop/ ga joylang
+// Yangi dizayn qo'shish: massivga obyekt qo'shing, birinchi rasm kartochka uchun thumbnail bo'ladi.
+// Qo'shimcha galereya tasvirlari uchun gallery maydonidan foydalaning.
 // =========================
 
 export const photoshopProjects: PhotoshopProject[] = [
 	{
-		id: 'ps-poster-1',
-		title: 'Kino poster dizayni (tahrirlang)',
+		id: 'event-poster-suite',
+		titleKey: 'photoshop.project.poster.title',
 		category: 'poster',
-		description: 'Kino yoki tadbir uchun yaratilgan poster dizayni. Qalin tipografiya va dramatik kompozitsiya.',
-		image: '/images/photoshop/ps-poster-1.svg',
+		descriptionKey: 'photoshop.project.poster.description',
+		image: '/images/event poster.png',
+		gallery: ['/images/poster.png'],
 	},
 	{
-		id: 'ps-poster-2',
-		title: 'Tadbir posteri (tahrirlang)',
-		category: 'poster',
-		description: "Tadbir e'lonlari uchun zamonaviy poster dizayni.",
-		image: '/images/photoshop/ps-poster-2.svg',
+		id: 'social-launch-kit',
+		titleKey: 'photoshop.project.social.title',
+		category: 'social',
+		descriptionKey: 'photoshop.project.social.description',
+		image: '/images/SOCIAL MEDIA.png',
+		gallery: ['/images/STORY DESIGN.png'],
 	},
 	{
-		id: 'ps-thumbnail-1',
-		title: 'YouTube thumbnail (tahrirlang)',
+		id: 'video-thumbnail-cover',
+		titleKey: 'photoshop.project.thumbnail.title',
 		category: 'thumbnail',
-		description: 'Diqqatni tortadigan video muqovasi — yuqori CTR uchun optimallashtirilgan.',
-		image: '/images/photoshop/ps-thumbnail-1.svg',
+		descriptionKey: 'photoshop.project.thumbnail.description',
+		image: '/images/THUMBNAIL.png',
+		gallery: [],
 	},
 	{
-		id: 'ps-social-1',
-		title: 'Instagram post (tahrirlang)',
-		category: 'social',
-		description: 'Ijtimoiy tarmoq uchun kvadrat formatdagi post dizayni.',
-		image: '/images/photoshop/ps-social-1.svg',
-	},
-	{
-		id: 'ps-social-2',
-		title: 'Story dizayni (tahrirlang)',
-		category: 'social',
-		description: 'Instagram/Telegram story formatida vertikal dizayn.',
-		image: '/images/photoshop/ps-social-2.svg',
-	},
-	{
-		id: 'ps-banner-1',
-		title: 'Veb banner (tahrirlang)',
-		category: 'banner',
-		description: 'Sayt yoki reklama kampaniyasi uchun keng format banner.',
-		image: '/images/photoshop/ps-banner-1.svg',
-	},
-	{
-		id: 'ps-manipulation-1',
-		title: 'Foto manipulyatsiya (tahrirlang)',
+		id: 'editorial-manipulation',
+		titleKey: 'photoshop.project.manipulation.title',
 		category: 'manipulation',
-		description: 'Bir nechta tasvirlarni birlashtirgan kreativ foto kompozitsiya.',
-		image: '/images/photoshop/ps-manipulation-1.svg',
+		descriptionKey: 'photoshop.project.manipulation.description',
+		image: '/images/PHOTO MANIPULATION.png',
+		gallery: [],
 	},
 	{
-		id: 'ps-artwork-1',
-		title: 'Kreativ artwork (tahrirlang)',
+		id: 'web-banner-campaign',
+		titleKey: 'photoshop.project.banner.title',
+		category: 'banner',
+		descriptionKey: 'photoshop.project.banner.description',
+		image: '/images/WEB BANNER.png',
+		gallery: [],
+	},
+	{
+		id: 'creative-artwork-series',
+		titleKey: 'photoshop.project.artwork.title',
 		category: 'artwork',
-		description: 'Erkin ijodiy kompozitsiya — abstrakt va geometrik elementlar.',
-		image: '/images/photoshop/ps-artwork-1.svg',
+		descriptionKey: 'photoshop.project.artwork.description',
+		image: '/images/CREATIVE ARTWORK.png',
+		gallery: [],
 	},
 ];
 

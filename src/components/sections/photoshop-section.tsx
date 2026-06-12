@@ -1,228 +1,767 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Layers, ZoomIn } from 'lucide-react';
-import { useIsDark } from '@/hooks/use-is-dark';
-import { SectionHeading } from '@/components/shared/section-heading';
-import { Lightbox } from '@/components/shared/lightbox';
-import { FloatingShapes } from '@/components/shared/floating-shapes';
-import { GlowCard } from '@/components/shared/glow-card';
+import { motion, AnimatePresence } from 'framer-motion';
+import { photoshopProjects, type PhotoshopProject } from '@/config/portfolio';
 import { useLanguage } from '@/hooks/use-language';
-import { photoshopProjects } from '@/config/portfolio';
-import { slideInScale, staggerContainerFast, premiumSlideLeftGlow, premiumBlurToClear } from '@/lib/animations';
-import { cn } from '@/lib/utils';
 import type { TranslationKey } from '@/lib/i18n/translations';
+import { cn } from '@/lib/utils';
+
+// ═════════════════════════════════════════════════════════════════════════
+// FIXED GRID LAYOUT CONFIGURATION
+// ═════════════════════════════════════════════════════════════════════════
+
+interface GridItem extends PhotoshopProject {
+	gridCol: number;
+	gridRow: number;
+	colSpan: number;
+	rowSpan: number;
+}
+
+// Create fixed grid layout from portfolio projects
+const createFixedGridLayout = (projects: PhotoshopProject[]): GridItem[] => {
+	const layout: GridItem[] = [];
+	let currentRow = 1;
+	let currentCol = 1;
+
+	projects.forEach((project) => {
+		let colSpan = 1;
+		let rowSpan = 1;
+
+		if (project.category === 'poster') {
+			colSpan = 2;
+			rowSpan = 2;
+		} else if (project.category === 'banner' || project.category === 'manipulation') {
+			colSpan = 2;
+			rowSpan = 1;
+		} else if (project.category === 'artwork') {
+			colSpan = 1;
+			rowSpan = 2;
+		}
+
+		const item: GridItem = {
+			...project,
+			gridCol: currentCol,
+			gridRow: currentRow,
+			colSpan,
+			rowSpan
+		};
+
+		layout.push(item);
+
+		currentCol += colSpan;
+		if (currentCol > 4) {
+			currentCol = 1;
+			currentRow += rowSpan;
+		}
+	});
+
+	return layout;
+};
+
+const FIXED_GRID = createFixedGridLayout(photoshopProjects);
 
 export function PhotoshopSection() {
-const { translate } = useLanguage();
-const isDark = useIsDark();
-const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-const filteredProjects = useMemo(() => photoshopProjects, []);
-const lightboxItems = useMemo(
-() =>
-filteredProjects.map(p => ({
-id: p.id,
-title: p.title,
-description: p.description,
-image: p.image,
-category: translate(`photoshop.category.${p.category}` as TranslationKey),
-badge: translate('photoshop.badge'),
-})),
-[filteredProjects, translate],
-);
+	const { translate } = useLanguage();
+	const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-const openLightbox = useCallback(
-(id: string) => {
-const index = filteredProjects.findIndex(p => p.id === id);
-if (index >= 0) setLightboxIndex(index);
-},
-[filteredProjects],
-);
+	const visibleProjects = selectedCategory === 'all'
+		? FIXED_GRID
+		: FIXED_GRID.filter(p => p.category === selectedCategory);
 
-return (
-<section
-id='photoshop'
-className={cn(
-'relative w-full max-w-full overflow-hidden section-spacing',
-isDark ? '' : 'section-surface-alt',
-)}>
-{isDark ? (
-<>
-<div className='absolute inset-0 bg-[#030303]' aria-hidden />
-<motion.div
-className='absolute inset-0 opacity-40'
-animate={{ opacity: [0.35, 0.5, 0.35] }}
-transition={{ duration: 8, repeat: Infinity }}
-style={{
-backgroundImage:
-'radial-gradient(ellipse 80% 50% at 20% 0%, rgba(220,38,38,0.15) 0%, transparent 50%), radial-gradient(ellipse 60% 40% at 80% 100%, rgba(220,38,38,0.08) 0%, transparent 50%)',
-}}
-aria-hidden
-/>
-</>
-) : (
-<>
-<div className='absolute inset-0 bg-[var(--bg-deep)]' aria-hidden />
-<motion.div
-className='absolute inset-0 opacity-60'
-animate={{ opacity: [0.5, 0.65, 0.5] }}
-transition={{ duration: 10, repeat: Infinity }}
-style={{
-backgroundImage:
-'radial-gradient(ellipse 75% 50% at 15% 0%, rgba(59,130,246,0.07) 0%, transparent 50%), radial-gradient(ellipse 60% 45% at 85% 100%, rgba(6,182,212,0.06) 0%, transparent 50%), radial-gradient(ellipse 50% 35% at 50% 50%, rgba(20,184,166,0.04) 0%, transparent 55%)',
-}}
-aria-hidden
-/>
-</>
-)}
+	const categories = [
+		{
+			id: 'all',
+			label: translate('photoshop.filter.all'),
+			emoji: '✨',
+			count: FIXED_GRID.length
+		},
+		{
+			id: 'poster',
+			label: translate('photoshop.category.poster'),
+			emoji: '📄',
+			count: FIXED_GRID.filter(p => p.category === 'poster').length
+		},
+		{
+			id: 'thumbnail',
+			label: translate('photoshop.category.thumbnail'),
+			emoji: '🎬',
+			count: FIXED_GRID.filter(p => p.category === 'thumbnail').length
+		},
+		{
+			id: 'social',
+			label: translate('photoshop.category.social'),
+			emoji: '📱',
+			count: FIXED_GRID.filter(p => p.category === 'social').length
+		},
+		{
+			id: 'banner',
+			label: translate('photoshop.category.banner'),
+			emoji: '🎨',
+			count: FIXED_GRID.filter(p => p.category === 'banner').length
+		},
+		{
+			id: 'manipulation',
+			label: translate('photoshop.category.manipulation'),
+			emoji: '🖼️',
+			count: FIXED_GRID.filter(p => p.category === 'manipulation').length
+		},
+		{
+			id: 'artwork',
+			label: translate('photoshop.category.artwork'),
+			emoji: '🌟',
+			count: FIXED_GRID.filter(p => p.category === 'artwork').length
+		}
+	];
 
-<FloatingShapes variant='photoshop' />
+	return (
+		<section id='photoshop' className='photoshop-section'>
+			<div className='section-container'>
+				{/* Header */}
+				<motion.div
+					className='section-header'
+					initial={{ opacity: 0, y: -20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6 }}
+					viewport={{ once: true }}
+				>
+					<div>
+						<h2>{translate('photoshop.title')}</h2>
+						<p>{translate('photoshop.subtitle')}</p>
+					</div>
+				</motion.div>
 
-<div className='section-container relative z-10'>
-<SectionHeading title={translate('photoshop.title')} subtitle={translate('photoshop.subtitle')} dark={isDark} />
+				{/* Category Filters */}
+				<motion.div
+					className='category-filters'
+					initial={{ opacity: 0, y: 10 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6, delay: 0.1 }}
+					viewport={{ once: true }}
+				>
+					{categories.map((cat) => (
+						<motion.button
+							key={cat.id}
+							className={cn(
+								'filter-btn',
+								selectedCategory === cat.id && 'active'
+							)}
+							onClick={() => setSelectedCategory(cat.id)}
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+						>
+							<span className='emoji'>{cat.emoji}</span>
+							<span className='label'>{cat.label}</span>
+							<span className='count'>({cat.count})</span>
+						</motion.button>
+					))}
+				</motion.div>
 
-<motion.div
-variants={staggerContainerFast}
-initial='hidden'
-whileInView='visible'
-viewport={{ once: true, margin: '-40px' }}
-className='columns-1 gap-4 xs:columns-2 xs:gap-5 md:gap-6 lg:columns-3'>
-<AnimatePresence mode='popLayout'>
-{filteredProjects.map((project, index) => (
-<motion.article
-key={project.id}
-layout
-variants={[slideInScale, premiumSlideLeftGlow, premiumBlurToClear][index % 3]}
-initial='hidden'
-whileInView='visible'
-exit={{ opacity: 0, scale: 0.92 }}
-viewport={{ once: true, margin: '-30px' }}
-transition={{ layout: { duration: 0.35 }, delay: (index % 3) * 0.08 }}
-className='mb-4 break-inside-avoid xs:mb-5 md:mb-6'>
-<GlowCard variant={isDark ? 'red' : 'blue'}>
-<button
-type='button'
-onClick={() => openLightbox(project.id)}
-className={cn(
-'group relative w-full overflow-hidden rounded-2xl text-left backdrop-blur-xl transition-all duration-500 focus-visible:outline-none focus-visible:ring-2',
-isDark
-? 'border border-white/8 bg-white/5 hover:border-red-500/50 focus-visible:ring-red-500/50'
-: 'glass-card hover-accent-highlight focus-visible:ring-[rgb(var(--accent-primary)/0.35)]',
-)}>
-<div className='relative overflow-hidden'>
-<motion.div
-className='relative w-full'
-whileHover={{ scale: 1.06 }}
-transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
-<Image
-src={project.image}
-alt={project.title}
-width={800}
-height={600}
-className='w-full object-cover'
-loading='lazy'
-sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
-/>
-</motion.div>
+				{/* Grid Gallery */}
+				<motion.div
+					className='grid-container'
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.4 }}
+				>
+					<AnimatePresence mode='wait'>
+						{visibleProjects.length > 0 ? (
+							visibleProjects.map((project, idx) => (
+								<motion.article
+									key={project.id}
+									className={cn(
+										'grid-item',
+										`col-span-${project.colSpan}`,
+										`row-span-${project.rowSpan}`
+									)}
+									style={{
+										gridColumn: `${project.gridCol} / span ${project.colSpan}`,
+										gridRow: `${project.gridRow} / span ${project.rowSpan}`
+									}}
+									initial={{ opacity: 0, scale: 0.95 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.95 }}
+									transition={{
+										duration: 0.4,
+										delay: idx * 0.02
+									}}
+								>
+									<div className='project-card'>
+										{/* Image */}
+										<div className='image-wrapper'>
+											<Image
+												src={project.image}
+												alt={translate(project.titleKey as TranslationKey)}
+												fill
+												className='project-image'
+												sizes={`
+													(max-width: 640px) 100vw,
+													(max-width: 1024px) 50vw,
+													33vw
+												`}
+												quality={85}
+												priority={idx < 3}
+											/>
+										</div>
 
-<motion.div
-className={cn(
-'absolute inset-0 bg-gradient-to-t to-transparent',
-isDark ? 'from-black/90 via-black/40' : 'from-[var(--bg-deep)]/90 via-[var(--bg-deep)]/35',
-)}
-initial={{ opacity: isDark ? 0.55 : 0.35 }}
-whileHover={{ opacity: isDark ? 0.92 : 0.82 }}
-transition={{ duration: 0.4 }}
-/>
+										{/* Overlay */}
+										<div className='overlay'>
+											<div className='overlay-content'>
+												{/* Category Badge */}
+												<motion.span
+													className='category-badge'
+													initial={{ opacity: 0, y: 10 }}
+													whileHover={{ opacity: 1, y: 0 }}
+													transition={{ duration: 0.3 }}
+												>
+													{translate(`photoshop.category.${project.category}` as TranslationKey)}
+												</motion.span>
 
-<motion.div className='absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-<motion.span
-className={cn(
-'flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-sm',
-isDark
-? 'border border-white/30 bg-black/50 text-white'
-: 'border border-[var(--border-subtle)] bg-[rgb(var(--surface-elevated-rgb)/0.85)] text-accent shadow-soft',
-)}
-whileHover={{ scale: 1.1 }}>
-<ZoomIn className='h-5 w-5' />
-</motion.span>
-</motion.div>
+												{/* Content */}
+												<motion.div
+													className='content-box'
+													initial={{ opacity: 0, y: 20 }}
+													whileHover={{ opacity: 1, y: 0 }}
+													transition={{ duration: 0.3, delay: 0.05 }}
+												>
+													<h3 className='title'>
+														{translate(project.titleKey as TranslationKey)}
+													</h3>
+													<p className='description'>
+														{translate(project.descriptionKey as TranslationKey)}
+													</p>
 
-<div className='absolute bottom-0 left-0 right-0 translate-y-2 p-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 xs:p-5'>
-<span
-className={cn(
-'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.65rem] font-medium xs:text-xs',
-isDark ? 'bg-red-500/20 text-red-400' : 'bg-[rgb(var(--accent-primary)/0.1)] text-accent',
-)}>
-<Layers className='h-3 w-3' />
-{translate('photoshop.badge')}
-</span>
+													{/* Gallery Indicator */}
+													{project.gallery && project.gallery.length > 0 && (
+														<div className='gallery-info'>
+															<svg viewBox='0 0 24 24' className='icon'>
+																<rect x='3' y='3' width='7' height='7' fill='currentColor' />
+																<rect x='14' y='3' width='7' height='7' fill='currentColor' />
+																<rect x='3' y='14' width='7' height='7' fill='currentColor' />
+															</svg>
+															<span>{project.gallery.length + 1} images</span>
+														</div>
+													)}
 
-<h3
-className={cn(
-'mt-2 text-base font-semibold xs:text-lg',
-isDark ? 'text-white' : 'text-primary-content',
-)}>
-{project.title}
-</h3>
+													{/* View Button */}
+													<button className='view-btn'>
+														<svg viewBox='0 0 24 24' className='icon'>
+															<path d='M10 19l-7-7m0 0l7-7m-7 7h18' stroke='currentColor' strokeWidth='2' fill='none' />
+														</svg>
+														{translate('projects.demo')}
+													</button>
+												</motion.div>
+											</div>
+										</div>
+									</div>
+								</motion.article>
+							))
+						) : (
+							<motion.div
+								className='empty-state'
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{ duration: 0.4 }}
+							>
+								<p>No projects in this category</p>
+							</motion.div>
+						)}
+					</AnimatePresence>
+				</motion.div>
+			</div>
 
-<p
-className={cn(
-'mt-1 line-clamp-2 text-xs xs:text-sm',
-isDark ? 'text-white/70' : 'text-secondary-content',
-)}>
-{project.description}
-</p>
+			<style jsx>{`
+				/* ═══════════════════════════════════════════════════════════ */
+				/* COLOR PALETTE - PORTFOLIO EXACT MATCH */
+				/* ═══════════════════════════════════════════════════════════ */
 
-<span
-className={cn(
-'mt-2 inline-block rounded-full border px-2 py-0.5 text-[0.65rem] xs:text-xs',
-isDark
-? 'border-white/15 text-white/50'
-: 'border-[var(--border-subtle)] text-secondary-content',
-)}>
-{translate(`photoshop.category.${project.category}` as TranslationKey)}
-</span>
-</div>
-</div>
+				:root {
+					--bg-deep: #050505;
+					--bg-primary: #0a0a0a;
+					--bg-secondary: #111111;
+					--text-primary: #ffffff;
+					--text-secondary: #b0b0b0;
+					--text-tertiary: #808080;
+					--accent-red: #ff2d2d;
+					--accent-red-dark: #cc0000;
+					--accent-red-glow: rgba(255, 45, 45, 0.3);
+					--accent-red-glow-strong: rgba(255, 45, 45, 0.6);
+					--border-red: rgba(255, 45, 45, 0.25);
+					--border-subtle: rgba(255, 255, 255, 0.05);
+					--shadow-dark: rgba(0, 0, 0, 0.8);
+				}
 
-<div
-className={cn(
-'border-t p-3 xs:p-4 md:hidden',
-isDark ? 'border-white/5' : 'border-[var(--border-subtle)]',
-)}>
-<span
-className={cn(
-'text-[0.65rem] font-medium xs:text-xs',
-isDark ? 'text-red-400' : 'text-accent',
-)}>
-{translate('photoshop.badge')}
-</span>
+				/* ═══════════════════════════════════════════════════════════ */
+				/* SECTION */
+				/* ═══════════════════════════════════════════════════════════ */
 
-<h3
-className={cn(
-'mt-1 text-sm font-semibold',
-isDark ? 'text-white' : 'text-primary-content',
-)}>
-{project.title}
-</h3>
-</div>
-</button>
-</GlowCard>
-</motion.article>
-))}
-</AnimatePresence>
-</motion.div>
-</div>
+				.photoshop-section {
+					width: 100%;
+					background: var(--bg-primary);
+					padding: 80px 24px;
+					position: relative;
+					overflow: hidden;
+				}
 
-<Lightbox
-items={lightboxItems}
-activeIndex={lightboxIndex}
-onClose={() => setLightboxIndex(null)}
-onNavigate={setLightboxIndex}
-/>
-</section>
-);
+				.photoshop-section::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background: radial-gradient(
+						circle at 20% 50%,
+						rgba(255, 45, 45, 0.03) 0%,
+						transparent 50%
+					);
+					pointer-events: none;
+				}
+
+				.section-container {
+					max-width: 1400px;
+					margin: 0 auto;
+					position: relative;
+					z-index: 1;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* HEADER */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.section-header {
+					margin-bottom: 60px;
+				}
+
+				.section-header h2 {
+					font-size: clamp(32px, 5vw, 56px);
+					font-weight: 800;
+					color: var(--text-primary);
+					margin-bottom: 12px;
+					letter-spacing: -1.5px;
+					line-height: 1.1;
+				}
+
+				.section-header p {
+					font-size: 16px;
+					color: var(--text-secondary);
+					max-width: 550px;
+					line-height: 1.6;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* FILTERS */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.category-filters {
+					display: flex;
+					gap: 12px;
+					margin-bottom: 60px;
+					flex-wrap: wrap;
+					justify-content: flex-start;
+				}
+
+				.filter-btn {
+					display: flex;
+					align-items: center;
+					gap: 8px;
+					padding: 10px 16px;
+					background: transparent;
+					border: 1px solid var(--border-subtle);
+					border-radius: 20px;
+					color: var(--text-secondary);
+					font-size: 12px;
+					font-weight: 600;
+					cursor: pointer;
+					transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+					text-transform: uppercase;
+					letter-spacing: 0.5px;
+					white-space: nowrap;
+				}
+
+				.filter-btn:hover {
+					background: rgba(255, 45, 45, 0.05);
+					border-color: var(--border-red);
+					color: var(--text-primary);
+					transform: translateY(-2px);
+				}
+
+				.filter-btn.active {
+					background: rgba(255, 45, 45, 0.1);
+					border-color: var(--accent-red);
+					color: var(--accent-red);
+					box-shadow: 0 0 20px var(--accent-red-glow);
+				}
+
+				.emoji {
+					font-size: 16px;
+				}
+
+				.count {
+					opacity: 0.75;
+					font-weight: 500;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* GRID LAYOUT */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.grid-container {
+					display: grid;
+					grid-template-columns: repeat(4, 1fr);
+					grid-auto-rows: auto;
+					gap: 24px;
+					margin-bottom: 40px;
+				}
+
+				.grid-item {
+					animation: fadeInScale 0.6s ease-out forwards;
+					opacity: 0;
+				}
+
+				.grid-item:nth-child(1) { animation-delay: 0.05s; }
+				.grid-item:nth-child(2) { animation-delay: 0.1s; }
+				.grid-item:nth-child(3) { animation-delay: 0.15s; }
+				.grid-item:nth-child(4) { animation-delay: 0.2s; }
+				.grid-item:nth-child(5) { animation-delay: 0.25s; }
+				.grid-item:nth-child(6) { animation-delay: 0.3s; }
+				.grid-item:nth-child(7) { animation-delay: 0.35s; }
+
+				.grid-item.col-span-1 { grid-column: span 1; }
+				.grid-item.col-span-2 { grid-column: span 2; }
+				.grid-item.row-span-1 { grid-row: span 1; }
+				.grid-item.row-span-2 { grid-row: span 2; }
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* PROJECT CARD */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.project-card {
+					position: relative;
+					width: 100%;
+					height: 100%;
+					min-height: 200px;
+					overflow: hidden;
+					border-radius: 20px;
+					background: var(--bg-secondary);
+					border: 1px solid var(--border-subtle);
+					cursor: pointer;
+					transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+					box-shadow: 0 0 0 0 transparent;
+				}
+
+				.project-card:hover {
+					transform: scale(1.03) translateY(-8px);
+					border-color: var(--border-red);
+					box-shadow:
+						0 0 40px var(--accent-red-glow),
+						0 0 20px var(--accent-red-glow),
+						0 12px 48px rgba(0, 0, 0, 0.6);
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* IMAGE */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.image-wrapper {
+					position: relative;
+					width: 100%;
+					height: 100%;
+					background: var(--bg-deep);
+					overflow: hidden;
+				}
+
+				.project-image {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					object-position: center;
+					transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+					display: block;
+				}
+
+				.project-card:hover .project-image {
+					transform: scale(1.08);
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* OVERLAY */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.overlay {
+					position: absolute;
+					inset: 0;
+					background: linear-gradient(
+						180deg,
+						transparent 0%,
+						rgba(0, 0, 0, 0.4) 40%,
+						rgba(5, 5, 5, 0.9) 100%
+					);
+					opacity: 0;
+					transition: opacity 0.4s ease;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					padding: 24px;
+					z-index: 2;
+				}
+
+				.project-card:hover .overlay {
+					opacity: 1;
+				}
+
+				.overlay-content {
+					display: flex;
+					flex-direction: column;
+					gap: 16px;
+					height: 100%;
+					justify-content: space-between;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* CATEGORY BADGE */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.category-badge {
+					display: inline-block;
+					background: rgba(255, 45, 45, 0.15);
+					color: var(--accent-red);
+					padding: 6px 12px;
+					border-radius: 16px;
+					font-size: 10px;
+					font-weight: 700;
+					text-transform: uppercase;
+					letter-spacing: 0.5px;
+					border: 1px solid var(--border-red);
+					backdrop-filter: blur(10px);
+					width: fit-content;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* CONTENT */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.content-box {
+					display: flex;
+					flex-direction: column;
+					gap: 12px;
+				}
+
+				.title {
+					font-size: clamp(14px, 2.5vw, 18px);
+					font-weight: 700;
+					color: var(--text-primary);
+					line-height: 1.3;
+					margin: 0;
+				}
+
+				.description {
+					font-size: 12px;
+					color: var(--text-secondary);
+					line-height: 1.4;
+					margin: 0;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* GALLERY INFO & BUTTON */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.gallery-info {
+					display: flex;
+					align-items: center;
+					gap: 6px;
+					font-size: 11px;
+					color: var(--text-secondary);
+					padding: 6px 8px;
+					background: rgba(255, 45, 45, 0.05);
+					border-radius: 6px;
+					border: 1px solid var(--border-red);
+					width: fit-content;
+				}
+
+				.gallery-info .icon {
+					width: 12px;
+					height: 12px;
+					color: var(--accent-red);
+				}
+
+				.view-btn {
+					display: inline-flex;
+					align-items: center;
+					gap: 6px;
+					padding: 8px 14px;
+					background: rgba(255, 45, 45, 0.15);
+					color: var(--accent-red);
+					border: 1px solid var(--border-red);
+					border-radius: 8px;
+					font-size: 12px;
+					font-weight: 600;
+					cursor: pointer;
+					transition: all 0.3s ease;
+					width: fit-content;
+				}
+
+				.view-btn:hover {
+					background: rgba(255, 45, 45, 0.25);
+					border-color: var(--accent-red);
+					box-shadow: 0 0 20px var(--accent-red-glow);
+				}
+
+				.view-btn .icon {
+					width: 14px;
+					height: 14px;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* EMPTY STATE */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				.empty-state {
+					grid-column: 1 / -1;
+					text-align: center;
+					padding: 80px 24px;
+					color: var(--text-tertiary);
+					font-size: 16px;
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* ANIMATIONS */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				@keyframes fadeInScale {
+					from {
+						opacity: 0;
+						transform: scale(0.95);
+					}
+					to {
+						opacity: 1;
+						transform: scale(1);
+					}
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* RESPONSIVE: TABLET (1024px) */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				@media (max-width: 1024px) {
+					.grid-container {
+						grid-template-columns: repeat(2, 1fr);
+						gap: 20px;
+					}
+
+					.grid-item.col-span-2 {
+						grid-column: span 2;
+					}
+
+					.grid-item.row-span-2 {
+						grid-row: span 1;
+					}
+
+					.section-header {
+						margin-bottom: 40px;
+					}
+
+					.section-header h2 {
+						font-size: 32px;
+					}
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* RESPONSIVE: MOBILE (768px) */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				@media (max-width: 768px) {
+					.photoshop-section {
+						padding: 60px 16px;
+					}
+
+					.grid-container {
+						grid-template-columns: 1fr;
+						gap: 16px;
+					}
+
+					.grid-item {
+						grid-column: span 1 !important;
+						grid-row: span 1 !important;
+					}
+
+					.project-card {
+						min-height: 240px;
+					}
+
+					.category-filters {
+						gap: 8px;
+						margin-bottom: 40px;
+						overflow-x: auto;
+						-webkit-overflow-scrolling: touch;
+						padding-bottom: 8px;
+					}
+
+					.filter-btn {
+						flex-shrink: 0;
+						padding: 8px 14px;
+						font-size: 11px;
+					}
+
+					.overlay {
+						padding: 16px;
+					}
+
+					.title {
+						font-size: 14px;
+					}
+
+					.description {
+						font-size: 11px;
+					}
+				}
+
+				/* ═══════════════════════════════════════════════════════════ */
+				/* RESPONSIVE: SMALL MOBILE (480px) */
+				/* ═══════════════════════════════════════════════════════════ */
+
+				@media (max-width: 480px) {
+					.photoshop-section {
+						padding: 40px 12px;
+					}
+
+					.section-header {
+						margin-bottom: 30px;
+					}
+
+					.section-header h2 {
+						font-size: 24px;
+					}
+
+					.grid-container {
+						gap: 12px;
+						margin-bottom: 30px;
+					}
+
+					.project-card {
+						min-height: 180px;
+						border-radius: 16px;
+					}
+
+					.overlay {
+						padding: 12px;
+					}
+
+					.category-badge {
+						font-size: 9px;
+						padding: 5px 10px;
+					}
+
+					.title {
+						font-size: 13px;
+					}
+				}
+			`}</style>
+		</section>
+	);
 }

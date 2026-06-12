@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1000" fill="none">
-  <rect width="700" height="1000" fill="#050505"/>
-  <rect x="30" y="30" width="640" height="940" rx="6" fill="#0d0d0d" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="350" y="460" text-anchor="middle" fill="#ef4444" font-family="system-ui,sans-serif" font-size="38" font-weight="800">EVENT POSTER</text>
-  <rect x="150" y="600" width="400" height="4" fill="#ef4444" opacity="0.5"/>
-</svg>

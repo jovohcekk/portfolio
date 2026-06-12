@@ -4,7 +4,7 @@
 // Yangi matn qo'shish: har uch tilga ham qo'shing.
 // =====================================
 
-import type { Locale } from '@/config/portfolio';
+import type { Locale } from '@/config/portfolio'
 
 export type TranslationKey = keyof typeof translations.uz;
 
@@ -59,6 +59,24 @@ const translations = {
 		'photoshop.category.banner': 'Banner Dizayn',
 		'photoshop.category.manipulation': 'Foto Manipulyatsiya',
 		'photoshop.category.artwork': 'Kreativ Artwork',
+		'photoshop.project.poster.title': 'Event Poster Suite',
+		'photoshop.project.poster.description':
+			"Jonli tadbirga reklama uchun tuzilgan posterlar. Kuchli vizual ierarxiya, qora ranglar va auditoriyaga mo'projali xabarlar bilan print va raqamli tarqatish uchun.",
+		'photoshop.project.social.title': 'Social Launch Kit',
+		'photoshop.project.social.description':
+			'Mahsulot ishga tushirish uchun sayqalangan ijtimoiy media kampaniya. Brend ravshanligini, vizual ritmi va mobile-birinchi hamkasblik optimalligini muvoznalatgan.',
+		'photoshop.project.banner.title': 'Web Banner Campaign',
+		'photoshop.project.banner.description':
+			"Veb-kampaniya uchun premium raqamli banner dizayni. Qisqa bo'shliq, qatlama tasvirlar va clickthrough va brend ishonchini ushbu maqsadli xabarlar bilan.",
+		'photoshop.project.thumbnail.title': 'Video Thumbnail Cover',
+		'photoshop.project.thumbnail.description':
+			"Video klikini takomillashtirilgan dizayni olish uchun o'zaro ta'siri bilan. Toza vizual tasnifi, yorug' focal nuqtalari va oydin mavzu ta'kidi bilan.",
+		'photoshop.project.manipulation.title': 'Editorial Manipulation',
+		'photoshop.project.manipulation.description':
+			"Bir nechta elementlarni birga shugullanuvchi fo'to manipulyatsiyasi tushunchasi. Sayqalangan yoritish va kayfiyat bilan toza redaksiyaviy kompozitsiyaga.",
+		'photoshop.project.artwork.title': 'Creative Artwork Series',
+		'photoshop.project.artwork.description':
+			'Premium tuzilishi va yumshoq chuqurligi bilan vizual artwork turi. Brend hikoyasini aytish va ijodiy kontent taqdimoti uchun.',
 		'experience.title': 'Tajriba',
 		'experience.subtitle': "Kasbiy yo'l",
 		'experience.freelance.title': 'Freelance Developer',
@@ -78,7 +96,7 @@ const translations = {
 		'contact.form.email': 'Email',
 		'contact.form.email.placeholder': 'email@example.com',
 		'contact.form.message': 'Xabar',
-		'contact.form.message.placeholder': "Xabaringizni yozing...",
+		'contact.form.message.placeholder': 'Xabaringizni yozing...',
 		'contact.form.send': 'Yuborish',
 		'contact.form.sending': 'Yuborilmoqda...',
 		'contact.form.reset': 'Tozalash',
@@ -145,6 +163,18 @@ const translations = {
 		'photoshop.category.banner': 'Banner Design',
 		'photoshop.category.manipulation': 'Photo Manipulation',
 		'photoshop.category.artwork': 'Creative Artwork',
+		'photoshop.project.poster.title': 'Event Poster Suite',
+		'photoshop.project.poster.description': 'Promotional posters for a live event campaign, featuring striking visual hierarchy, bold color contrast, and audience-focused messaging for print and digital distribution.',
+		'photoshop.project.social.title': 'Social Launch Kit',
+		'photoshop.project.social.description': 'A polished social media campaign concept for product launch storytelling, designed to balance brand clarity, strong visual rhythm, and optimized mobile-first engagement.',
+		'photoshop.project.banner.title': 'Web Banner Campaign',
+		'photoshop.project.banner.description': 'A premium digital banner design for a web campaign, using refined spacing, layered imagery, and purposeful messaging to drive clickthrough and brand confidence.',
+		'photoshop.project.thumbnail.title': 'Video Thumbnail Cover',
+		'photoshop.project.thumbnail.description': 'A high-impact video cover designed to improve click engagement with a clean visual layout, bright focal points, and clear subject emphasis.',
+		'photoshop.project.manipulation.title': 'Editorial Manipulation',
+		'photoshop.project.manipulation.description': 'A layered photo manipulation concept that combines multiple elements into a cohesive editorial composition with refined lighting and mood.',
+		'photoshop.project.artwork.title': 'Creative Artwork Series',
+		'photoshop.project.artwork.description': 'A visual artwork piece with premium composition and soft depth, designed for brand storytelling and creative content presentation.',
 		'experience.title': 'Experience',
 		'experience.subtitle': 'Professional journey',
 		'experience.freelance.title': 'Freelance Developer',
@@ -231,6 +261,18 @@ const translations = {
 		'photoshop.category.banner': 'Баннер',
 		'photoshop.category.manipulation': 'Фотомонтаж',
 		'photoshop.category.artwork': 'Креатив',
+		'photoshop.project.poster.title': 'Набор постеров',
+		'photoshop.project.poster.description': 'Рекламные постеры для кампании прямой трансляции с поразительной визуальной иерархией, смелым контрастом цвета и ориентированными на аудиторию сообщениями для печати и распределения в цифровом формате.',
+		'photoshop.project.social.title': 'Социальный набор запуска',
+		'photoshop.project.social.description': 'Отточенная концепция кампании в социальных сетях для рассказа о запуске продукта, разработанная для балансирования ясности бренда, сильного визуального ритма и оптимизированного мобильного взаимодействия.',
+		'photoshop.project.banner.title': 'Веб-баннер Кампания',
+		'photoshop.project.banner.description': 'Премиальный дизайн цифрового баннера для веб-кампании, использующий изысканный интервал, многоуровневые изображения и целенаправленные сообщения для повышения кликов и доверия к бренду.',
+		'photoshop.project.thumbnail.title': 'Обложка видео миниатюры',
+		'photoshop.project.thumbnail.description': 'Высокоэффективная видеообложка, разработанная для улучшения взаимодействия с кликом чистым визуальным макетом, яркими точками фокусировки и четким акцентом на предмет.',
+		'photoshop.project.manipulation.title': 'Редакторская манипуляция',
+		'photoshop.project.manipulation.description': 'Концепция многоуровневого фотомонтажа, которая объединяет несколько элементов в связную редакторскую композицию с изысканным освещением и атмосферой.',
+		'photoshop.project.artwork.title': 'Серия творческой работы',
+		'photoshop.project.artwork.description': 'Произведение искусства с премиальной композицией и мягкой глубиной, разработанное для рассказа о бренде и представления творческого контента.',
 		'experience.title': 'Опыт',
 		'experience.subtitle': 'Профессиональный путь',
 		'experience.freelance.title': 'Freelance разработчик',

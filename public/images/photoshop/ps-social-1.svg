@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" fill="none">
-  <rect width="1080" height="1080" fill="#0a0a0a"/>
-  <rect x="40" y="40" width="1000" height="1000" rx="24" fill="#111" stroke="#dc2626" stroke-width="2"/>
-  <circle cx="540" cy="400" r="120" fill="#dc2626" opacity="0.25"/>
-  <text x="540" y="620" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="40" font-weight="700">SOCIAL MEDIA</text>
-  <text x="540" y="670" text-anchor="middle" fill="#888" font-family="system-ui,sans-serif" font-size="18">Instagram / Post Design</text>
-</svg>
