@@ -173,7 +173,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 									className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-sm font-semibold text-white transition-all duration-300 hover:border-[rgba(255,45,45,0.5)] hover:bg-[rgba(255,45,45,0.12)] hover:shadow-[0_0_20px_rgba(255,45,45,0.25)]"
 									whileHover={{ scale: 1.08, y: -2 }}>
 									<Globe className="w-4 h-4" />
-									{translate('projects.liveWebsite')}
+									{translate('projects.demo')}
 								</motion.a>
 							</motion.div>
 						)}
@@ -202,7 +202,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 							className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-sm font-semibold text-white transition-all duration-300 hover:border-[rgba(255,45,45,0.5)] hover:bg-[rgba(255,45,45,0.12)] hover:shadow-[0_0_20px_rgba(255,45,45,0.25)]"
 							whileHover={{ scale: 1.05, y: -2 }}>
 							<Globe className="w-4 h-4" />
-							{translate('projects.liveWebsite')}
+							{translate('projects.demo')}
 						</motion.a>
 					</motion.div>
 				</div>

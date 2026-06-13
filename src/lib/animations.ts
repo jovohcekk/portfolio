@@ -597,3 +597,321 @@ export const gradientAnimation: Variants = {
 		transition: { duration: 6, repeat: Infinity, ease: 'linear' },
 	},
 };
+
+// =====================================
+// PREMIUM TEXT ANIMATIONS
+// =====================================
+
+/** Text fade in with slide up - PREMIUM */
+export const textFadeInUp: Variants = {
+	hidden: { opacity: 0, y: 20 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: 0.6, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Title character reveal with glow - PREMIUM */
+export const titleCharacterRevealGlow: Variants = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.04,
+			delayChildren: 0.1,
+		},
+	},
+};
+
+/** Subtitle word reveal stagger - PREMIUM */
+export const subtitleWordReveal: Variants = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.08,
+			delayChildren: 0.2,
+		},
+	},
+};
+
+/** Description progressive reveal - PREMIUM */
+export const descriptionProgressiveReveal: Variants = {
+	hidden: { opacity: 0, y: 10 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: 0.7, ease: EASE_OUT_EXPO, delay: 0.3 },
+	},
+};
+
+// =====================================
+// PREMIUM CARD ANIMATIONS
+// =====================================
+
+/** Enhanced card hover - PREMIUM (scale 1.05, lift -12px) */
+export const cardHoverPremium: Variants = {
+	rest: { scale: 1, y: 0 },
+	hover: {
+		scale: 1.05,
+		y: -12,
+		transition: { duration: 0.3, ease: 'easeOut', type: 'spring', stiffness: 300, damping: 20 },
+	},
+};
+
+/** Card entrance with stagger - PREMIUM */
+export const cardEntranceStagger: Variants = {
+	hidden: { opacity: 0, y: 32, scale: 0.95 },
+	visible: (i: number) => ({
+		opacity: 1,
+		y: 0,
+		scale: 1,
+		transition: {
+			delay: i * 0.08,
+			duration: 0.6,
+			ease: EASE_OUT_EXPO,
+		},
+	}),
+};
+
+/** Image zoom on hover - PREMIUM */
+export const imageZoomHover: Variants = {
+	rest: { scale: 1 },
+	hover: {
+		scale: 1.08,
+		transition: { duration: 0.4, ease: EASE_OUT_EXPO },
+	},
+};
+
+// =====================================
+// PREMIUM BUTTON ANIMATIONS
+// =====================================
+
+/** Button hover glow - PREMIUM (scale 1.04) */
+export const buttonHoverGlowPremium: Variants = {
+	rest: { scale: 1 },
+	hover: {
+		scale: 1.04,
+		transition: { duration: 0.2, ease: 'easeOut', type: 'spring', stiffness: 400, damping: 25 },
+	},
+	tap: {
+		scale: 0.97,
+		transition: { duration: 0.1 },
+	},
+};
+
+/** Button icon scale on hover - PREMIUM */
+export const buttonIconScale: Variants = {
+	rest: { scale: 1, rotate: 0 },
+	hover: {
+		scale: 1.15,
+		rotate: 5,
+		transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Button success animation - PREMIUM */
+export const buttonSuccessState: Variants = {
+	animate: {
+		scale: [1, 1.1, 1],
+		transition: { duration: 0.5, ease: EASE_OUT_EXPO },
+	},
+};
+
+// =====================================
+// PREMIUM FORM INPUT ANIMATIONS
+// =====================================
+
+/** Input focus glow - PREMIUM */
+export const inputFocusGlow: Variants = {
+	unfocused: {
+		borderColor: 'rgba(255, 45, 45, 0.2)',
+		boxShadow: '0 0 0px rgba(255, 45, 45, 0)',
+	},
+	focused: {
+		borderColor: 'rgba(255, 45, 45, 0.6)',
+		boxShadow: '0 0 20px rgba(255, 45, 45, 0.3), inset 0 0 10px rgba(255, 45, 45, 0.05)',
+		transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Label float animation - PREMIUM */
+export const labelFloat: Variants = {
+	initial: { y: 0, opacity: 0.7 },
+	animate: {
+		y: -24,
+		opacity: 1,
+		transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Input error shake - PREMIUM (transform-based) */
+export const inputErrorShake: Variants = {
+	animate: {
+		x: [-8, 8, -8, 8, 0],
+		transition: { duration: 0.4, ease: 'easeInOut' },
+	},
+};
+
+/** Error message fade in - PREMIUM */
+export const errorMessageFade: Variants = {
+	hidden: { opacity: 0, y: -10 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+	},
+};
+
+// =====================================
+// PREMIUM NAVIGATION ANIMATIONS
+// =====================================
+
+/** Nav link underline reveal - PREMIUM */
+export const navUnderlineReveal: Variants = {
+	initial: { scaleX: 0 },
+	hover: {
+		scaleX: 1,
+		transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Dropdown item entrance - PREMIUM */
+export const dropdownItemEntrance: Variants = {
+	hidden: { opacity: 0, y: -8, scale: 0.95 },
+	visible: (i: number) => ({
+		opacity: 1,
+		y: 0,
+		scale: 1,
+		transition: {
+			delay: i * 0.06,
+			duration: 0.4,
+			ease: EASE_OUT_EXPO,
+			type: 'spring',
+			stiffness: 300,
+			damping: 20,
+		},
+	}),
+};
+
+// =====================================
+// PREMIUM SCROLL ENTRANCE ANIMATIONS
+// =====================================
+
+/** Section fade in stagger - PREMIUM */
+export const sectionFadeInStagger: Variants = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.06,
+			delayChildren: 0.1,
+		},
+	},
+};
+
+/** Section entrance children - PREMIUM */
+export const sectionEntranceChild: Variants = {
+	hidden: { opacity: 0, y: 24, scale: 0.96 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		scale: 1,
+		transition: { duration: 0.6, ease: EASE_OUT_EXPO },
+	},
+};
+
+/** Badge entrance stagger - PREMIUM */
+export const badgeEntranceStagger: Variants = {
+	hidden: { opacity: 0, scale: 0.8 },
+	visible: (i: number) => ({
+		opacity: 1,
+		scale: 1,
+		transition: {
+			delay: i * 0.06,
+			duration: 0.5,
+			ease: EASE_OUT_EXPO,
+		},
+	}),
+};
+
+// =====================================
+// PREMIUM MODAL/OVERLAY ANIMATIONS
+// =====================================
+
+/** Modal content zoom entrance - PREMIUM */
+export const modalContentZoom: Variants = {
+	hidden: { opacity: 0, scale: 0.92, y: 20 },
+	visible: {
+		opacity: 1,
+		scale: 1,
+		y: 0,
+		transition: { duration: 0.5, ease: EASE_OUT_EXPO, type: 'spring', stiffness: 300, damping: 25 },
+	},
+	exit: {
+		opacity: 0,
+		scale: 0.92,
+		y: 20,
+		transition: { duration: 0.3, ease: 'easeIn' },
+	},
+};
+
+/** Modal backdrop blur enhancement - PREMIUM */
+export const backdropBlurEnhanced: Variants = {
+	hidden: { backdropFilter: 'blur(0px)', opacity: 0 },
+	visible: {
+		backdropFilter: 'blur(12px)',
+		opacity: 1,
+		transition: { duration: 0.35, ease: EASE_OUT_EXPO },
+	},
+	exit: {
+		backdropFilter: 'blur(0px)',
+		opacity: 0,
+		transition: { duration: 0.25, ease: 'easeOut' },
+	},
+};
+
+// =====================================
+// PREMIUM LOADING & STATUS ANIMATIONS
+// =====================================
+
+/** Loading pulse - PREMIUM */
+export const loadingPulse: Variants = {
+	animate: {
+		scale: [1, 1.05, 1],
+		opacity: [0.6, 1, 0.6],
+		transition: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
+	},
+};
+
+/** Success checkmark - PREMIUM */
+export const successCheckmark: Variants = {
+	hidden: { scale: 0, rotate: -90 },
+	visible: {
+		scale: 1,
+		rotate: 0,
+		transition: { duration: 0.5, ease: EASE_OUT_EXPO, type: 'spring', stiffness: 300, damping: 20 },
+	},
+};
+
+// =====================================
+// PREMIUM INFINITE ANIMATIONS
+// =====================================
+
+/** Subtle glow pulse - PREMIUM (infinite) */
+export const subtleGlowPulse: Variants = {
+	animate: {
+		opacity: [0.4, 0.6, 0.4],
+		scale: [1, 1.02, 1],
+		transition: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+	},
+};
+
+/** Smooth float - PREMIUM (infinite) */
+export const smoothFloat: Variants = {
+	animate: {
+		y: [0, -12, 0],
+		transition: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
+	},
+};
