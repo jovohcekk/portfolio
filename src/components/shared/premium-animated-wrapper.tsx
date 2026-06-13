@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from 'framer-motion';
 import { ReactNode } from 'react';
-import { useViewportAnimation, useReducedMotionAnimation } from '@/hooks/use-viewport-animation';
+import { useReducedMotionAnimation } from '@/hooks/use-viewport-animation';
 
 interface PremiumAnimatedWrapperProps {
 	children: ReactNode;

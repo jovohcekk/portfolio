@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import Image from 'next/image'
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2, X } from 'lucide-react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 interface ProjectImageModalProps {
 	isOpen: boolean;
@@ -34,10 +34,15 @@ export function ProjectImageModal({
 	onNext,
 }: ProjectImageModalProps) {
 	const [isMaximized, setIsMaximized] = useState(false);
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	// Handle escape key
 	useEffect(() => {
-		if (!isOpen) return;
+		if (!mounted || !isOpen) return;
 
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
@@ -51,14 +56,14 @@ export function ProjectImageModal({
 
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
-			document.body.style.overflow = 'unset';
+			document.body.style.overflow = '';
 		};
-	}, [isOpen, onClose]);
+	}, [isOpen, onClose, mounted]);
 
 	useEffect(() => {
-	if (isOpen) {
-		setIsMaximized(false);
-	}
+		if (isOpen) {
+			setIsMaximized(false);
+		}
 	}, [isOpen]);
 
 	const handleBackdropClick = (e: React.MouseEvent) => {
@@ -67,6 +72,8 @@ export function ProjectImageModal({
 			setIsMaximized(false);
 		}
 	};
+
+	if (!mounted) return null;
 
 	return (
 		<AnimatePresence>
@@ -110,7 +117,9 @@ export function ProjectImageModal({
 								<div className='flex-1 min-w-0'>
 									<h2 className='text-lg md:text-xl font-bold text-white truncate'>{title}</h2>
 									<div className='mt-2 flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-gray-500'>
-										<span>{projectIndex + 1} / {projectCount}</span>
+										<span>
+											{projectIndex + 1} / {projectCount}
+										</span>
 										<span className='hidden sm:inline'>•</span>
 										<span>{isMaximized ? 'Maximized' : 'Preview'}</span>
 									</div>
@@ -130,12 +139,9 @@ export function ProjectImageModal({
 										)}
 										whileHover={{ scale: 1.05 }}
 										whileTap={{ scale: 0.95 }}
-										title={isMaximized ? 'Restore' : 'Maximize'}>
-										{isMaximized ? (
-											<Minimize2 className='w-5 h-5' />
-										) : (
-											<Maximize2 className='w-5 h-5' />
-										)}
+										title={isMaximized ? 'Restore' : 'Maximize'}
+										aria-label={isMaximized ? 'Restore' : 'Maximize'}>
+										{isMaximized ? <Minimize2 className='w-5 h-5' /> : <Maximize2 className='w-5 h-5' />}
 									</motion.button>
 
 									{/* Close Button */}
@@ -152,7 +158,8 @@ export function ProjectImageModal({
 										)}
 										whileHover={{ scale: 1.05 }}
 										whileTap={{ scale: 0.95 }}
-										title='Close (ESC)'>
+										title='Close (ESC)'
+										aria-label='Close'>
 										<X className='w-5 h-5' />
 									</motion.button>
 								</div>
@@ -165,34 +172,34 @@ export function ProjectImageModal({
 									'bg-gradient-to-br from-[rgba(20,20,20,0.5)] to-[rgba(5,5,5,0.8)]',
 								)}
 								layout>
-									<div className='pointer-events-none absolute inset-0 flex items-center justify-between px-3 md:px-6'>
-										<motion.button
-											className={cn(
-												'pointer-events-auto rounded-full p-2 transition-all duration-300',
-												'border border-[rgba(255,45,45,0.22)] bg-[rgba(10,10,10,0.7)] text-[rgba(255,45,45,0.85)]',
-												'hover:border-[rgba(255,45,45,0.4)] hover:bg-[rgba(255,45,45,0.12)]',
-											)}
-											whileHover={{ scale: 1.02 }}
-											whileTap={{ scale: 0.95 }}
-											onClick={onPrevious}
-											disabled={projectCount <= 1}
-											aria-label='Previous project'>
-												<ChevronLeft className='w-5 h-5' />
-											</motion.button>
-										<motion.button
-											className={cn(
-												'pointer-events-auto rounded-full p-2 transition-all duration-300',
-												'border border-[rgba(255,45,45,0.22)] bg-[rgba(10,10,10,0.7)] text-[rgba(255,45,45,0.85)]',
-												'hover:border-[rgba(255,45,45,0.4)] hover:bg-[rgba(255,45,45,0.12)]',
-											)}
-											whileHover={{ scale: 1.02 }}
-											whileTap={{ scale: 0.95 }}
-											onClick={onNext}
-											disabled={projectCount <= 1}
-											aria-label='Next project'>
-												<ChevronRight className='w-5 h-5' />
-											</motion.button>
-										</div>
+								<div className='pointer-events-none absolute inset-0 flex items-center justify-between px-3 md:px-6'>
+									<motion.button
+										className={cn(
+											'pointer-events-auto rounded-full p-2 transition-all duration-300',
+											'border border-[rgba(255,45,45,0.22)] bg-[rgba(10,10,10,0.7)] text-[rgba(255,45,45,0.85)]',
+											'hover:border-[rgba(255,45,45,0.4)] hover:bg-[rgba(255,45,45,0.12)]',
+										)}
+										whileHover={{ scale: 1.02 }}
+										whileTap={{ scale: 0.95 }}
+										onClick={onPrevious}
+										disabled={projectCount <= 1}
+										aria-label='Previous project'>
+										<ChevronLeft className='w-5 h-5' />
+									</motion.button>
+									<motion.button
+										className={cn(
+											'pointer-events-auto rounded-full p-2 transition-all duration-300',
+											'border border-[rgba(255,45,45,0.22)] bg-[rgba(10,10,10,0.7)] text-[rgba(255,45,45,0.85)]',
+											'hover:border-[rgba(255,45,45,0.4)] hover:bg-[rgba(255,45,45,0.12)]',
+										)}
+										whileHover={{ scale: 1.02 }}
+										whileTap={{ scale: 0.95 }}
+										onClick={onNext}
+										disabled={projectCount <= 1}
+										aria-label='Next project'>
+										<ChevronRight className='w-5 h-5' />
+									</motion.button>
+								</div>
 								<motion.div
 									className='relative w-full h-full flex items-center justify-center'
 									layoutId={`project-image-${projectId}`}
@@ -206,7 +213,7 @@ export function ProjectImageModal({
 										fill
 										className='object-contain'
 										sizes='(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 90vw'
-										quality={95}
+										quality={90}
 										priority
 									/>
 								</motion.div>

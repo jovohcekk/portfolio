@@ -33,6 +33,8 @@ const nextConfig: NextConfig = {
 		// OPTIMIZATION: Prevent blur placeholder generation (faster)
 		dangerouslyAllowSVG: true,
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+		// Configure image quality levels
+		qualities: [75, 85, 90],
 	},
 
 	// OPTIMIZATION: Code splitting and dynamic imports

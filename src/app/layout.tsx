@@ -39,9 +39,9 @@ export const metadata: Metadata = {
 	authors: [{ name: seoConfig.author }],
 	creator: seoConfig.author,
 	icons: {
-		icon: './logo.png?v=2',
-		shortcut: './logo.png?v=2',
-		apple: './logo.png?v=2',
+		icon: '/images/logo.png?v=2',
+		shortcut: '/images/logo.png?v=2',
+		apple: '/images/logo.png?v=2',
 	},
 	manifest: '/manifest.json',
 	openGraph: {

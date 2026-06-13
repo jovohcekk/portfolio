@@ -5,7 +5,7 @@ import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { floatAnimation, glowPulse } from '@/lib/animations'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 interface FloatingShapesProps {
 	variant?: 'default' | 'photoshop';
@@ -14,7 +14,13 @@ interface FloatingShapesProps {
 function FloatingShapesComponent({ variant = 'default' }: FloatingShapesProps) {
 	const reducedMotion = useReducedMotion();
 	const isDark = useIsDark();
-	if (reducedMotion) return null;
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	if (!mounted || reducedMotion) return null;
 
 	const isPhotoshop = variant === 'photoshop';
 

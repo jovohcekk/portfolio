@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { X, Maximize2, Minimize2 } from 'lucide-react';
 
 import { type PhotoshopGalleryItem } from '@/config/portfolio';
-import { cn } from '@/lib/utils';
 
 interface PhotoshopProjectModalProps {
 	project: PhotoshopGalleryItem | null;
@@ -53,9 +52,14 @@ export function PhotoshopProjectModal({
 	isMaximized,
 	onToggleMaximize,
 }: PhotoshopProjectModalProps) {
-	// Handle escape key
+	const [mounted, setMounted] = useState(false);
+
 	useEffect(() => {
-		if (!isOpen) return;
+		setMounted(true);
+	}, []);
+
+	useEffect(() => {
+		if (!mounted || !isOpen) return;
 
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
@@ -68,9 +72,9 @@ export function PhotoshopProjectModal({
 
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
-			document.body.style.overflow = 'unset';
+			document.body.style.overflow = '';
 		};
-	}, [isOpen, onClose]);
+	}, [isOpen, onClose, mounted]);
 
 	const handleBackdropClick = (e: React.MouseEvent) => {
 		if (e.target === e.currentTarget) {
@@ -78,7 +82,7 @@ export function PhotoshopProjectModal({
 		}
 	};
 
-	if (!project) return null;
+	if (!mounted || !project) return null;
 
 	return (
 		<AnimatePresence>
@@ -126,7 +130,7 @@ export function PhotoshopProjectModal({
 									maxHeight: '90vh',
 								}}
 								sizes="90vw"
-								quality={95}
+								quality={90}
 								priority
 							/>
 
@@ -143,7 +147,8 @@ export function PhotoshopProjectModal({
 										className="rounded-full border border-white/20 bg-black/40 backdrop-blur-md p-2.5 text-white/90 transition-all duration-300 hover:border-red-400/70 hover:bg-red-500/10 hover:text-white"
 										whileHover={{ scale: 1.08 }}
 										whileTap={{ scale: 0.95 }}
-										title={isMaximized ? 'Minimize' : 'Maximize'}>
+										title={isMaximized ? 'Minimize' : 'Maximize'}
+										aria-label={isMaximized ? 'Minimize' : 'Maximize'}>
 										{isMaximized ? (
 											<Minimize2 className="w-5 h-5" />
 										) : (
@@ -160,7 +165,8 @@ export function PhotoshopProjectModal({
 										className="rounded-full border border-white/20 bg-black/40 backdrop-blur-md p-2.5 text-white/90 transition-all duration-300 hover:border-red-400/70 hover:bg-red-500/10 hover:text-white"
 										whileHover={{ scale: 1.08 }}
 										whileTap={{ scale: 0.95 }}
-										title="Close (ESC)">
+										title="Close (ESC)"
+										aria-label="Close">
 										<X className="w-5 h-5" />
 									</motion.button>
 								</div>
