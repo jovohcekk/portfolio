@@ -112,10 +112,6 @@ const translations = {
 		backToTop: 'Yuqoriga',
 		'years.old': 'yosh',
 		'skip.content': "Asosiy kontentga o'tish",
-		// Development Projects Section
-		'projects.dev.title': 'Development Loyihalari',
-		'projects.dev.subtitle': 'Mening veb-ishlab chiqish, full-stack engineering va zamonaviy raqamli mahsulotlarning premium showcaseami.',
-		'projects.liveWebsite': 'Demo',
 		// Photoshop Section
 		'photoshop.description': "Photoshop manipulyatsiyalari, posterlar, ijtimoiy media kreativlari, reklama bannerlar, brending vizuallari, thumbnail-lar va tijorat dizayni ishlarining kolleksiyasi.",
 		// Modal
@@ -223,10 +219,6 @@ const translations = {
 		backToTop: 'Back to top',
 		'years.old': 'years old',
 		'skip.content': 'Skip to content',
-		// Development Projects Section
-		'projects.dev.title': 'Development Projects',
-		'projects.dev.subtitle': 'Premium showcase of my software engineering, full stack development, cybersecurity, and web application projects.',
-		'projects.liveWebsite': 'Demo',
 		// Photoshop Section
 		'photoshop.description': 'A collection of high-end Photoshop manipulations, posters, social media creatives, advertising banners, thumbnails, branding visuals, and commercial design works.',
 		// Modal
@@ -334,10 +326,6 @@ const translations = {
 		backToTop: 'Наверх',
 		'years.old': 'лет',
 		'skip.content': 'Перейти к основному контенту',
-		// Development Projects Section
-		'projects.dev.title': 'Проекты Разработки',
-		'projects.dev.subtitle': 'Premium-демонстрация моих проектов разработки, full-stack инженерии, кибербезопасности и веб-приложений.',
-		'projects.liveWebsite': 'Демо',
 		// Photoshop Section
 		'photoshop.description': 'Коллекция высококачественных манипуляций Photoshop, постеров, креативов для социальных сетей, рекламных баннеров, миниатюр, брендовых визуалов и коммерческих дизайнов.',
 		// Modal
