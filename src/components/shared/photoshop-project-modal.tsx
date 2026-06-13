@@ -84,7 +84,7 @@ export function PhotoshopProjectModal({
 		<AnimatePresence>
 			{isOpen && (
 				<motion.div
-					className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black/80 p-4 md:p-8"
+					className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/80"
 					initial="hidden"
 					animate="visible"
 					exit="exit"
@@ -104,31 +104,28 @@ export function PhotoshopProjectModal({
 
 					{/* Modal Content - Image Only */}
 					<motion.div
-						className={cn(
-							'relative z-20 overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b]/90 shadow-[0_32px_120px_rgba(255,0,0,0.24)]',
-							isMaximized
-								? 'w-[90vw] max-w-[95vw] h-[90vh] max-h-[95vh]'
-								: 'w-full max-w-[900px] h-auto'
-						)}
+						className="relative z-20 flex items-center justify-center overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b]/90 shadow-[0_32px_120px_rgba(255,0,0,0.24)] p-4 md:p-8"
+						style={{
+							maxWidth: '90vw',
+							maxHeight: '90vh',
+						}}
 						variants={contentVariants}
 						layoutId={`gallery-image-${project.id}`}
 						transition={{ type: 'spring', stiffness: 120, damping: 18 }}
 						onClick={(e) => e.stopPropagation()}>
-						{/* Image Container */}
-						<div className={cn(
-							'relative w-full',
-							isMaximized ? 'h-full' : 'h-auto'
-						)}>
+						{/* Image Container - Flex layout for centering */}
+						<div className="relative w-full h-full flex items-center justify-center overflow-hidden">
 							<Image
 								src={project.image}
 								alt={project.title}
 								width={1200}
 								height={1200}
-								className={cn(
-									'w-full object-contain',
-									isMaximized ? 'h-full' : 'h-auto'
-								)}
-								sizes={isMaximized ? '90vw' : '(max-width: 768px) 100vw, 90vw'}
+								className="w-auto h-auto object-contain"
+								style={{
+									maxWidth: '90vw',
+									maxHeight: '90vh',
+								}}
+								sizes="90vw"
 								quality={95}
 								priority
 							/>
