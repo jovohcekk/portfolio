@@ -112,14 +112,24 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 			{/* Content Container */}
 			<div className="relative p-6 md:p-8">
 				{/* Project Title */}
-				<h3 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-3 group-hover:text-white transition-colors duration-300">
+				<motion.h3
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.5, delay: 0.2 + index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+					className="text-xl md:text-2xl font-bold text-white tracking-tight mb-3 group-hover:text-white transition-colors duration-300">
 					{project.title}
-				</h3>
+				</motion.h3>
 
 				{/* Description */}
-				<p className="text-sm md:text-base leading-7 text-slate-300 mb-6 line-clamp-3">
+				<motion.p
+					initial={{ opacity: 0, y: 16 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.5, delay: 0.3 + index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+					className="text-sm md:text-base leading-7 text-slate-300 mb-6 line-clamp-3">
 					{project.description}
-				</p>
+				</motion.p>
 
 				{/* Technologies Tags */}
 				<motion.div

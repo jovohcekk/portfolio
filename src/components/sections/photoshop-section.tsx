@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { SectionHeading } from '@/components/shared/section-heading';
 import { photoshopGallery, type PhotoshopGalleryItem } from '@/config/portfolio';
 import { useLanguage } from '@/hooks/use-language';
 
@@ -40,17 +41,11 @@ export function PhotoshopSection({ onProjectSelect }: PhotoshopSectionProps) {
 			</div>
 
 			<div className='section-container relative z-10'>
-				{/* Section Header - Title Only */}
-				<motion.div
-					className='mx-auto text-center mb-16'
-					initial={{ opacity: 0, y: 24 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-					<h2 className='text-4xl md:text-6xl font-bold tracking-tight text-white'>
-						{translate('photoshop.title')}
-					</h2>
-				</motion.div>
+				{/* Premium Section Heading with Red Gradient */}
+				<SectionHeading
+					title={translate('photoshop.title')}
+					subtitle={translate('photoshop.description')}
+				/>
 
 				{/* Masonry Gallery - No Fixed Aspect Ratios */}
 				<motion.div

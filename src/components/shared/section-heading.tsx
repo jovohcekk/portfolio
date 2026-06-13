@@ -1,7 +1,7 @@
 'use client';
 
 import { LetterReveal } from '@/components/shared/letter-reveal';
-import { blurIn, fadeInUp } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 import { motion } from 'framer-motion';
 
 interface SectionHeadingProps {
@@ -25,10 +25,10 @@ export function SectionHeading({ title, subtitle, align = 'center', dark = false
 			</h2>
 			{subtitle && (
 				<motion.p
-					variants={blurIn}
-					initial='hidden'
-					whileInView='visible'
+					initial={{ opacity: 0, y: 10 }}
+					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
+					transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
 					className={`body-lg mt-4 break-words transition-colors duration-300 ${dark ? 'text-white/60' : 'text-secondary-content'}`}
 					key={`subtitle-${subtitle}`}>
 					{subtitle}
@@ -38,7 +38,7 @@ export function SectionHeading({ title, subtitle, align = 'center', dark = false
 				initial={{ scaleX: 0 }}
 				whileInView={{ scaleX: 1 }}
 				viewport={{ once: true }}
-				transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+				transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
 				className={`mt-5 h-0.5 w-16 rounded-full ${dark ? 'bg-[rgb(var(--accent-primary))]' : 'bg-gradient-primary'} ${
 					align === 'center' ? 'mx-auto' : ''
 				}`}
