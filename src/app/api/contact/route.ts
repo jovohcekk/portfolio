@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
-import { socialLinks } from "@/config/portfolio";
 
 interface ContactBody {
   name: string;
+  phone?: string;
   email: string;
   message: string;
   website?: string;
 }
 
 const MAX_NAME = 120;
+const MAX_PHONE = 20;
 const MAX_EMAIL = 254;
 const MAX_MESSAGE = 5000;
 
@@ -25,6 +26,45 @@ function isRateLimited(ip: string): boolean {
   }
   entry.count += 1;
   return entry.count > RATE_LIMIT_MAX;
+}
+
+function formatTelegramMessage(name: string, phone: string, email: string, message: string): string {
+  return [
+    "📩 New Portfolio Message",
+    "",
+    `👤 Name: ${name}`,
+    `📱 Phone: ${phone}`,
+    `📧 Email: ${email}`,
+    "",
+    "💬 Message:",
+    message,
+  ].join("\n");
+}
+
+async function sendTelegramMessage(text: string): Promise<boolean> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+
+  if (!token || !chatId) {
+    console.error("[Contact] Telegram credentials are not configured");
+    return false;
+  }
+
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+    }),
+  });
+
+  if (!response.ok) {
+    console.error("[Contact] Telegram API request failed", response.status);
+    return false;
+  }
+
+  return true;
 }
 
 export async function POST(request: Request) {
@@ -50,6 +90,7 @@ export async function POST(request: Request) {
     }
 
     const name = body.name?.trim() ?? "";
+    const phone = body.phone?.trim() ?? "";
     const email = body.email?.trim() ?? "";
     const message = body.message?.trim() ?? "";
 
@@ -57,7 +98,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
-    if (name.length > MAX_NAME || email.length > MAX_EMAIL || message.length > MAX_MESSAGE) {
+    if (
+      name.length > MAX_NAME ||
+      phone.length > MAX_PHONE ||
+      email.length > MAX_EMAIL ||
+      message.length > MAX_MESSAGE
+    ) {
       return NextResponse.json({ error: "Input too long" }, { status: 400 });
     }
 
@@ -66,15 +112,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
 
-  // Production: connect Resend, SendGrid, or Nodemailer here.
-    if (process.env.NODE_ENV === "development") {
-      console.log("[Portfolio Contact]", {
-        to: socialLinks.email,
-        from: email,
-        name,
-        messageLength: message.length,
-        timestamp: new Date().toISOString(),
-      });
+    const telegramText = formatTelegramMessage(name, phone, email, message);
+    const sent = await sendTelegramMessage(telegramText);
+
+    if (!sent) {
+      return NextResponse.json({ error: "Failed to send message" }, { status: 500 });
     }
 
     return NextResponse.json({

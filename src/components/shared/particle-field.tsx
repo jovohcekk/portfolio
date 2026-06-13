@@ -2,7 +2,7 @@
 
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { motion } from 'framer-motion'
-import { useMemo, memo } from 'react'
+import { useMemo, memo, useEffect, useState } from 'react'
 
 interface ParticleFieldProps {
 	count?: number;
@@ -12,10 +12,18 @@ interface ParticleFieldProps {
 
 function ParticleFieldComponent({ count = 24, className = '', variant = 'default' }: ParticleFieldProps) {
 	const reducedMotion = useReducedMotion();
+	const [isMobile, setIsMobile] = useState(false);
+
+	useEffect(() => {
+		setIsMobile(window.innerWidth < 768);
+	}, []);
+
+	// OPTIMIZATION: Reduce particle count on mobile
+	const effectiveCount = isMobile ? Math.ceil(count * 0.5) : count;
 
 	const particles = useMemo(
 		() =>
-			Array.from({ length: count }, (_, i) => ({
+			Array.from({ length: effectiveCount }, (_, i) => ({
 				id: i,
 				x: (i * 17 + 11) % 100,
 				y: (i * 23 + 7) % 100,
@@ -23,10 +31,10 @@ function ParticleFieldComponent({ count = 24, className = '', variant = 'default
 				duration: 4 + (i % 5),
 				delay: (i % 8) * 0.4,
 			})),
-		[count],
+		[effectiveCount],
 	);
 
-	if (reducedMotion || count <= 0) return null;
+	if (reducedMotion || effectiveCount <= 0) return null;
 
 	const dotClass = variant === 'hero' ? 'particle-dot-hero' : 'particle-dot';
 
@@ -43,6 +51,7 @@ function ParticleFieldComponent({ count = 24, className = '', variant = 'default
 						height: `${p.size}px`,
 						willChange: 'transform, opacity',
 						transform: 'translate3d(0,0,0)',
+						backfaceVisibility: 'hidden',
 					}}
 					animate={{
 						y: [0, -30, 0],

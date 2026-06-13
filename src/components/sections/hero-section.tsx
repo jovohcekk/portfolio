@@ -15,12 +15,18 @@ import { blurIn, fadeInLeft, fadeInRight, staggerContainer } from '@/lib/animati
 import { scrollToSection } from '@/lib/utils'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { MapPin, Sparkles } from 'lucide-react'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 export function HeroSectionComponent() {
 	const { translate } = useLanguage();
 	const reducedMotion = useReducedMotion();
 	const { scrollY } = useScroll();
+	const [isMobile, setIsMobile] = useState(false);
+
+	useEffect(() => {
+		setIsMobile(window.innerWidth < 768);
+	}, []);
+
 	const heroOpacity = useTransform(scrollY, [0, 400], [1, reducedMotion ? 1 : 0.3]);
 	const heroY = useTransform(scrollY, [0, 400], [0, reducedMotion ? 0 : 80]);
 
@@ -33,19 +39,21 @@ export function HeroSectionComponent() {
 				aria-hidden
 			/>
 			<FloatingShapes />
-			<ParticleField count={reducedMotion ? 0 : 20} variant='hero' />
+			<ParticleField count={reducedMotion ? 0 : (isMobile ? 10 : 20)} variant='hero' />
 
 			<div className='pointer-events-none absolute inset-0'>
 				<ParallaxLayer speed={0.2} className='absolute top-1/4 left-1/4'>
 					<motion.div
-						className='glow-orb-primary h-48 w-48 rounded-full blur-[80px] xs:h-64 xs:w-64 xs:blur-[100px] md:h-96 md:w-96 md:blur-[120px]'
+						className={`glow-orb-primary h-48 w-48 rounded-full ${isMobile ? 'blur-[60px]' : 'xs:blur-[80px] md:blur-[100px]'} xs:h-64 xs:w-64 md:h-96 md:w-96`}
+						style={{ willChange: 'transform, opacity' }}
 						animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.08, 1] }}
 						transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
 					/>
 				</ParallaxLayer>
 				<ParallaxLayer speed={0.15} className='absolute bottom-1/4 right-1/4'>
 					<motion.div
-						className='glow-orb-secondary h-48 w-48 rounded-full blur-[80px] xs:h-64 xs:w-64 xs:blur-[100px] md:h-96 md:w-96 md:blur-[120px]'
+						className={`glow-orb-secondary h-48 w-48 rounded-full ${isMobile ? 'blur-[50px]' : 'xs:blur-[70px] md:blur-[100px]'} xs:h-64 xs:w-64 md:h-96 md:w-96`}
+						style={{ willChange: 'transform, opacity' }}
 						animate={{ opacity: [0.3, 0.65, 0.3], scale: [1, 1.06, 1] }}
 						transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
 					/>
@@ -61,6 +69,7 @@ export function HeroSectionComponent() {
 						style={{
 							left: `${Math.min(10 + ((i * 11) % 80), 72)}%`,
 							top: `${15 + ((i * 17) % 65)}%`,
+							willChange: 'transform, opacity',
 						}}
 						animate={
 							reducedMotion

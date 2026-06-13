@@ -22,56 +22,51 @@ function CustomCursorPortalComponent() {
 	const [isDarkMode, setIsDarkMode] = useState(false)
 
 	useEffect(() => {
-		setMounted(true)
+		setMounted(true);
 		// Check for dark mode
-		const isDark = document.documentElement.classList.contains('dark')
-		setIsDarkMode(isDark)
+		const isDark = document.documentElement.classList.contains('dark');
+		setIsDarkMode(isDark);
 
-		// Listen for theme changes
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('dark')
-			setIsDarkMode(isDark)
-		})
+		// OPTIMIZATION: Use a more efficient MutationObserver configuration
+		const observer = new MutationObserver((mutations) => {
+			// Only check for dark class changes
+			for (const mutation of mutations) {
+				if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+					const isDark = document.documentElement.classList.contains('dark');
+					setIsDarkMode(isDark);
+					break; // Only process once per batch
+				}
+			}
+		});
 
-		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-		return () => observer.disconnect()
-	}, [])
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['class'],
+			attributeOldValue: false,
+		});
+		return () => observer.disconnect();
+	}, []);
 
 	// Hide default cursor globally if desktop - with stronger importance
 	useEffect(() => {
 		if (isDesktop) {
-			document.documentElement.style.cursor = 'none !important'
-			document.documentElement.style.setProperty('cursor', 'none', 'important')
-			document.body.style.cursor = 'none !important'
-			document.body.style.setProperty('cursor', 'none', 'important')
-			
-			// Force cursor none on all interactive elements
-			const style = document.createElement('style')
-			style.textContent = `
-				* {
-					cursor: none !important;
-				}
-				button, a, input, textarea, select, [role="button"], [onclick] {
-					cursor: none !important;
-				}
-			`
-			document.head.appendChild(style)
-			
+			document.documentElement.style.cursor = 'none !important';
+			document.body.style.cursor = 'none !important';
+
 			return () => {
-				style.remove()
-				document.documentElement.style.cursor = 'auto'
-				document.body.style.cursor = 'auto'
-			}
+				document.documentElement.style.cursor = 'auto';
+				document.body.style.cursor = 'auto';
+			};
 		} else {
-			document.documentElement.style.cursor = 'auto'
-			document.body.style.cursor = 'auto'
+			document.documentElement.style.cursor = 'auto';
+			document.body.style.cursor = 'auto';
 		}
 
 		return () => {
-			document.documentElement.style.cursor = 'auto'
-			document.body.style.cursor = 'auto'
-		}
-	}, [isDesktop])
+			document.documentElement.style.cursor = 'auto';
+			document.body.style.cursor = 'auto';
+		};
+	}, [isDesktop]);
 
 	// OPTIMIZATION: Memoize scale calculations (must be before early return)
 	const scales = useMemo(() => ({
