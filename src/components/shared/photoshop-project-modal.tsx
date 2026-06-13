@@ -107,21 +107,28 @@ export function PhotoshopProjectModal({
 						className={cn(
 							'relative z-20 overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b]/90 shadow-[0_32px_120px_rgba(255,0,0,0.24)]',
 							isMaximized
-								? 'h-[90vh] w-[90vw] max-w-[95vw] max-h-[95vh]'
-								: 'h-auto w-full max-w-[900px]'
+								? 'w-[90vw] max-w-[95vw] h-[90vh] max-h-[95vh]'
+								: 'w-full max-w-[900px] h-auto'
 						)}
 						variants={contentVariants}
 						layoutId={`gallery-image-${project.id}`}
 						transition={{ type: 'spring', stiffness: 120, damping: 18 }}
 						onClick={(e) => e.stopPropagation()}>
-						{/* Image */}
-						<div className="relative w-full h-full">
+						{/* Image Container */}
+						<div className={cn(
+							'relative w-full',
+							isMaximized ? 'h-full' : 'h-auto'
+						)}>
 							<Image
 								src={project.image}
 								alt={project.title}
-								fill
-								className="object-contain"
-								sizes="(max-width: 768px) 100vw, 90vw"
+								width={1200}
+								height={1200}
+								className={cn(
+									'w-full object-contain',
+									isMaximized ? 'h-full' : 'h-auto'
+								)}
+								sizes={isMaximized ? '90vw' : '(max-width: 768px) 100vw, 90vw'}
 								quality={95}
 								priority
 							/>

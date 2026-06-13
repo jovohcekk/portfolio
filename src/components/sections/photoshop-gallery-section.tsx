@@ -11,12 +11,6 @@ interface PhotoshopGallerySectionProps {
 	onImageSelect: (item: PhotoshopGalleryItem) => void;
 }
 
-const sizeClasses = {
-	portrait: 'aspect-[4/5]',
-	square: 'aspect-square',
-	landscape: 'aspect-[16/9]',
-};
-
 export function PhotoshopGallerySection({ onImageSelect }: PhotoshopGallerySectionProps) {
 	const { translate } = useLanguage();
 	const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -57,7 +51,7 @@ export function PhotoshopGallerySection({ onImageSelect }: PhotoshopGallerySecti
 					</h2>
 				</motion.div>
 
-				{/* Masonry Gallery */}
+				{/* Masonry Gallery - No Fixed Aspect Ratios */}
 				<motion.div
 					className="mx-auto max-w-[1400px]"
 					initial="hidden"
@@ -73,7 +67,7 @@ export function PhotoshopGallerySection({ onImageSelect }: PhotoshopGallerySecti
 							},
 						},
 					}}>
-					<div className="columns-1 gap-6 sm:columns-2 xl:columns-3 2xl:columns-4">
+					<div className="columns-1 gap-6 sm:columns-2 lg:columns-3 2xl:columns-4">
 						{photoshopGallery.map((item, idx) => (
 							<motion.button
 								type="button"
@@ -96,16 +90,18 @@ export function PhotoshopGallerySection({ onImageSelect }: PhotoshopGallerySecti
 										},
 									},
 								}}
-								className={`group mb-6 w-full overflow-hidden rounded-[20px] border border-white/10 bg-[#050505]/95 shadow-[0_24px_72px_rgba(255,16,16,0.18)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] break-inside-avoid hover:border-white/20 hover:shadow-[0_32px_90px_rgba(255,45,45,0.25)] ${sizeClasses[item.display]}`}>
-								<div className="relative h-full w-full overflow-hidden rounded-[20px]">
+								className="group mb-6 w-full overflow-hidden rounded-[20px] border border-white/10 bg-[#050505]/95 shadow-[0_24px_72px_rgba(255,16,16,0.18)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] break-inside-avoid hover:border-white/20 hover:shadow-[0_32px_90px_rgba(255,45,45,0.25)]">
+								<div className="relative w-full overflow-hidden rounded-[20px]">
 									<motion.div
 										layoutId={`gallery-image-${item.id}`}
-										className="relative h-full w-full overflow-hidden rounded-[20px]">
+										className="relative w-full overflow-hidden rounded-[20px]"
+										style={{ aspectRatio: 'auto' }}>
 										<Image
 											src={item.image}
 											alt={item.title}
-											fill
-											className="object-contain transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+											width={600}
+											height={600}
+											className="w-full h-auto object-contain"
 											sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
 											quality={85}
 											priority={idx < 3}
