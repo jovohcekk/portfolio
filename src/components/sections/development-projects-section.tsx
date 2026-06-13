@@ -36,7 +36,7 @@ export function DevelopmentProjectsSection() {
 				{/* Premium Section Heading with Red Gradient */}
 				<SectionHeading
 					title={translate('projects.title')}
-					subtitle={translate('projects.dev.subtitle')}
+					
 				/>
 
 				{/* 2-Column Project Cards Grid */}

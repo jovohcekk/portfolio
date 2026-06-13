@@ -26,7 +26,7 @@ const translations = {
 		'hero.cta.contact': "Bog'lanish",
 		'hero.available': 'Freelance uchun ochiq',
 		'about.title': 'Men haqimda',
-		'about.subtitle': 'Passion va tajriba',
+		// 'about.subtitle': 'Passion va tajriba',
 		'about.intro':
 			"Men Jovohirbek Isoyev — 4 yillik dasturlash tajribasiga ega Full Stack Developer. Zamonaviy veb-ilovalar yaratish, Linux tizimlari bilan ishlash va real mijozlar uchun yechimlar yetkazish mening asosiy yo'nalishim.",
 		'about.points.fullstack': 'Full Stack Development',
@@ -38,7 +38,7 @@ const translations = {
 		'about.points.security': 'Kiberxavfsizlik Asoslari',
 		'about.points.problem': 'Muammolarni Hal Qilish',
 		'skills.title': "Ko'nikmalar",
-		'skills.subtitle': 'Texnologiyalar va vositalar',
+		// 'skills.subtitle': 'Texnologiyalar va vositalar',
 		'skills.programming': 'Dasturlash',
 		'skills.devTools': 'Ishlab chiqish vositalari',
 		'skills.linux': 'Linux tajribasi',
@@ -46,7 +46,7 @@ const translations = {
 		'skills.cybersecurity': 'Kiberxavfsizlik',
 		'projects.title': 'Loyihalar',
 		'projects.dev.title': 'Development Loyihalari',
-		'projects.dev.subtitle': 'Mening veb-ishlab chiqish, full-stack engineering va zamonaviy raqamli mahsulotlarning premium showcaseami.',
+		// 'projects.dev.subtitle': 'Mening veb-ishlab chiqish, full-stack engineering va zamonaviy raqamli mahsulotlarning premium showcaseami.',
 		'projects.github': 'GitHub',
 		'projects.demo': 'Demo',
 		'projects.technologies': 'Texnologiyalar',
@@ -113,7 +113,7 @@ const translations = {
 		'years.old': 'yosh',
 		'skip.content': "Asosiy kontentga o'tish",
 		// Photoshop Section
-		'photoshop.description': "Photoshop manipulyatsiyalari, posterlar, ijtimoiy media kreativlari, reklama bannerlar, brending vizuallari, thumbnail-lar va tijorat dizayni ishlarining kolleksiyasi.",
+		// 'photoshop.description': "Photoshop manipulyatsiyalari, posterlar, ijtimoiy media kreativlari, reklama bannerlar, brending vizuallari, thumbnail-lar va tijorat dizayni ishlarining kolleksiyasi.",
 		// Modal
 		'projects.modal.category': 'Kategoriya',
 		'projects.modal.year': 'Yil',
@@ -139,7 +139,7 @@ const translations = {
 		'hero.cta.contact': 'Contact Me',
 		'hero.available': 'Open for freelance',
 		'about.title': 'About Me',
-		'about.subtitle': 'Passion & experience',
+		// 'about.subtitle': 'Passion & experience',
 		'about.intro':
 			"I'm Jovohirbek Isoyev — a Full Stack Developer with 4 years of programming experience. I focus on building modern web applications, working with Linux systems, and delivering solutions for real clients.",
 		'about.points.fullstack': 'Full Stack Development',
@@ -151,7 +151,7 @@ const translations = {
 		'about.points.security': 'Cybersecurity Fundamentals',
 		'about.points.problem': 'Problem Solving',
 		'skills.title': 'Skills',
-		'skills.subtitle': 'Technologies & tools',
+		// 'skills.subtitle': 'Technologies & tools',
 		'skills.programming': 'Programming',
 		'skills.devTools': 'Development Tools',
 		'skills.linux': 'Linux Experience',
@@ -159,7 +159,7 @@ const translations = {
 		'skills.cybersecurity': 'Cybersecurity',
 		'projects.title': 'Projects',
 		'projects.dev.title': 'Development Projects',
-		'projects.dev.subtitle': 'Premium showcase of my software engineering, full stack development, cybersecurity, and web application projects.',
+		// 'projects.dev.subtitle': 'Premium showcase of my software engineering, full stack development, cybersecurity, and web application projects.',
 		'projects.github': 'GitHub',
 		'projects.demo': 'Live Demo',
 		'projects.technologies': 'Technologies',
@@ -220,7 +220,7 @@ const translations = {
 		'years.old': 'years old',
 		'skip.content': 'Skip to content',
 		// Photoshop Section
-		'photoshop.description': 'A collection of high-end Photoshop manipulations, posters, social media creatives, advertising banners, thumbnails, branding visuals, and commercial design works.',
+		// 'photoshop.description': 'A collection of high-end Photoshop manipulations, posters, social media creatives, advertising banners, thumbnails, branding visuals, and commercial design works.',
 		// Modal
 		'projects.modal.category': 'Category',
 		'projects.modal.year': 'Year',
@@ -246,7 +246,7 @@ const translations = {
 		'hero.cta.contact': 'Связаться',
 		'hero.available': 'Открыт для freelance',
 		'about.title': 'Обо мне',
-		'about.subtitle': 'Страсть и опыт',
+		// 'about.subtitle': 'Страсть и опыт',
 		'about.intro':
 			'Я Жовохирбек Исоев — Full Stack разработчик с 4-летним опытом программирования. Создаю современные веб-приложения, работаю с Linux и решаю задачи реальных клиентов.',
 		'about.points.fullstack': 'Full Stack разработка',
@@ -258,7 +258,7 @@ const translations = {
 		'about.points.security': 'Основы кибербезопасности',
 		'about.points.problem': 'Решение задач',
 		'skills.title': 'Навыки',
-		'skills.subtitle': 'Технологии и инструменты',
+		// 'skills.subtitle': 'Технологии иинструменты',
 		'skills.programming': 'Программирование',
 		'skills.devTools': 'Инструменты разработки',
 		'skills.linux': 'Опыт Linux',
@@ -266,7 +266,7 @@ const translations = {
 		'skills.cybersecurity': 'Кибербезопасность',
 		'projects.title': 'Проекты',
 		'projects.dev.title': 'Проекты Разработки',
-		'projects.dev.subtitle': 'Premium-демонстрация моих проектов разработки, full-stack инженерии, кибербезопасности и веб-приложений.',
+		// 'projects.dev.subtitle': 'Premium-демонстрация моих проектов разработки, full-stack инженерии, кибербезопасности и веб-приложений.',
 		'projects.github': 'GitHub',
 		'projects.demo': 'Демо',
 		'projects.technologies': 'Технологии',
@@ -327,7 +327,7 @@ const translations = {
 		'years.old': 'лет',
 		'skip.content': 'Перейти к основному контенту',
 		// Photoshop Section
-		'photoshop.description': 'Коллекция высококачественных манипуляций Photoshop, постеров, креативов для социальных сетей, рекламных баннеров, миниатюр, брендовых визуалов и коммерческих дизайнов.',
+		// 'photoshop.description': 'Коллекция высококачественных манипуляций Photoshop, постеров, креативов для социальных сетей, рекламных баннеров, миниатюр, брендовых визуалов и коммерческих дизайнов.',
 		// Modal
 		'projects.modal.category': 'Категория',
 		'projects.modal.year': 'Год',

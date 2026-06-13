@@ -41,10 +41,10 @@ export function PhotoshopSection({ onProjectSelect }: PhotoshopSectionProps) {
 			</div>
 
 			<div className='section-container relative z-10'>
-				{/* Premium Section Heading with Red Gradient */}
+				
 				<SectionHeading
 					title={translate('photoshop.title')}
-					subtitle={translate('photoshop.description')}
+
 				/>
 
 				{/* Masonry Gallery - No Fixed Aspect Ratios */}

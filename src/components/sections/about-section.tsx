@@ -33,7 +33,7 @@ export function AboutSectionComponent() {
 				<div className='absolute inset-0 bg-hero-mesh opacity-50' />
 			</ParallaxLayer>
 			<div className='section-container relative'>
-				<SectionHeading title={translate('about.title')} subtitle={translate('about.subtitle')} />
+				<SectionHeading title={translate('about.title')}  />
 
 				<div className='grid w-full min-w-0 gap-8 md:gap-12 lg:grid-cols-2 lg:items-center'>
 					<TiltCard maxTilt={6}>

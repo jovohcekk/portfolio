@@ -212,9 +212,9 @@ export const projects: ProjectItem[] = [
 		description:
 			'A premium photo manipulation with cinematic lighting, composited textures, and polished color grading for a premium campaign showcase.',
 		technologies: ['Photoshop', 'Illustrator', 'Retouching', 'Color Grading'],
-		github: 'https://github.com/jovohcekk',
-		demo: 'https://example.com',
-		image: '/images/projects/project-1.svg',
+		github: 'https://github.com/jovohcekk/3D',
+		demo: 'https://jovohcekk.github.io/3D/',
+		image: '/images/projects/3D.png',
 	},
 	{
 		id: 'project-2',

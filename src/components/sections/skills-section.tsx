@@ -86,7 +86,7 @@ export function SkillsSectionComponent() {
 			className='section-surface section-surface-tint relative w-full max-w-full overflow-hidden section-spacing'>
 			<ParticleField count={16} className='opacity-50' />
 			<div className='section-container relative'>
-				<SectionHeading title={translate('skills.title')} subtitle={translate('skills.subtitle')} />
+				<SectionHeading title={translate('skills.title')} />
 
 				<motion.div
 					variants={staggerContainer}
