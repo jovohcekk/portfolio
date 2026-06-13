@@ -131,9 +131,7 @@ export function PhotoshopProjectModal({
 							/>
 
 							{/* Header with Controls */}
-							<div className="absolute inset-x-0 top-0 flex justify-between items-center p-4 z-10 bg-gradient-to-b from-black/60 to-transparent">
-								<div className="flex-1" />
-
+							<div className="absolute inset-x-0 top-0 flex justify-end items-center p-4 z-10 bg-gradient-to-b from-black/60 to-transparent">
 								{/* Button Group */}
 								<div className="flex gap-3">
 									{/* Maximize Button */}

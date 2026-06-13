@@ -1,10 +1,12 @@
 'use client';
 
-import { motion, type Variants } from 'framer-motion';
+import { useState } from 'react';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import Image from 'next/image';
 import { Github, Globe } from 'lucide-react';
 
 import { type ProjectItem } from '@/config/portfolio';
+import { useLanguage } from '@/hooks/use-language';
 
 interface ProjectCardProps {
 	project: ProjectItem;
@@ -26,7 +28,33 @@ const cardVariants: Variants = {
 	}),
 };
 
+const buttonRevealVariants: Variants = {
+	hidden: { opacity: 0, y: 16, scale: 0.9 },
+	visible: (delay: number) => ({
+		opacity: 1,
+		y: 0,
+		scale: 1,
+		transition: {
+			duration: 0.35,
+			delay,
+			ease: [0.22, 1, 0.36, 1],
+		},
+	}),
+	exit: {
+		opacity: 0,
+		y: 16,
+		scale: 0.9,
+		transition: {
+			duration: 0.25,
+			ease: 'easeOut',
+		},
+	},
+};
+
 export function ProjectCard({ project, index }: ProjectCardProps) {
+	const [isHovering, setIsHovering] = useState(false);
+	const { translate } = useLanguage();
+
 	return (
 		<motion.div
 			custom={index}
@@ -39,7 +67,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 				scale: 1.05,
 				y: -16,
 				boxShadow: '0 48px 120px rgba(255, 45, 45, 0.25)',
-			}}>
+			}}
+			onMouseEnter={() => setIsHovering(true)}
+			onMouseLeave={() => setIsHovering(false)}>
 			{/* Card Glow Effect on Hover */}
 			<div className="absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-100">
 				<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(239,68,68,0.16),transparent_30%)]" />
@@ -108,32 +138,74 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 					))}
 				</motion.div>
 
-				{/* Action Buttons */}
-				<motion.div
-					className="flex flex-wrap gap-3"
-					initial={{ opacity: 0, y: 8 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.2 + index * 0.1 }}>
-					<motion.a
-						href={project.github}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,45,45,0.35)] bg-[rgba(255,45,45,0.1)] text-sm font-semibold text-[rgba(255,120,120,0.95)] transition-all duration-300 hover:border-[rgba(255,45,45,0.6)] hover:bg-[rgba(255,45,45,0.2)] hover:shadow-[0_0_20px_rgba(255,45,45,0.3)]"
-						whileHover={{ scale: 1.05, y: -2 }}>
-						<Github className="w-4 h-4" />
-						GitHub
-					</motion.a>
+				{/* Action Buttons Container */}
+				<div className="flex flex-col gap-3">
+					{/* Desktop: Hidden by default, shown on hover */}
+					<AnimatePresence>
+						{isHovering && (
+							<motion.div className="flex flex-wrap gap-3">
+								{/* GitHub Button */}
+								<motion.a
+									href={project.github}
+									target="_blank"
+									rel="noopener noreferrer"
+									custom={0}
+									variants={buttonRevealVariants}
+									initial="hidden"
+									animate="visible"
+									exit="exit"
+									className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,45,45,0.35)] bg-[rgba(255,45,45,0.1)] text-sm font-semibold text-[rgba(255,120,120,0.95)] transition-all duration-300 hover:border-[rgba(255,45,45,0.6)] hover:bg-[rgba(255,45,45,0.2)] hover:shadow-[0_0_20px_rgba(255,45,45,0.3)]"
+									whileHover={{ scale: 1.08, y: -2 }}>
+									<Github className="w-4 h-4" />
+									GitHub
+								</motion.a>
 
-					<motion.a
-						href={project.demo}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-sm font-semibold text-white transition-all duration-300 hover:border-[rgba(255,45,45,0.5)] hover:bg-[rgba(255,45,45,0.12)] hover:shadow-[0_0_20px_rgba(255,45,45,0.25)]"
-						whileHover={{ scale: 1.05, y: -2 }}>
-						<Globe className="w-4 h-4" />
-						Live Website
-					</motion.a>
-				</motion.div>
+								{/* Demo Button */}
+								<motion.a
+									href={project.demo}
+									target="_blank"
+									rel="noopener noreferrer"
+									custom={0.1}
+									variants={buttonRevealVariants}
+									initial="hidden"
+									animate="visible"
+									exit="exit"
+									className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-sm font-semibold text-white transition-all duration-300 hover:border-[rgba(255,45,45,0.5)] hover:bg-[rgba(255,45,45,0.12)] hover:shadow-[0_0_20px_rgba(255,45,45,0.25)]"
+									whileHover={{ scale: 1.08, y: -2 }}>
+									<Globe className="w-4 h-4" />
+									{translate('projects.liveWebsite')}
+								</motion.a>
+							</motion.div>
+						)}
+					</AnimatePresence>
+
+					{/* Mobile: Always visible buttons (shown via CSS media query) */}
+					<motion.div
+						className="flex flex-wrap gap-3 [display:none] [@media(hover:none)]:flex"
+						initial={{ opacity: 0, y: 8 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.2 + index * 0.1 }}>
+						<motion.a
+							href={project.github}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,45,45,0.35)] bg-[rgba(255,45,45,0.1)] text-sm font-semibold text-[rgba(255,120,120,0.95)] transition-all duration-300 hover:border-[rgba(255,45,45,0.6)] hover:bg-[rgba(255,45,45,0.2)] hover:shadow-[0_0_20px_rgba(255,45,45,0.3)]"
+							whileHover={{ scale: 1.05, y: -2 }}>
+							<Github className="w-4 h-4" />
+							GitHub
+						</motion.a>
+
+						<motion.a
+							href={project.demo}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-sm font-semibold text-white transition-all duration-300 hover:border-[rgba(255,45,45,0.5)] hover:bg-[rgba(255,45,45,0.12)] hover:shadow-[0_0_20px_rgba(255,45,45,0.25)]"
+							whileHover={{ scale: 1.05, y: -2 }}>
+							<Globe className="w-4 h-4" />
+							{translate('projects.liveWebsite')}
+						</motion.a>
+					</motion.div>
+				</div>
 			</div>
 		</motion.div>
 	);
