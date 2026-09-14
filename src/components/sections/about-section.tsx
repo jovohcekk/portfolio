@@ -1,25 +1,22 @@
 'use client';
 
-import { ParallaxLayer } from '@/components/shared/parallax-layer'
-import { SectionHeading } from '@/components/shared/section-heading'
-import { TiltCard } from '@/components/shared/tilt-card'
-import { personalInfo } from '@/config/portfolio'
-import { useLanguage } from '@/hooks/use-language'
-import { blurIn, scaleIn, staggerContainer } from '@/lib/animations'
-import type { TranslationKey } from '@/lib/i18n/translations'
-import { motion } from 'framer-motion'
-import { Box, Braces, Briefcase, Code2, Image, Lightbulb, Shield, Terminal } from 'lucide-react'
-import { memo } from 'react'
+import { ParallaxLayer } from '@/components/shared/parallax-layer';
+import { SectionHeading } from '@/components/shared/section-heading';
+import { TiltCard } from '@/components/shared/tilt-card';
+import { personalInfo } from '@/config/portfolio';
+import { useLanguage } from '@/hooks/use-language';
+import { blurIn, scaleIn, staggerContainer } from '@/lib/animations';
+import type { TranslationKey } from '@/lib/i18n/translations';
+import { motion } from 'framer-motion';
+import { Briefcase, Code2, Image, Shield, Terminal } from 'lucide-react';
+import { memo } from 'react';
 
 const aboutPoints: { key: TranslationKey; icon: typeof Code2 }[] = [
 	{ key: 'about.points.fullstack', icon: Code2 },
-	{ key: 'about.points.python', icon: Braces },
 	{ key: 'about.points.linux', icon: Terminal },
 	{ key: 'about.points.freelance', icon: Briefcase },
 	{ key: 'about.points.photoshop', icon: Image },
-	{ key: 'about.points.blender', icon: Box },
 	{ key: 'about.points.security', icon: Shield },
-	{ key: 'about.points.problem', icon: Lightbulb },
 ];
 
 export function AboutSectionComponent() {
@@ -33,7 +30,7 @@ export function AboutSectionComponent() {
 				<div className='absolute inset-0 bg-hero-mesh opacity-50' />
 			</ParallaxLayer>
 			<div className='section-container relative'>
-				<SectionHeading title={translate('about.title')}  />
+				<SectionHeading title={translate('about.title')} />
 
 				<div className='grid w-full min-w-0 gap-8 md:gap-12 lg:grid-cols-2 lg:items-center'>
 					<TiltCard maxTilt={6}>
@@ -55,20 +52,27 @@ export function AboutSectionComponent() {
 						whileInView='visible'
 						viewport={{ once: true }}
 						className='grid w-full min-w-0 grid-cols-1 gap-3 xs:gap-4 sm:grid-cols-2'>
-						{aboutPoints.map(({ key, icon: Icon }) => (
-							<motion.div
-								key={key}
-								variants={scaleIn}
-								whileHover={{ y: -4 }}
-								className='group flex min-w-0 items-center gap-3 rounded-xl glass-card p-3 xs:gap-4 xs:p-4 hover-accent-highlight'>
-								<div className='icon-box flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110 xs:h-12 xs:w-12'>
-									<Icon className='h-5 w-5 xs:h-6 xs:w-6' />
-								</div>
-								<span className='min-w-0 flex-1 break-words font-medium text-primary-content text-sm xs:text-base'>
-									{translate(key)}
-								</span>
-							</motion.div>
-						))}
+						{aboutPoints.map(({ key, icon: Icon }) => {
+							const hideOnMobile = key === 'about.points.freelance' || key === 'about.points.security';
+							const baseClasses =
+								'group min-w-0 items-center gap-3 rounded-xl glass-card p-3 xs:gap-4 xs:p-4 hover-accent-highlight';
+							const responsiveLayout = hideOnMobile ? 'hidden sm:flex' : 'flex';
+
+							return (
+								<motion.div
+									key={key}
+									variants={scaleIn}
+									whileHover={{ y: -4 }}
+									className={`${responsiveLayout} ${baseClasses}`}>
+									<div className='icon-box flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110 xs:h-12 xs:w-12'>
+										<Icon className='h-5 w-5 xs:h-6 xs:w-6' />
+									</div>
+									<span className='min-w-0 flex-1 break-words font-medium text-primary-content text-sm xs:text-base'>
+										{translate(key)}
+									</span>
+								</motion.div>
+							);
+						})}
 					</motion.div>
 				</div>
 			</div>
@@ -77,4 +81,4 @@ export function AboutSectionComponent() {
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders when parent updates but props don't change
-export const AboutSection = memo(AboutSectionComponent)
+export const AboutSection = memo(AboutSectionComponent);

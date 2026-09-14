@@ -44,6 +44,8 @@ export interface PhotoshopGalleryItem {
 	tools: string[];
 	image: string;
 	display: 'portrait' | 'square' | 'landscape';
+	width: number;
+	height: number;
 }
 
 /** Ko'nikma guruhi */
@@ -234,10 +236,13 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		title: 'Cinematic Manipulation',
 		category: 'Manipulation',
 		year: '2026',
-		description: 'Dramatic Photoshop compositing for a luxury editorial campaign with rich lighting and seamless textures.',
+		description:
+			'Dramatic Photoshop compositing for a luxury editorial campaign with rich lighting and seamless textures.',
 		tools: ['Photoshop', 'Illustrator', 'Figma'],
 		image: '/images/photoshop/PHOTO MANIPULATION.png',
 		display: 'portrait',
+		width: 669,
+		height: 901,
 	},
 	{
 		id: 'gallery-2',
@@ -248,6 +253,8 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		tools: ['Photoshop', 'Illustrator', 'Figma'],
 		image: '/images/photoshop/CREATIVE ARTWORK.png',
 		display: 'square',
+		width: 467,
+		height: 700,
 	},
 	{
 		id: 'gallery-3',
@@ -258,6 +265,8 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		tools: ['Photoshop', 'Illustrator', 'Figma'],
 		image: '/images/photoshop/WEB BANNER.png',
 		display: 'landscape',
+		width: 1200,
+		height: 400,
 	},
 	{
 		id: 'gallery-4',
@@ -268,6 +277,8 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		tools: ['Photoshop', 'Illustrator', 'Figma'],
 		image: '/images/photoshop/STORY DESIGN.png',
 		display: 'portrait',
+		width: 1122,
+		height: 1402,
 	},
 	{
 		id: 'gallery-5',
@@ -278,6 +289,8 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		tools: ['Photoshop', 'Illustrator', 'Figma'],
 		image: '/images/photoshop/SOCIAL MEDIA.png',
 		display: 'square',
+		width: 736,
+		height: 920,
 	},
 	{
 		id: 'gallery-6',
@@ -288,6 +301,8 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		tools: ['Photoshop', 'Illustrator', 'Figma'],
 		image: '/images/photoshop/poster.png',
 		display: 'landscape',
+		width: 1054,
+		height: 1492,
 	},
 	{
 		id: 'gallery-7',
@@ -298,6 +313,8 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		tools: ['Photoshop', 'Illustrator', 'Figma'],
 		image: '/images/photoshop/event poster.png',
 		display: 'portrait',
+		width: 1200,
+		height: 1697,
 	},
 ];
 

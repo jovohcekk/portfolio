@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Maximize2, Minimize2, X } from 'lucide-react';
 import Image from 'next/image';
-import { X, Maximize2, Minimize2 } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { type PhotoshopGalleryItem } from '@/config/portfolio';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
@@ -78,21 +78,30 @@ export function PhotoshopProjectModal({
 		};
 	}, [isOpen, onClose, mounted]);
 
-	const handleBackdropClick = useCallback((e: React.MouseEvent) => {
-		if (e.target === e.currentTarget) {
+	const handleBackdropClick = useCallback(
+		(e: React.MouseEvent) => {
+			if (e.target === e.currentTarget) {
+				onClose();
+			}
+		},
+		[onClose],
+	);
+
+	const handleMaximizeClick = useCallback(
+		(e: React.MouseEvent) => {
+			e.stopPropagation();
+			onToggleMaximize();
+		},
+		[onToggleMaximize],
+	);
+
+	const handleCloseClick = useCallback(
+		(e: React.MouseEvent) => {
+			e.stopPropagation();
 			onClose();
-		}
-	}, [onClose]);
-
-	const handleMaximizeClick = useCallback((e: React.MouseEvent) => {
-		e.stopPropagation();
-		onToggleMaximize();
-	}, [onToggleMaximize]);
-
-	const handleCloseClick = useCallback((e: React.MouseEvent) => {
-		e.stopPropagation();
-		onClose();
-	}, [onClose]);
+		},
+		[onClose],
+	);
 
 	if (!mounted || !project) return null;
 
@@ -108,7 +117,7 @@ export function PhotoshopProjectModal({
 					onClick={handleBackdropClick}>
 					{/* Backdrop Blur */}
 					<motion.div
-						className='absolute inset-0 bg-black/70'
+						className='pointer-events-none absolute inset-0 bg-black/70'
 						aria-hidden='true'
 						variants={{
 							hidden: { opacity: 0 },
@@ -121,27 +130,29 @@ export function PhotoshopProjectModal({
 
 					{/* Modal Content - Image Only */}
 					<motion.div
-						className='relative z-20 flex items-center justify-center overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b]/90 shadow-[0_32px_120px_rgba(255,0,0,0.24)] p-4 md:p-8'
+						className='relative z-20 flex max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)] items-center justify-center overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b]/90 p-2 shadow-[0_32px_120px_rgba(255,0,0,0.24)] md:max-h-[90vh] md:max-w-[90vw] md:p-8'
 						style={{
-							maxWidth: '90vw',
-							maxHeight: '90vh',
+							width: isMaximized ? '100vw' : undefined,
+							height: isMaximized ? '100dvh' : undefined,
+							maxWidth: isMaximized ? '100vw' : undefined,
+							maxHeight: isMaximized ? '100dvh' : undefined,
 							willChange: 'transform, opacity',
 						}}
 						variants={contentVariants}
 						layoutId={`gallery-image-${project.id}`}
 						transition={reducedMotion ? {} : { type: 'spring', stiffness: 120, damping: 18 }}
-						onClick={(e) => e.stopPropagation()}>
+						onClick={e => e.stopPropagation()}>
 						{/* Image Container - Flex layout for centering */}
-						<div className='relative w-full h-full flex items-center justify-center overflow-hidden'>
+						<div className='relative flex h-full w-full items-center justify-center overflow-hidden'>
 							<Image
 								src={project.image}
 								alt={project.title}
 								width={1200}
 								height={1200}
-								className='w-auto h-auto object-contain'
+								className='h-auto max-h-[calc(100dvh-3rem)] w-auto max-w-full object-contain touch-[pinch-zoom] md:max-h-[calc(90vh-4rem)]'
 								style={{
-									maxWidth: '90vw',
-									maxHeight: '90vh',
+									maxWidth: isMaximized ? '100vw' : undefined,
+									maxHeight: isMaximized ? '100dvh' : undefined,
 								}}
 								sizes='90vw'
 								quality={90}
@@ -161,11 +172,7 @@ export function PhotoshopProjectModal({
 										whileTap={reducedMotion ? {} : { scale: 0.95 }}
 										title={isMaximized ? 'Minimize' : 'Maximize'}
 										aria-label={isMaximized ? 'Minimize' : 'Maximize'}>
-										{isMaximized ? (
-											<Minimize2 className='w-5 h-5' />
-										) : (
-											<Maximize2 className='w-5 h-5' />
-										)}
+										{isMaximized ? <Minimize2 className='w-5 h-5' /> : <Maximize2 className='w-5 h-5' />}
 									</motion.button>
 
 									{/* Close Button */}

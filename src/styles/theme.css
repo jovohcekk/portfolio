@@ -57,12 +57,16 @@
 
 	--accent-glow-tertiary: rgba(59, 130, 246, 0.08);
 
-	/* Dark text for excellent readability */
-	--text-primary: #0f172a;
+	/* Light mode text palette - requested portfolio-wide values */
+	--text-primary: #111111;
 
-	--text-secondary: #334155;
+	--text-secondary: #292929;
 
-	--text-muted: #64748b;
+	--text-muted: #404040;
+
+	--text-link: #1e40af;
+
+	--text-link-hover: #1d4ed8;
 
 	/* Soft borders with premium feel */
 	--border-subtle: rgba(15, 23, 42, 0.06);
@@ -113,9 +117,9 @@
 
 	--foreground: 215 28% 6%;
 
-	--card: 210 40% 99%;
+	--foreground: 0 0% 6.7%;
 
-	--card-foreground: 215 28% 6%;
+	--card-foreground: 0 0% 6.7%;
 
 	--primary: 186 100% 38%;
 
@@ -123,7 +127,7 @@
 
 	--muted: 210 40% 96%;
 
-	--muted-foreground: 215 16% 30%;
+	--muted-foreground: 0 0% 25.1%;
 
 	--border: 210 20% 94%;
 

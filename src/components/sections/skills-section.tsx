@@ -2,83 +2,39 @@
 
 import { ParticleField } from '@/components/shared/particle-field';
 import { SectionHeading } from '@/components/shared/section-heading';
-import { SkillCategoryCard } from '@/components/shared/skill-category-card';
-import { SkillCategoryModal } from '@/components/shared/skill-category-modal';
+import { SkillCard } from '@/components/shared/skill-card';
 import { useLanguage } from '@/hooks/use-language';
 import { staggerContainer } from '@/lib/animations';
 import { motion } from 'framer-motion';
-import { Code2, Database, Terminal, Palette, Shield } from 'lucide-react';
 import { memo, useState } from 'react';
 
-// Skill categories with their metadata
-const skillCategories = [
-	{
-		id: 'programming',
-		name: 'Programming',
-		level: 92,
-		icon: Code2,
-		skills: [
-			{ name: 'HTML5', level: 96 },
-			{ name: 'CSS3', level: 95 },
-			{ name: 'JavaScript', level: 87 },
-			{ name: 'Python', level: 70 },
-			{ name: 'Django', level: 70 },
-		],
-	},
-	{
-		id: 'devTools',
-		name: 'Development Tools',
-		level: 88,
-		icon: Database,
-		skills: [
-			{ name: 'Git', level: 50 },
-			{ name: 'Linux', level: 30 },
-			{ name: 'REST API', level: 43 },
-		],
-	},
-	{
-		id: 'linux',
-		name: 'Linux Experience',
-		level: 85,
-		icon: Terminal,
-		skills: [
-			{ name: 'Arch Linux', level: 92 },
-			{ name: 'BlackArch', level: 88 },
-			{ name: 'Kali Linux', level: 85 },
-			{ name: 'Ubuntu', level: 0 },
-		],
-	},
-	{
-		id: 'creative',
-		name: 'Creative Tools',
-		level: 82,
-		icon: Palette,
-		skills: [
-			{ name: 'Adobe Photoshop', level: 69 },
-			{ name: 'Blender', level: 12 },
-		],
-	},
-	{
-		id: 'cybersecurity',
-		name: 'Cybersecurity',
-		level: 78,
-		icon: Shield,
-		skills: [
-			{ name: 'Security Fundamentals', level: 8 },
-			{ name: 'Linux Security Basics', level: 3 },
-		],
-	},
+import adobePhotoshopIcon from '../../../icon/adobe-photoshop.png';
+import cssIcon from '../../../icon/css-3.png';
+import dockerIcon from '../../../icon/Docker.png';
+import figmaIcon from '../../../icon/figma.png';
+import gitIcon from '../../../icon/git.png';
+import htmlIcon from '../../../icon/html.png';
+import jsIcon from '../../../icon/js.png';
+import nodejsIcon from '../../../icon/nodejs.png';
+import reactIcon from '../../../icon/React.png';
+
+const skills = [
+	{ name: 'HTML', level: 95, category: 'Frontend', icon: htmlIcon },
+	{ name: 'CSS', level: 97, category: 'Frontend', icon: cssIcon },
+	{ name: 'JavaScript', level: 90, category: 'Frontend', icon: jsIcon },
+	{ name: 'React', level: 87, category: 'Frontend', icon: reactIcon },
+	{ name: 'Node.js', level: 90, category: 'Backend', icon: nodejsIcon },
+	{ name: 'Git', level: 80, category: 'DevOps', icon: gitIcon },
+	{ name: 'Docker', level: 62, category: 'DevOps', icon: dockerIcon },
+	{ name: 'Figma', level: 93, category: 'Design', icon: figmaIcon },
+	{ name: 'Adobe Photoshop', level: 98, category: 'Design', icon: adobePhotoshopIcon },
 ];
 
 export function SkillsSectionComponent() {
 	const { translate } = useLanguage();
-	const [modalOpen, setModalOpen] = useState(false);
-	const [selectedCategory, setSelectedCategory] = useState<(typeof skillCategories)[0] | null>(null);
+	const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-	const handleCategoryClick = (category: (typeof skillCategories)[0]) => {
-		setSelectedCategory(category);
-		setModalOpen(true);
-	};
+	const categories = ['All', 'Frontend', 'Backend', 'DevOps', 'Design'];
 
 	return (
 		<section
@@ -88,38 +44,43 @@ export function SkillsSectionComponent() {
 			<div className='section-container relative'>
 				<SectionHeading title={translate('skills.title')} />
 
+				<div className='mb-6 flex flex-wrap gap-3'>
+					{categories.map(cat => (
+						<button
+							key={cat}
+							onClick={() => setSelectedCategory(cat)}
+							className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+								selectedCategory === cat
+									? 'bg-[#00e5ff] text-black shadow-lg'
+									: 'bg-white/5 text-[var(--text-secondary)] hover:bg-white/8 hover:text-[var(--text-link-hover)]'
+							}`}>
+							{cat}
+						</button>
+					))}
+				</div>
+
 				<motion.div
 					variants={staggerContainer}
 					initial='hidden'
 					whileInView='visible'
 					viewport={{ once: true, margin: '-50px' }}
-					className='grid w-full min-w-0 grid-cols-1 gap-4 xs:gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-					{skillCategories.map((category, index) => (
-						<SkillCategoryCard
-							key={category.id}
-							name={category.name}
-							level={category.level}
-							icon={category.icon}
-							skillCount={category.skills.length}
-							index={index}
-							onClick={() => handleCategoryClick(category)}
-						/>
-					))}
+					className='grid w-full min-w-0 grid-cols-2 gap-3 xs:gap-3 sm-lg:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4'>
+					{skills
+						.filter(s => selectedCategory === 'All' || s.category === selectedCategory)
+						.map((s, idx) => (
+							<SkillCard
+								key={`${s.name}-${idx}`}
+								name={s.name}
+								level={s.level}
+								category={s.category}
+								iconPath={s.icon}
+							/>
+						))}
 				</motion.div>
 			</div>
-
-			{/* Premium Modal */}
-			{selectedCategory && (
-				<SkillCategoryModal
-					isOpen={modalOpen}
-					category={selectedCategory.name}
-					skills={selectedCategory.skills}
-					onClose={() => setModalOpen(false)}
-				/>
-			)}
 		</section>
 	);
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders when parent updates but props don't change
-export const SkillsSection = memo(SkillsSectionComponent)
+export const SkillsSection = memo(SkillsSectionComponent);

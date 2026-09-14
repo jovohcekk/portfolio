@@ -1,37 +1,42 @@
 'use client';
 
-import { FloatingShapes } from '@/components/shared/floating-shapes'
-import { MagneticButton } from '@/components/shared/magnetic-button'
-import { ParallaxLayer } from '@/components/shared/parallax-layer'
-import { ParticleField } from '@/components/shared/particle-field'
-import { HeroCleanProfile } from '@/components/shared/hero-clean-profile'
-import { TextReveal } from '@/components/shared/text-reveal'
-import { TypingText } from '@/components/shared/typing-text'
-import { Button } from '@/components/ui/button'
-import { floatingTechIcons, personalInfo } from '@/config/portfolio'
-import { useLanguage } from '@/hooks/use-language'
-import { useReducedMotion } from '@/hooks/use-reduced-motion'
-import { blurIn, fadeInLeft, fadeInRight, staggerContainer } from '@/lib/animations'
-import { scrollToSection } from '@/lib/utils'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { MapPin, Sparkles } from 'lucide-react'
-import { memo, useEffect, useState } from 'react'
+import { FloatingShapes } from '@/components/shared/floating-shapes';
+import { HeroCleanProfile } from '@/components/shared/hero-clean-profile';
+import { MagneticButton } from '@/components/shared/magnetic-button';
+import { ParallaxLayer } from '@/components/shared/parallax-layer';
+import { ParticleField } from '@/components/shared/particle-field';
+import { TextReveal } from '@/components/shared/text-reveal';
+import { TypingText } from '@/components/shared/typing-text';
+import { Button } from '@/components/ui/button';
+import { floatingTechIcons, personalInfo } from '@/config/portfolio';
+import { useLanguage } from '@/hooks/use-language';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { blurIn, fadeInLeft, fadeInRight, staggerContainer } from '@/lib/animations';
+import { scrollToSection } from '@/lib/utils';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { MapPin, Sparkles } from 'lucide-react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 export function HeroSectionComponent() {
 	const { translate } = useLanguage();
 	const reducedMotion = useReducedMotion();
-	const { scrollY } = useScroll();
+	const heroRef = useRef<HTMLElement>(null);
+	const { scrollYProgress } = useScroll({
+		target: heroRef,
+		offset: ['start start', 'end start'],
+	});
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
 		setIsMobile(window.innerWidth < 768);
 	}, []);
 
-	const heroOpacity = useTransform(scrollY, [0, 400], [1, reducedMotion ? 1 : 0.3]);
-	const heroY = useTransform(scrollY, [0, 400], [0, reducedMotion ? 0 : 80]);
+	const heroOpacity = useTransform(scrollYProgress, [0.85, 1], [1, reducedMotion ? 1 : 0.3]);
+	const heroY = useTransform(scrollYProgress, [0.85, 1], [0, reducedMotion ? 0 : 80]);
 
 	return (
 		<section
+			ref={heroRef}
 			id='home'
 			className='section-surface relative flex min-h-[100dvh] w-full max-w-full items-center overflow-hidden pt-20 pb-12 xs:pt-24 xs:pb-16'>
 			<div
@@ -39,7 +44,7 @@ export function HeroSectionComponent() {
 				aria-hidden
 			/>
 			<FloatingShapes />
-			<ParticleField count={reducedMotion ? 0 : (isMobile ? 10 : 20)} variant='hero' />
+			<ParticleField count={reducedMotion ? 0 : isMobile ? 10 : 20} variant='hero' />
 
 			<div className='pointer-events-none absolute inset-0'>
 				<ParallaxLayer speed={0.2} className='absolute top-1/4 left-1/4'>
@@ -170,4 +175,4 @@ export function HeroSectionComponent() {
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders when parent updates but props don't change
-export const HeroSection = memo(HeroSectionComponent)
+export const HeroSection = memo(HeroSectionComponent);

@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, memo, useCallback, useMemo } from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/shared/section-heading';
 import { photoshopGallery, type PhotoshopGalleryItem } from '@/config/portfolio';
 import { useLanguage } from '@/hooks/use-language';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { memo, useCallback, useMemo, useState } from 'react';
 
 interface PhotoshopSectionProps {
 	onProjectSelect?: (project: PhotoshopGalleryItem) => void;
@@ -28,9 +28,12 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 		setHoveredId(null);
 	}, []);
 
-	const handleProjectSelect = useCallback((project: PhotoshopGalleryItem) => {
-		onProjectSelect?.(project);
-	}, [onProjectSelect]);
+	const handleProjectSelect = useCallback(
+		(project: PhotoshopGalleryItem) => {
+			onProjectSelect?.(project);
+		},
+		[onProjectSelect],
+	);
 
 	return (
 		<motion.section
@@ -44,10 +47,14 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 				<motion.div
 					className='absolute right-1/3 top-40 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,45,45,0.22),transparent_50%)] blur-3xl opacity-75'
 					style={{ willChange: 'transform, opacity' }}
-					animate={reducedMotion ? undefined : {
-						y: [0, -20, 0],
-						opacity: [0.75, 0.85, 0.75],
-					}}
+					animate={
+						reducedMotion
+							? undefined
+							: {
+									y: [0, -20, 0],
+									opacity: [0.75, 0.85, 0.75],
+								}
+					}
 					transition={{
 						duration: 8,
 						ease: 'easeInOut',
@@ -57,9 +64,7 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 			</div>
 
 			<div className='section-container relative z-10'>
-				<SectionHeading
-					title={translate('photoshop.title')}
-				/>
+				<SectionHeading title={translate('photoshop.title')} />
 
 				{/* Masonry Gallery - No Fixed Aspect Ratios */}
 				<motion.div
@@ -77,7 +82,7 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 							},
 						},
 					}}>
-					<div className='columns-1 gap-6 sm:columns-2 lg:columns-3 2xl:columns-4'>
+					<div className='grid grid-cols-2 gap-3 sm:block sm:columns-2 sm:gap-6 lg:columns-3 2xl:columns-4'>
 						{galleryImages.map((item, idx) => (
 							<motion.button
 								type='button'
@@ -100,7 +105,7 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 										},
 									},
 								}}
-								className='group mb-6 w-full overflow-hidden rounded-[20px] border border-white/10 bg-[#050505]/95 shadow-[0_24px_72px_rgba(255,16,16,0.18)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] break-inside-avoid hover:border-white/20 hover:shadow-[0_32px_90px_rgba(255,45,45,0.25)]'>
+								className='group mb-3 w-full min-w-0 overflow-hidden rounded-2xl border border-white/10 bg-[#050505]/95 shadow-[0_24px_72px_rgba(255,16,16,0.18)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] break-inside-avoid hover:border-white/20 hover:shadow-[0_32px_90px_rgba(255,45,45,0.25)] sm:mb-6 sm:rounded-[20px]'>
 								<div className='relative w-full overflow-hidden rounded-[20px]'>
 									<motion.div
 										layoutId={`gallery-image-${item.id}`}
@@ -109,8 +114,8 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 										<Image
 											src={item.image}
 											alt={item.title}
-											width={600}
-											height={600}
+											width={item.width}
+											height={item.height}
 											className='w-full h-auto object-contain'
 											sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
 											quality={idx < 3 ? 85 : 75}
@@ -142,4 +147,4 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders
-export const PhotoshopSection = memo(PhotoshopSectionComponent)
+export const PhotoshopSection = memo(PhotoshopSectionComponent);
