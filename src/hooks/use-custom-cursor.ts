@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useMotionValue } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type CursorState = 'default' | 'hover' | 'click' | 'text';
 
@@ -9,10 +10,12 @@ interface Position {
 
 export function useCustomCursor() {
 	const [isDesktop, setIsDesktop] = useState(false);
-	const [mousePos, setMousePos] = useState<Position>({ x: 0, y: 0 });
-	const [ringPos, setRingPos] = useState<Position>({ x: 0, y: 0 });
 	const [cursorState, setCursorState] = useState<CursorState>('default');
 	const [isVisible, setIsVisible] = useState(true);
+	const mouseX = useMotionValue(0);
+	const mouseY = useMotionValue(0);
+	const ringX = useMotionValue(0);
+	const ringY = useMotionValue(0);
 	const mouseRef = useRef<Position>({ x: 0, y: 0 });
 	const ringRef = useRef<Position>({ x: 0, y: 0 });
 	const animationFrameRef = useRef<number | null>(null);
@@ -30,10 +33,11 @@ export function useCustomCursor() {
 			const lerpFactor = 0.15;
 			ringRef.current.x = lerp(ringRef.current.x, mouseRef.current.x, lerpFactor);
 			ringRef.current.y = lerp(ringRef.current.y, mouseRef.current.y, lerpFactor);
-			setRingPos({ x: ringRef.current.x, y: ringRef.current.y });
+			ringX.set(ringRef.current.x);
+			ringY.set(ringRef.current.y);
 			animationFrameRef.current = requestAnimationFrame(animateRing.current);
 		};
-	}, [lerp]);
+	}, [lerp, ringX, ringY]);
 
 	// Initialize - check if desktop
 	useEffect(() => {
@@ -61,7 +65,8 @@ export function useCustomCursor() {
 
 		const handleMouseMove = (e: MouseEvent) => {
 			mouseRef.current = { x: e.clientX, y: e.clientY };
-			setMousePos({ x: e.clientX, y: e.clientY });
+			mouseX.set(e.clientX);
+			mouseY.set(e.clientY);
 		};
 
 		const handleMouseEnter = () => {
@@ -88,7 +93,7 @@ export function useCustomCursor() {
 				cancelAnimationFrame(animationFrameRef.current);
 			}
 		};
-	}, [isDesktop]);
+	}, [isDesktop, mouseX, mouseY]);
 
 	// Handle interactive element hover - OPTIMIZED with consolidated handlers
 	useEffect(() => {
@@ -97,18 +102,28 @@ export function useCustomCursor() {
 		// Consolidated hover/interaction detection
 		const handleMouseOver = (e: Event) => {
 			const target = e.target as HTMLElement;
-			const isButton = target.tagName === 'BUTTON' || target.tagName === 'A' || target.closest('button') || target.closest('a[href]');
-			const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.closest('input') || target.closest('textarea');
-			
+			const isButton =
+				target.tagName === 'BUTTON' || target.tagName === 'A' || target.closest('button') || target.closest('a[href]');
+			const isInput =
+				target.tagName === 'INPUT' ||
+				target.tagName === 'TEXTAREA' ||
+				target.closest('input') ||
+				target.closest('textarea');
+
 			if (isButton) setCursorState('hover');
 			else if (isInput) setCursorState('text');
 		};
 
 		const handleMouseOut = (e: Event) => {
 			const target = e.target as HTMLElement;
-			const wasButton = target.tagName === 'BUTTON' || target.tagName === 'A' || target.closest('button') || target.closest('a[href]');
-			const wasInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.closest('input') || target.closest('textarea');
-			
+			const wasButton =
+				target.tagName === 'BUTTON' || target.tagName === 'A' || target.closest('button') || target.closest('a[href]');
+			const wasInput =
+				target.tagName === 'INPUT' ||
+				target.tagName === 'TEXTAREA' ||
+				target.closest('input') ||
+				target.closest('textarea');
+
 			if (wasButton || wasInput) setCursorState('default');
 		};
 
@@ -137,8 +152,10 @@ export function useCustomCursor() {
 	return {
 		isDesktop,
 		isVisible,
-		mousePos,
-		ringPos,
+		mouseX,
+		mouseY,
+		ringX,
+		ringY,
 		cursorState,
 	};
 }

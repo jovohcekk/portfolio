@@ -1,10 +1,11 @@
 'use client';
 
-import { useCustomCursor } from '@/hooks/use-custom-cursor'
-import { useEffect } from 'react'
+import { useCustomCursor } from '@/hooks/use-custom-cursor';
+import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 
 export function CustomCursor() {
-	const { isDesktop, isVisible, mousePos, ringPos, cursorState } = useCustomCursor();
+	const { isDesktop, isVisible, mouseX, mouseY, ringX, ringY, cursorState } = useCustomCursor();
 
 	// Hide default cursor globally if desktop
 	useEffect(() => {
@@ -33,11 +34,11 @@ export function CustomCursor() {
 	return (
 		<>
 			{/* Main Cursor Dot - HIGHEST Z-INDEX */}
-			<div
+			<motion.div
 				className='pointer-events-none fixed z-9999 mix-blend-screen'
 				style={{
-					left: `${mousePos.x}px`,
-					top: `${mousePos.y}px`,
+					left: mouseX,
+					top: mouseY,
 					transform: `translate(-50%, -50%) scale(${dotScale})`,
 					transition: 'transform 0.15s cubic-bezier(0.22, 1, 0.36, 1)',
 					willChange: 'transform',
@@ -56,14 +57,14 @@ export function CustomCursor() {
 						top: '-4px',
 					}}
 				/>
-			</div>
+			</motion.div>
 
 			{/* Trailing Ring - HIGHEST Z-INDEX */}
-			<div
+			<motion.div
 				className='pointer-events-none fixed z-9999 mix-blend-screen'
 				style={{
-					left: `${ringPos.x}px`,
-					top: `${ringPos.y}px`,
+					left: ringX,
+					top: ringY,
 					transform: `translate(-50%, -50%) scale(${ringScale})`,
 					transition: 'transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
 					willChange: 'transform',
@@ -102,15 +103,15 @@ export function CustomCursor() {
 						}}
 					/>
 				)}
-			</div>
+			</motion.div>
 
 			{/* Text indicator for input fields - HIGHEST Z-INDEX */}
 			{cursorState === 'text' && (
-				<div
+				<motion.div
 					className='pointer-events-none fixed z-9999'
 					style={{
-						left: `${mousePos.x}px`,
-						top: `${mousePos.y}px`,
+						left: mouseX,
+						top: mouseY,
 						transform: 'translate(-50%, -50%)',
 						opacity: 0.6,
 					}}>
@@ -125,7 +126,7 @@ export function CustomCursor() {
 							top: '-8px',
 						}}
 					/>
-				</div>
+				</motion.div>
 			)}
 
 			{/* Hidden style for animations */}

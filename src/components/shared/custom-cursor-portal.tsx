@@ -1,14 +1,15 @@
-'use client'
+'use client';
 
-import { useEffect, useState, useMemo, memo } from 'react'
-import { createPortal } from 'react-dom'
-import { useCustomCursor } from '@/hooks/use-custom-cursor'
+import { useCustomCursor } from '@/hooks/use-custom-cursor';
+import { motion } from 'framer-motion';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * CustomCursor Portal Component - OPTIMIZED FOR PERFORMANCE
  * Renders cursor at the document root level with memoization
  * Uses createPortal to escape stacking contexts
- * 
+ *
  * OPTIMIZATIONS:
  * - useMemo for scale calculations to prevent re-calculations
  * - memo() wrapper to prevent unnecessary re-renders when props haven't changed
@@ -17,9 +18,9 @@ import { useCustomCursor } from '@/hooks/use-custom-cursor'
  * - Premium Dark Mode: Pure White with Dark glow
  */
 function CustomCursorPortalComponent() {
-	const { isDesktop, isVisible, mousePos, ringPos, cursorState } = useCustomCursor()
-	const [mounted, setMounted] = useState(false)
-	const [isDarkMode, setIsDarkMode] = useState(false)
+	const { isDesktop, isVisible, mouseX, mouseY, ringX, ringY, cursorState } = useCustomCursor();
+	const [mounted, setMounted] = useState(false);
+	const [isDarkMode, setIsDarkMode] = useState(false);
 
 	useEffect(() => {
 		setMounted(true);
@@ -28,7 +29,7 @@ function CustomCursorPortalComponent() {
 		setIsDarkMode(isDark);
 
 		// OPTIMIZATION: Use a more efficient MutationObserver configuration
-		const observer = new MutationObserver((mutations) => {
+		const observer = new MutationObserver(mutations => {
 			// Only check for dark class changes
 			for (const mutation of mutations) {
 				if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
@@ -69,19 +70,15 @@ function CustomCursorPortalComponent() {
 	}, [isDesktop]);
 
 	// OPTIMIZATION: Memoize scale calculations (must be before early return)
-	const scales = useMemo(() => ({
-		dotScale: cursorState === 'click' ? 0.8 : cursorState === 'text' ? 0.6 : 1,
-		ringScale:
-			cursorState === 'hover'
-				? 1.5
-				: cursorState === 'click'
-				? 0.7
-				: cursorState === 'text'
-				? 0.8
-				: 1,
-	}), [cursorState])
+	const scales = useMemo(
+		() => ({
+			dotScale: cursorState === 'click' ? 0.8 : cursorState === 'text' ? 0.6 : 1,
+			ringScale: cursorState === 'hover' ? 1.5 : cursorState === 'click' ? 0.7 : cursorState === 'text' ? 0.8 : 1,
+		}),
+		[cursorState],
+	);
 
-	const { dotScale, ringScale } = scales
+	const { dotScale, ringScale } = scales;
 
 	// LIGHT MODE: Pure Black with White outline
 	// DARK MODE: Pure White with Dark glow
@@ -98,7 +95,7 @@ function CustomCursorPortalComponent() {
 				pulseRingBorder: 'rgba(255, 255, 255, 0.4)',
 				pulseGlow: '0 0 15px rgba(0, 0, 0, 0.4)',
 				mixBlend: 'mix-blend-multiply',
-			}
+			};
 		} else {
 			// Light Mode: Pure Black with White outline
 			return {
@@ -111,22 +108,22 @@ function CustomCursorPortalComponent() {
 				pulseRingBorder: 'rgba(0, 0, 0, 0.4)',
 				pulseGlow: '0 0 15px rgba(255, 255, 255, 0.6)',
 				mixBlend: 'mix-blend-multiply',
-			}
+			};
 		}
-	}
+	};
 
-	const colors = getCursorColors()
+	const colors = getCursorColors();
 
-	if (!mounted || !isDesktop || !isVisible) return null
+	if (!mounted || !isDesktop || !isVisible) return null;
 
 	const cursorContent = (
 		<>
 			{/* Main Cursor Dot - HIGHEST Z-INDEX */}
-			<div
+			<motion.div
 				className='pointer-events-none fixed'
 				style={{
-					left: `${mousePos.x}px`,
-					top: `${mousePos.y}px`,
+					left: mouseX,
+					top: mouseY,
 					transform: `translate(-50%, -50%) scale(${dotScale})`,
 					transition: 'transform 0.15s cubic-bezier(0.22, 1, 0.36, 1)',
 					willChange: 'transform',
@@ -148,14 +145,14 @@ function CustomCursorPortalComponent() {
 						backdropFilter: 'blur(1px)',
 					}}
 				/>
-			</div>
+			</motion.div>
 
 			{/* Trailing Ring - HIGHEST Z-INDEX */}
-			<div
+			<motion.div
 				className='pointer-events-none fixed'
 				style={{
-					left: `${ringPos.x}px`,
-					top: `${ringPos.y}px`,
+					left: ringX,
+					top: ringY,
 					transform: `translate(-50%, -50%) scale(${ringScale})`,
 					transition: 'transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
 					willChange: 'transform',
@@ -197,15 +194,15 @@ function CustomCursorPortalComponent() {
 						}}
 					/>
 				)}
-			</div>
+			</motion.div>
 
 			{/* Text indicator for input fields - HIGHEST Z-INDEX */}
 			{cursorState === 'text' && (
-				<div
+				<motion.div
 					className='pointer-events-none fixed'
 					style={{
-						left: `${mousePos.x}px`,
-						top: `${mousePos.y}px`,
+						left: mouseX,
+						top: mouseY,
 						transform: 'translate(-50%, -50%)',
 						opacity: 0.8,
 						zIndex: 2147483647,
@@ -222,7 +219,7 @@ function CustomCursorPortalComponent() {
 							backdropFilter: 'blur(1px)',
 						}}
 					/>
-				</div>
+				</motion.div>
 			)}
 
 			{/* Hidden style for animations */}
@@ -237,11 +234,11 @@ function CustomCursorPortalComponent() {
 				}
 			`}</style>
 		</>
-	)
+	);
 
 	// Use createPortal to render cursor at body level, escaping DOM hierarchy
-	return typeof document !== 'undefined' ? createPortal(cursorContent, document.body) : null
+	return typeof document !== 'undefined' ? createPortal(cursorContent, document.body) : null;
 }
 
 // OPTIMIZATION: Memoized component to prevent unnecessary re-renders
-export const CustomCursorPortal = memo(CustomCursorPortalComponent)
+export const CustomCursorPortal = memo(CustomCursorPortalComponent);
