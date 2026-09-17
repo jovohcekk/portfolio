@@ -20,21 +20,6 @@ export interface ProjectItem {
 	displaySize?: 'large' | 'medium' | 'small' | 'wide';
 }
 
-/** Photoshop loyiha kategoriyalari */
-export type PhotoshopCategory = 'poster' | 'thumbnail' | 'social' | 'banner' | 'manipulation' | 'artwork';
-
-/** Photoshop loyiha kartochkasi */
-export interface PhotoshopProject {
-	id: string;
-	titleKey: string;
-	category: PhotoshopCategory;
-	descriptionKey: string;
-	image: string;
-	width?: number;
-	height?: number;
-	gallery?: string[];
-}
-
 export interface PhotoshopGalleryItem {
 	id: string;
 	title: string;
@@ -100,17 +85,6 @@ export const navSections = [
 	{ id: 'experience', labelKey: 'nav.experience' },
 	{ id: 'contact', labelKey: 'nav.contact' },
 ] as const;
-
-/** Photoshop kategoriya kalitlari (i18n) */
-export const photoshopCategories: { id: PhotoshopCategory | 'all'; labelKey: string }[] = [
-	{ id: 'all', labelKey: 'photoshop.filter.all' },
-	{ id: 'poster', labelKey: 'photoshop.category.poster' },
-	{ id: 'thumbnail', labelKey: 'photoshop.category.thumbnail' },
-	{ id: 'social', labelKey: 'photoshop.category.social' },
-	{ id: 'banner', labelKey: 'photoshop.category.banner' },
-	{ id: 'manipulation', labelKey: 'photoshop.category.manipulation' },
-	{ id: 'artwork', labelKey: 'photoshop.category.artwork' },
-];
 
 // =========================
 // O'ZGARTIRISH MUMKIN — KO'NIKMALAR
@@ -315,75 +289,6 @@ export const photoshopGallery: PhotoshopGalleryItem[] = [
 		display: 'portrait',
 		width: 1200,
 		height: 1697,
-	},
-];
-
-// =========================
-// O'ZGARTIRISH MUMKIN — PHOTOSHOP LOYIHALARI
-// Yangi dizayn qo'shish: massivga obyekt qo'shing, birinchi rasm kartochka uchun thumbnail bo'ladi.
-// Qo'shimcha galereya tasvirlari uchun gallery maydonidan foydalaning.
-// =========================
-
-export const photoshopProjects: PhotoshopProject[] = [
-	{
-		id: 'event-poster-suite',
-		titleKey: 'photoshop.project.poster.title',
-		category: 'poster',
-		descriptionKey: 'photoshop.project.poster.description',
-		image: '/images/event poster.png',
-		width: 1200,
-		height: 1697,
-		gallery: ['/images/poster.png'],
-	},
-	{
-		id: 'social-launch-kit',
-		titleKey: 'photoshop.project.social.title',
-		category: 'social',
-		descriptionKey: 'photoshop.project.social.description',
-		image: '/images/SOCIAL MEDIA.png',
-		width: 736,
-		height: 920,
-		gallery: ['/images/STORY DESIGN.png'],
-	},
-	{
-		id: 'video-thumbnail-cover',
-		titleKey: 'photoshop.project.thumbnail.title',
-		category: 'thumbnail',
-		descriptionKey: 'photoshop.project.thumbnail.description',
-		image: '/images/THUMBNAIL.png',
-		width: 1672,
-		height: 941,
-		gallery: [],
-	},
-	{
-		id: 'editorial-manipulation',
-		titleKey: 'photoshop.project.manipulation.title',
-		category: 'manipulation',
-		descriptionKey: 'photoshop.project.manipulation.description',
-		image: '/images/PHOTO MANIPULATION.png',
-		width: 669,
-		height: 901,
-		gallery: [],
-	},
-	{
-		id: 'web-banner-campaign',
-		titleKey: 'photoshop.project.banner.title',
-		category: 'banner',
-		descriptionKey: 'photoshop.project.banner.description',
-		image: '/images/WEB BANNER.png',
-		width: 1200,
-		height: 400,
-		gallery: [],
-	},
-	{
-		id: 'creative-artwork-series',
-		titleKey: 'photoshop.project.artwork.title',
-		category: 'artwork',
-		descriptionKey: 'photoshop.project.artwork.description',
-		image: '/images/CREATIVE ARTWORK.png',
-		width: 467,
-		height: 700,
-		gallery: [],
 	},
 ];
 

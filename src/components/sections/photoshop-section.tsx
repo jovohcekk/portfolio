@@ -6,27 +6,15 @@ import { useLanguage } from '@/hooks/use-language';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback } from 'react';
 
 interface PhotoshopSectionProps {
 	onProjectSelect?: (project: PhotoshopGalleryItem) => void;
 }
 
 function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
-	const [hoveredId, setHoveredId] = useState<string | null>(null);
 	const { translate } = useLanguage();
 	const reducedMotion = useReducedMotion();
-
-	const galleryImages = useMemo(() => photoshopGallery, []);
-
-	// OPTIMIZATION: useCallback to prevent re-renders
-	const handleMouseEnter = useCallback((id: string) => {
-		setHoveredId(id);
-	}, []);
-
-	const handleMouseLeave = useCallback(() => {
-		setHoveredId(null);
-	}, []);
 
 	const handleProjectSelect = useCallback(
 		(project: PhotoshopGalleryItem) => {
@@ -83,13 +71,11 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 						},
 					}}>
 					<div className='grid grid-cols-2 gap-3 sm:block sm:columns-2 sm:gap-6 lg:columns-3 2xl:columns-4'>
-						{galleryImages.map((item, idx) => (
+						{photoshopGallery.map((item, idx) => (
 							<motion.button
 								type='button'
 								key={item.id}
 								onClick={() => handleProjectSelect(item)}
-								onMouseEnter={() => handleMouseEnter(item.id)}
-								onMouseLeave={handleMouseLeave}
 								whileHover={reducedMotion ? {} : { y: -6, scale: 1.03 }}
 								whileTap={reducedMotion ? {} : { scale: 0.98 }}
 								variants={{
@@ -127,13 +113,9 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 
 										{/* Hover Glow Effect - skipped if reduced motion */}
 										{!reducedMotion && (
-											<motion.div
-												className='absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100'
-												animate={{
-													opacity: hoveredId === item.id ? 1 : 0,
-												}}>
+											<div className='absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100'>
 												<div className='absolute inset-0 bg-[radial-gradient(circle,rgba(255,10,10,0.16),transparent_40%)]' />
-											</motion.div>
+											</div>
 										)}
 									</motion.div>
 								</div>

@@ -1,17 +1,17 @@
 'use client';
 
-import { LetterReveal } from '@/components/shared/letter-reveal'
-import { SectionHeading } from '@/components/shared/section-heading'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { socialLinkItems } from '@/config/portfolio'
-import { useLanguage } from '@/hooks/use-language'
-import { fadeInUp, scaleIn, staggerContainer } from '@/lib/animations'
-import { copyToClipboard } from '@/lib/utils'
-import { motion } from 'framer-motion'
-import { ArrowDown, Check, Copy, Github, Instagram, Mail, Phone, RotateCcw, Send, type LucideIcon } from 'lucide-react'
-import { useEffect, useRef, useState, memo } from 'react'
+import { LetterReveal } from '@/components/shared/letter-reveal';
+import { SectionHeading } from '@/components/shared/section-heading';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { socialLinkItems } from '@/config/portfolio';
+import { useLanguage } from '@/hooks/use-language';
+import { fadeInUp, scaleIn, staggerContainer } from '@/lib/animations';
+import { copyToClipboard } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { ArrowDown, Check, Copy, Github, Instagram, Mail, Phone, RotateCcw, Send, type LucideIcon } from 'lucide-react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 const contactIcons: Record<string, LucideIcon> = {
 	telegram: Send,
@@ -171,9 +171,7 @@ export function ContactSectionComponent() {
 							initial='hidden'
 							whileInView='visible'
 							viewport={{ once: true, margin: '-40px' }}
-							className='mb-8 flex items-center gap-2 xs:gap-3'
-							onHoverStart={() => {}}
-							onHoverEnd={() => {}}>
+							className='mb-8 flex items-center gap-2 xs:gap-3'>
 							<motion.div
 								className='text-xl xs:text-2xl md:text-3xl font-bold bg-gradient-to-r from-[rgb(var(--accent-primary))] via-[rgb(var(--accent-secondary))] to-[rgb(var(--accent-primary))] bg-clip-text text-transparent'
 								variants={glowPulseVariants}
@@ -322,4 +320,4 @@ export function ContactSectionComponent() {
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders when parent updates but props don't change
-export const ContactSection = memo(ContactSectionComponent)
+export const ContactSection = memo(ContactSectionComponent);

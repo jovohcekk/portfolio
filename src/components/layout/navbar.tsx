@@ -1,10 +1,11 @@
 'use client';
 
+import { LanguageDropdown } from '@/components/shared/language-dropdown';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { navSections, personalInfo, type Locale } from '@/config/portfolio';
 import { useLanguage } from '@/hooks/use-language';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
-import { localeLabels, type TranslationKey } from '@/lib/i18n/translations';
+import { type TranslationKey } from '@/lib/i18n/translations';
 import { cn, scrollToSection } from '@/lib/utils';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -87,20 +88,8 @@ export function Navbar() {
 
 				<div className='flex shrink-0 items-center gap-1.5 sm:gap-2'>
 					{/* Desktop Language Dropdown */}
-					<div className='hidden sm:flex items-center rounded-lg surface-chip p-0.5' role='group' aria-label='Language'>
-						{locales.map(loc => (
-							<button
-								key={loc}
-								type='button'
-								onClick={() => setLocale(loc)}
-								aria-pressed={locale === loc}
-								className={cn(
-									'rounded-md px-2.5 py-1 text-xs font-medium transition-colors duration-300',
-									locale === loc ? 'locale-active' : 'text-secondary-content hover:text-primary-content',
-								)}>
-								{localeLabels[loc]}
-							</button>
-						))}
+					<div className='hidden sm:block'>
+						<LanguageDropdown currentLocale={locale} locales={locales} onLocaleChange={setLocale} />
 					</div>
 
 					<ThemeToggle />
@@ -146,20 +135,14 @@ export function Navbar() {
 									</button>
 								</motion.li>
 							))}
-							<li className='flex gap-2 pt-2' role='group' aria-label='Language'>
-								{locales.map(loc => (
-									<button
-										key={loc}
-										type='button'
-										onClick={() => setLocale(loc)}
-										aria-pressed={locale === loc}
-										className={cn(
-											'flex-1 rounded-lg py-2 text-xs font-medium surface-chip',
-											locale === loc && 'locale-active',
-										)}>
-										{localeLabels[loc]}
-									</button>
-								))}
+							<li className='pt-2'>
+								<LanguageDropdown
+									currentLocale={locale}
+									locales={locales}
+									onLocaleChange={setLocale}
+									className='w-full'
+									dropUp
+								/>
 							</li>
 						</ul>
 					</motion.div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import type { StaticImageData } from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { memo } from 'react';
 
 interface SkillCardProps {
@@ -12,8 +12,6 @@ interface SkillCardProps {
 }
 
 export function SkillCardComponent({ name, level, category, iconPath }: SkillCardProps) {
-	const iconSrc = typeof iconPath === 'string' ? iconPath : iconPath.src;
-
 	return (
 		<motion.div
 			initial={{ opacity: 0, y: 16 }}
@@ -26,7 +24,13 @@ export function SkillCardComponent({ name, level, category, iconPath }: SkillCar
 				boxShadow: '0 6px 24px rgba(0,0,0,0.45), 0 0 30px rgba(0,229,255,0.06)',
 			}}>
 			<div className='inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-black/20 p-2 sm:h-16 sm:w-16 sm:p-3'>
-				<img src={iconSrc} alt={`${name} icon`} className='h-7 w-7 object-contain sm:h-10 sm:w-10' />
+				<Image
+					src={iconPath}
+					alt={`${name} icon`}
+					width={40}
+					height={40}
+					className='h-7 w-7 object-contain sm:h-10 sm:w-10'
+				/>
 			</div>
 
 			<h4 className='w-full min-w-0 break-words text-center text-xs font-semibold text-[var(--text-primary)] sm:text-sm'>

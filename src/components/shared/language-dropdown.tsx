@@ -1,23 +1,84 @@
 'use client';
 
-import type { Locale } from '@/config/portfolio'
-import { localeLabels } from '@/lib/i18n/translations'
-import { cn } from '@/lib/utils'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Check, ChevronDown } from 'lucide-react'
-import { memo, useEffect, useRef, useState } from 'react'
+import type { Locale } from '@/config/portfolio';
+import { localeLabels } from '@/lib/i18n/translations';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Check, ChevronDown } from 'lucide-react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 interface LanguageDropdownProps {
 	currentLocale: Locale;
 	locales: Locale[];
 	onLocaleChange: (locale: Locale) => void;
 	className?: string;
+	dropUp?: boolean;
 }
 
-function LanguageDropdownComponent({ currentLocale, locales, onLocaleChange, className = '' }: LanguageDropdownProps) {
+function LanguageDropdownComponent({
+	currentLocale,
+	locales,
+	onLocaleChange,
+	className = '',
+	dropUp = false,
+}: LanguageDropdownProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isHovered, setIsHovered] = useState(false);
+	const [highlightedIndex, setHighlightedIndex] = useState(() => Math.max(locales.indexOf(currentLocale), 0));
 	const dropdownRef = useRef<HTMLDivElement>(null);
+	const triggerRef = useRef<HTMLButtonElement>(null);
+	const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+	useEffect(() => {
+		setHighlightedIndex(Math.max(locales.indexOf(currentLocale), 0));
+	}, [currentLocale, locales]);
+
+	const handleLocaleSelect = (locale: Locale) => {
+		onLocaleChange(locale);
+		setIsOpen(false);
+		triggerRef.current?.focus();
+	};
+
+	const focusOption = (index: number) => {
+		const nextIndex = (index + locales.length) % locales.length;
+		setHighlightedIndex(nextIndex);
+		optionRefs.current[nextIndex]?.focus();
+	};
+
+	const handleTriggerKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+		if (!['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(event.key)) return;
+		event.preventDefault();
+		const currentIndex = Math.max(locales.indexOf(currentLocale), 0);
+		setHighlightedIndex(currentIndex);
+		setIsOpen(true);
+		requestAnimationFrame(() => optionRefs.current[currentIndex]?.focus());
+	};
+
+	const handleOptionKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+		switch (event.key) {
+			case 'ArrowDown':
+				event.preventDefault();
+				focusOption(index + 1);
+				break;
+			case 'ArrowUp':
+				event.preventDefault();
+				focusOption(index - 1);
+				break;
+			case 'Home':
+				event.preventDefault();
+				focusOption(0);
+				break;
+			case 'End':
+				event.preventDefault();
+				focusOption(locales.length - 1);
+				break;
+			case 'Escape':
+				event.preventDefault();
+				setIsOpen(false);
+				triggerRef.current?.focus();
+				break;
+		}
+	};
 
 	// Close dropdown when clicking outside
 	useEffect(() => {
@@ -40,17 +101,13 @@ function LanguageDropdownComponent({ currentLocale, locales, onLocaleChange, cla
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
 				setIsOpen(false);
+				triggerRef.current?.focus();
 			}
 		};
 
 		window.addEventListener('keydown', handleKeyDown);
 		return () => window.removeEventListener('keydown', handleKeyDown);
 	}, [isOpen]);
-
-	const handleLocaleSelect = (locale: Locale) => {
-		onLocaleChange(locale);
-		setIsOpen(false);
-	};
 
 	// Premium animation variants
 	const dropdownVariants = {
@@ -136,8 +193,14 @@ function LanguageDropdownComponent({ currentLocale, locales, onLocaleChange, cla
 
 			{/* Dropdown Button */}
 			<motion.button
+				ref={triggerRef}
+				type='button'
 				onClick={() => setIsOpen(!isOpen)}
-				className='relative flex items-center gap-1.5 rounded-lg surface-chip px-3 py-1.5 text-xs font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-primary))]'
+				onKeyDown={handleTriggerKeyDown}
+				className={cn(
+					'relative flex w-full items-center justify-between gap-1.5 rounded-lg surface-chip px-3 py-1.5 text-xs font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-primary))] sm:w-auto',
+					className,
+				)}
 				animate={isHovered ? 'hover' : 'idle'}
 				variants={breathingVariants}
 				whileHover={{ scale: 1.02 }}
@@ -176,7 +239,10 @@ function LanguageDropdownComponent({ currentLocale, locales, onLocaleChange, cla
 						animate='visible'
 						exit='exit'
 						variants={dropdownVariants}
-						className='absolute top-full right-0 z-50 mt-2 w-40 rounded-lg glass-card border border-[var(--border-subtle)] overflow-hidden'
+						className={cn(
+							'absolute right-0 z-50 w-40 rounded-lg glass-card border border-[var(--border-subtle)] overflow-hidden',
+							dropUp ? 'bottom-full mb-2' : 'top-full mt-2',
+						)}
 						style={{
 							boxShadow: '0 16px 40px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.1)',
 						}}
@@ -185,19 +251,23 @@ function LanguageDropdownComponent({ currentLocale, locales, onLocaleChange, cla
 							{locales.map((locale, index) => (
 								<motion.button
 									key={locale}
+									ref={element => {
+										optionRefs.current[index] = element;
+									}}
 									custom={index}
 									initial='hidden'
 									animate='visible'
 									variants={itemVariants}
 									onClick={() => handleLocaleSelect(locale)}
+									onKeyDown={event => handleOptionKeyDown(event, index)}
+									onFocus={() => setHighlightedIndex(index)}
 									className={cn(
 										'flex items-center gap-3 rounded-md px-3 py-2.5 text-xs font-medium transition-all duration-250 cursor-pointer relative group',
-										locale === currentLocale
-											? 'bg-accent-primary/15 text-accent-primary'
-											: 'text-primary-content',
+										locale === currentLocale ? 'bg-accent-primary/15 text-accent-primary' : 'text-primary-content',
 									)}
 									role='option'
 									aria-selected={locale === currentLocale}
+									tabIndex={highlightedIndex === index ? 0 : -1}
 									whileHover={{ x: 4 }}
 									layout>
 									{/* Hover background glow */}
@@ -213,9 +283,7 @@ function LanguageDropdownComponent({ currentLocale, locales, onLocaleChange, cla
 										}}
 									/>
 
-									<span className='flex-1 text-left tracking-tight relative z-10'>
-										{localeLabels[locale]}
-									</span>
+									<span className='flex-1 text-left tracking-tight relative z-10'>{localeLabels[locale]}</span>
 									<AnimatePresence mode='wait'>
 										{locale === currentLocale && (
 											<motion.div
@@ -227,7 +295,11 @@ function LanguageDropdownComponent({ currentLocale, locales, onLocaleChange, cla
 												className='flex items-center justify-center relative z-10'>
 												<motion.div
 													animate={{
-														boxShadow: ['0 0 0px rgba(var(--accent-primary), 0)', '0 0 8px rgba(var(--accent-primary), 0.5)', '0 0 0px rgba(var(--accent-primary), 0)'],
+														boxShadow: [
+															'0 0 0px rgba(var(--accent-primary), 0)',
+															'0 0 8px rgba(var(--accent-primary), 0.5)',
+															'0 0 0px rgba(var(--accent-primary), 0)',
+														],
 													}}
 													transition={{
 														duration: 2,
