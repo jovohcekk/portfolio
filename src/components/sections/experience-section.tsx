@@ -1,29 +1,21 @@
 'use client';
 
-import { AnimatedCounter } from '@/components/shared/animated-counter'
-import { SectionHeading } from '@/components/shared/section-heading'
-import { TiltCard } from '@/components/shared/tilt-card'
-import { statistics } from '@/config/portfolio'
-import { useLanguage } from '@/hooks/use-language'
-import {
-    blurIn,
-    premiumDepthTransition,
-    premiumPerspectiveShift,
-    scaleIn,
-    staggerContainer
-} from '@/lib/animations'
-import type { TranslationKey } from '@/lib/i18n/translations'
-import { motion } from 'framer-motion'
-import { Briefcase } from 'lucide-react'
-import { memo } from 'react'
+import { AnimatedCounter } from '@/components/shared/animated-counter';
+import { SectionHeading } from '@/components/shared/section-heading';
+import { TiltCard } from '@/components/shared/tilt-card';
+import { statistics } from '@/config/portfolio';
+import { useLanguage } from '@/hooks/use-language';
+import { blurIn, premiumDepthTransition, premiumPerspectiveShift, scaleIn, staggerContainer } from '@/lib/animations';
+import type { TranslationKey } from '@/lib/i18n/translations';
+import { motion } from 'framer-motion';
+import { Briefcase } from 'lucide-react';
+import { memo } from 'react';
 
 function ExperienceSectionComponent() {
 	const { translate } = useLanguage();
 
 	return (
-		<section
-			id='experience'
-			className='section-surface section-surface-elevated w-full max-w-full overflow-hidden section-spacing'>
+		<section className='section-surface section-surface-elevated w-full max-w-full overflow-hidden section-spacing'>
 			<div className='section-container'>
 				<SectionHeading title={translate('experience.title')} subtitle={translate('experience.subtitle')} />
 
@@ -84,4 +76,4 @@ function ExperienceSectionComponent() {
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders when parent updates but props don't change
-export const ExperienceSection = memo(ExperienceSectionComponent)
+export const ExperienceSection = memo(ExperienceSectionComponent);

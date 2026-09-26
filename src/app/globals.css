@@ -79,6 +79,10 @@
 }
 
 @layer components {
+	[data-section-active='false'] * {
+		animation-play-state: paused !important;
+	}
+
 	/* ── Page & ambient backgrounds ── */
 	.page-background {
 		background-color: var(--bg-start);

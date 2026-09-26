@@ -3,21 +3,22 @@
 import { motion } from 'framer-motion';
 import { memo } from 'react';
 
-import { ProjectCard } from './project-card';
+import { useSectionAnimationsActive } from '@/components/shared/lazy-section';
 import { SectionHeading } from '@/components/shared/section-heading';
+import { projects } from '@/config/portfolio';
 import { useLanguage } from '@/hooks/use-language';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { projects } from '@/config/portfolio';
 import { fadeInUp, floatAnimation, staggerContainer } from '@/lib/animations';
+import { ProjectCard } from './project-card';
 
 function DevelopmentProjectsSectionComponent() {
 	const { translate } = useLanguage();
 	const reducedMotion = useReducedMotion();
+	const isActive = useSectionAnimationsActive();
 	const devProjects = projects.slice(0, 2);
 
 	return (
 		<motion.section
-			id='projects'
 			className='section-surface section-surface-alt relative w-full overflow-hidden section-spacing'
 			initial='hidden'
 			whileInView='visible'
@@ -28,12 +29,12 @@ function DevelopmentProjectsSectionComponent() {
 				<motion.div
 					className='absolute left-1/4 top-32 h-96 w-96 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,45,45,0.24),transparent_50%)] blur-3xl opacity-85'
 					style={{ willChange: 'transform, opacity' }}
-					animate={reducedMotion ? undefined : floatAnimation(0)}
+					animate={!isActive || reducedMotion ? false : floatAnimation(0)}
 				/>
 				<motion.div
 					className='absolute right-1/4 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,45,45,0.18),transparent_45%)] blur-3xl opacity-70'
 					style={{ willChange: 'transform, opacity' }}
-					animate={reducedMotion ? undefined : floatAnimation(2)}
+					animate={!isActive || reducedMotion ? false : floatAnimation(2)}
 				/>
 			</div>
 

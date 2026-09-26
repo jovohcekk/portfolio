@@ -1,11 +1,12 @@
 'use client';
 
-import { useIsDark } from '@/hooks/use-is-dark'
-import { useReducedMotion } from '@/hooks/use-reduced-motion'
-import { floatAnimation, glowPulse } from '@/lib/animations'
-import { cn } from '@/lib/utils'
-import { motion } from 'framer-motion'
-import { memo, useEffect, useState, useMemo } from 'react'
+import { useSectionAnimationsActive } from '@/components/shared/lazy-section';
+import { useIsDark } from '@/hooks/use-is-dark';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { floatAnimation, glowPulse } from '@/lib/animations';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { memo, useEffect, useMemo, useState } from 'react';
 
 interface FloatingShapesProps {
 	variant?: 'default' | 'photoshop';
@@ -13,6 +14,7 @@ interface FloatingShapesProps {
 
 function FloatingShapesComponent({ variant = 'default' }: FloatingShapesProps) {
 	const reducedMotion = useReducedMotion();
+	const isActive = useSectionAnimationsActive();
 	const isDark = useIsDark();
 	const [mounted, setMounted] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
@@ -41,7 +43,7 @@ function FloatingShapesComponent({ variant = 'default' }: FloatingShapesProps) {
 					isPhotoshop ? (isDark ? 'bg-red-500/10' : 'bg-blue-500/8') : 'glow-orb-primary',
 				)}
 				style={{ willChange: 'transform, opacity' }}
-				animate={glowPulse}
+				animate={isActive ? glowPulse : false}
 			/>
 			{/* Secondary glow orb - optimized for mobile */}
 			<motion.div
@@ -51,14 +53,14 @@ function FloatingShapesComponent({ variant = 'default' }: FloatingShapesProps) {
 					isPhotoshop ? (isDark ? 'bg-red-600/8' : 'bg-cyan-500/6') : 'glow-orb-secondary',
 				)}
 				style={{ willChange: 'transform, opacity' }}
-				animate={{ ...glowPulse, transition: { ...glowPulse.transition, delay: 1.5 } }}
+				animate={isActive ? { ...glowPulse, transition: { ...glowPulse.transition, delay: 1.5 } } : false}
 			/>
 			{/* Small particle - only on desktop */}
 			{!isMobile && (
 				<motion.div
 					className='particle-dot absolute left-1/3 top-1/2 h-3 w-3 rounded-full'
 					style={{ willChange: 'transform' }}
-					animate={floatAnim1}
+					animate={isActive ? floatAnim1 : false}
 				/>
 			)}
 			{/* Secondary particle - only on desktop */}
@@ -69,7 +71,7 @@ function FloatingShapesComponent({ variant = 'default' }: FloatingShapesProps) {
 						isPhotoshop ? (isDark ? 'bg-red-500/40' : 'bg-blue-400/25') : 'particle-dot',
 					)}
 					style={{ willChange: 'transform' }}
-					animate={floatAnim2}
+					animate={isActive ? floatAnim2 : false}
 				/>
 			)}
 			{/* Rotating particle - only on desktop */}
@@ -77,7 +79,7 @@ function FloatingShapesComponent({ variant = 'default' }: FloatingShapesProps) {
 				<motion.div
 					className='absolute bottom-1/3 left-1/4 h-4 w-4 rotate-45 border border-accent-soft'
 					style={{ willChange: 'transform' }}
-					animate={floatAnim3}
+					animate={isActive ? floatAnim3 : false}
 				/>
 			)}
 		</div>
@@ -85,4 +87,4 @@ function FloatingShapesComponent({ variant = 'default' }: FloatingShapesProps) {
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders when props haven't changed
-export const FloatingShapes = memo(FloatingShapesComponent)
+export const FloatingShapes = memo(FloatingShapesComponent);

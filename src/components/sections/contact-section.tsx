@@ -1,5 +1,6 @@
 'use client';
 
+import { useSectionAnimationsActive } from '@/components/shared/lazy-section';
 import { LetterReveal } from '@/components/shared/letter-reveal';
 import { SectionHeading } from '@/components/shared/section-heading';
 import { Input } from '@/components/ui/input';
@@ -62,6 +63,7 @@ const floatingArrowVariants = {
 
 export function ContactSectionComponent() {
 	const { translate } = useLanguage();
+	const isActive = useSectionAnimationsActive();
 	const [copiedId, setCopiedId] = useState<string | null>(null);
 	const [formState, setFormState] = useState({ name: '', phone: '', email: '', message: '', website: '' });
 	const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -109,9 +111,7 @@ export function ContactSectionComponent() {
 	};
 
 	return (
-		<section
-			id='contact'
-			className='section-surface section-surface-tint relative w-full max-w-full overflow-hidden section-spacing'>
+		<section className='section-surface section-surface-tint relative w-full max-w-full overflow-hidden section-spacing'>
 			<div className='pointer-events-none absolute inset-0 bg-hero-mesh opacity-30' />
 			<div className='section-container relative'>
 				<SectionHeading title={translate('contact.title')} subtitle={translate('contact.subtitle')} />
@@ -184,7 +184,10 @@ export function ContactSectionComponent() {
 									className='text-xl xs:text-2xl md:text-3xl font-bold bg-gradient-to-r from-[rgb(var(--accent-primary))] via-[rgb(var(--accent-secondary))] to-[rgb(var(--accent-primary))] bg-clip-text text-transparent'
 								/>
 							</motion.div>
-							<motion.div variants={floatingArrowVariants} animate='animate' className='inline-flex pt-1 xs:pt-2'>
+							<motion.div
+								variants={floatingArrowVariants}
+								animate={isActive ? 'animate' : false}
+								className='inline-flex pt-1 xs:pt-2'>
 								<ArrowDown className='h-5 w-5 xs:h-6 xs:w-6 text-[rgb(var(--accent-primary))] drop-shadow-[0_0_8px_rgba(var(--accent-primary),0.3)]' />
 							</motion.div>
 						</motion.div>

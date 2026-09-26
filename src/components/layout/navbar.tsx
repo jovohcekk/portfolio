@@ -9,7 +9,7 @@ import { type TranslationKey } from '@/lib/i18n/translations';
 import { cn, scrollToSection } from '@/lib/utils';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const locales: Locale[] = ['uz', 'en', 'ru'];
 
@@ -17,7 +17,7 @@ export function Navbar() {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const { locale, setLocale, translate } = useLanguage();
-	const sectionIds = navSections.map(s => s.id);
+	const sectionIds = useMemo(() => navSections.map(s => s.id), []);
 	const activeId = useScrollSpy(sectionIds);
 	const { scrollY } = useScroll();
 	const mobileMenuRef = useRef<HTMLDivElement>(null);

@@ -1,5 +1,6 @@
 'use client';
 
+import { useSectionAnimationsActive } from '@/components/shared/lazy-section';
 import { SectionHeading } from '@/components/shared/section-heading';
 import { photoshopGallery, type PhotoshopGalleryItem } from '@/config/portfolio';
 import { useLanguage } from '@/hooks/use-language';
@@ -8,13 +9,14 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { memo, useCallback } from 'react';
 
-interface PhotoshopSectionProps {
+export interface PhotoshopSectionProps {
 	onProjectSelect?: (project: PhotoshopGalleryItem) => void;
 }
 
 function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 	const { translate } = useLanguage();
 	const reducedMotion = useReducedMotion();
+	const isActive = useSectionAnimationsActive();
 
 	const handleProjectSelect = useCallback(
 		(project: PhotoshopGalleryItem) => {
@@ -25,7 +27,6 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 
 	return (
 		<motion.section
-			id='photoshop'
 			className='section-surface section-surface-alt relative w-full overflow-hidden section-spacing'
 			initial='hidden'
 			whileInView='visible'
@@ -36,7 +37,7 @@ function PhotoshopSectionComponent({ onProjectSelect }: PhotoshopSectionProps) {
 					className='absolute right-1/3 top-40 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,45,45,0.22),transparent_50%)] blur-3xl opacity-75'
 					style={{ willChange: 'transform, opacity' }}
 					animate={
-						reducedMotion
+						!isActive || reducedMotion
 							? undefined
 							: {
 									y: [0, -20, 0],

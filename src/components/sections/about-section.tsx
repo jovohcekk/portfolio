@@ -23,9 +23,7 @@ export function AboutSectionComponent() {
 	const { translate } = useLanguage();
 
 	return (
-		<section
-			id='about'
-			className='section-surface section-surface-alt relative w-full max-w-full overflow-hidden section-spacing'>
+		<section className='section-surface section-surface-alt relative w-full max-w-full overflow-hidden section-spacing'>
 			<ParallaxLayer speed={0.1} className='pointer-events-none absolute inset-0'>
 				<div className='absolute inset-0 bg-hero-mesh opacity-50' />
 			</ParallaxLayer>

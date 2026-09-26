@@ -2,6 +2,7 @@
 
 import { FloatingShapes } from '@/components/shared/floating-shapes';
 import { HeroCleanProfile } from '@/components/shared/hero-clean-profile';
+import { useSectionAnimationsActive } from '@/components/shared/lazy-section';
 import { MagneticButton } from '@/components/shared/magnetic-button';
 import { ParallaxLayer } from '@/components/shared/parallax-layer';
 import { ParticleField } from '@/components/shared/particle-field';
@@ -20,6 +21,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 export function HeroSectionComponent() {
 	const { translate } = useLanguage();
 	const reducedMotion = useReducedMotion();
+	const isActive = useSectionAnimationsActive();
 	const heroRef = useRef<HTMLElement>(null);
 	const { scrollYProgress } = useScroll({
 		target: heroRef,
@@ -37,7 +39,6 @@ export function HeroSectionComponent() {
 	return (
 		<section
 			ref={heroRef}
-			id='home'
 			className='section-surface relative flex min-h-[100dvh] w-full max-w-full items-center overflow-hidden pt-20 pb-12 xs:pt-24 xs:pb-16'>
 			<div
 				className={`pointer-events-none absolute inset-0 ambient-gradient-layer opacity-80 ${reducedMotion ? '' : 'animate-ambient-shift'}`}
@@ -51,7 +52,7 @@ export function HeroSectionComponent() {
 					<motion.div
 						className={`glow-orb-primary h-48 w-48 rounded-full ${isMobile ? 'blur-[60px]' : 'xs:blur-[80px] md:blur-[100px]'} xs:h-64 xs:w-64 md:h-96 md:w-96`}
 						style={{ willChange: 'transform, opacity' }}
-						animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.08, 1] }}
+						animate={isActive ? { opacity: [0.35, 0.7, 0.35], scale: [1, 1.08, 1] } : false}
 						transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
 					/>
 				</ParallaxLayer>
@@ -59,7 +60,7 @@ export function HeroSectionComponent() {
 					<motion.div
 						className={`glow-orb-secondary h-48 w-48 rounded-full ${isMobile ? 'blur-[50px]' : 'xs:blur-[70px] md:blur-[100px]'} xs:h-64 xs:w-64 md:h-96 md:w-96`}
 						style={{ willChange: 'transform, opacity' }}
-						animate={{ opacity: [0.3, 0.65, 0.3], scale: [1, 1.06, 1] }}
+						animate={isActive ? { opacity: [0.3, 0.65, 0.3], scale: [1, 1.06, 1] } : false}
 						transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
 					/>
 				</ParallaxLayer>
@@ -77,7 +78,7 @@ export function HeroSectionComponent() {
 							willChange: 'transform, opacity',
 						}}
 						animate={
-							reducedMotion
+							!isActive || reducedMotion
 								? undefined
 								: {
 										y: [0, -22, 0],

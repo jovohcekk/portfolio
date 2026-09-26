@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useCallback, useState } from 'react';
 
 import { DevelopmentProjectsSection } from '@/components/sections/development-projects-section';
-import { PhotoshopSection } from '@/components/sections/photoshop-section';
+import { LazySection } from '@/components/shared/lazy-section';
 import { PhotoshopProjectModal } from '@/components/shared/photoshop-project-modal';
 import { type PhotoshopGalleryItem } from '@/config/portfolio';
 
@@ -41,7 +41,13 @@ export function ProjectsSection() {
 			<DevelopmentProjectsSection />
 
 			{/* Photoshop Projects Section with Modal Trigger */}
-			<PhotoshopSection onProjectSelect={handleSelectProject} />
+			<LazySection
+				id='photoshop'
+				load={() =>
+					import('@/components/sections/photoshop-section').then(module => ({ default: module.PhotoshopSection }))
+				}
+				props={{ onProjectSelect: handleSelectProject }}
+			/>
 
 			{/* Shared Modal for Photoshop Projects */}
 			<AnimatePresence>

@@ -1,8 +1,9 @@
 'use client';
 
-import { useReducedMotion } from '@/hooks/use-reduced-motion'
-import { motion } from 'framer-motion'
-import { useMemo, memo, useEffect, useState } from 'react'
+import { useSectionAnimationsActive } from '@/components/shared/lazy-section';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { motion } from 'framer-motion';
+import { memo, useEffect, useMemo, useState } from 'react';
 
 interface ParticleFieldProps {
 	count?: number;
@@ -12,6 +13,7 @@ interface ParticleFieldProps {
 
 function ParticleFieldComponent({ count = 24, className = '', variant = 'default' }: ParticleFieldProps) {
 	const reducedMotion = useReducedMotion();
+	const isActive = useSectionAnimationsActive();
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
@@ -53,11 +55,15 @@ function ParticleFieldComponent({ count = 24, className = '', variant = 'default
 						transform: 'translate3d(0,0,0)',
 						backfaceVisibility: 'hidden',
 					}}
-					animate={{
-						y: [0, -30, 0],
-						opacity: [0.2, 0.8, 0.2],
-						scale: [1, 1.4, 1],
-					}}
+					animate={
+						isActive
+							? {
+									y: [0, -30, 0],
+									opacity: [0.2, 0.8, 0.2],
+									scale: [1, 1.4, 1],
+								}
+							: false
+					}
 					transition={{
 						duration: p.duration,
 						repeat: Infinity,
@@ -71,4 +77,4 @@ function ParticleFieldComponent({ count = 24, className = '', variant = 'default
 }
 
 // OPTIMIZATION: Memoize to prevent re-renders when props haven't changed
-export const ParticleField = memo(ParticleFieldComponent)
+export const ParticleField = memo(ParticleFieldComponent);

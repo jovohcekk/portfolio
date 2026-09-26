@@ -37,9 +37,7 @@ export function SkillsSectionComponent() {
 	const categories = ['All', 'Frontend', 'Backend', 'DevOps', 'Design'];
 
 	return (
-		<section
-			id='skills'
-			className='section-surface section-surface-tint relative w-full max-w-full overflow-hidden section-spacing'>
+		<section className='section-surface section-surface-tint relative w-full max-w-full overflow-hidden section-spacing'>
 			<ParticleField count={16} className='opacity-50' />
 			<div className='section-container relative'>
 				<SectionHeading title={translate('skills.title')} />

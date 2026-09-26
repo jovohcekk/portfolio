@@ -1,12 +1,7 @@
 import { useMotionValue } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type CursorState = 'default' | 'hover' | 'click' | 'text';
-
-interface Position {
-	x: number;
-	y: number;
-}
 
 export function useCustomCursor() {
 	const [isDesktop, setIsDesktop] = useState(false);
@@ -16,28 +11,6 @@ export function useCustomCursor() {
 	const mouseY = useMotionValue(0);
 	const ringX = useMotionValue(0);
 	const ringY = useMotionValue(0);
-	const mouseRef = useRef<Position>({ x: 0, y: 0 });
-	const ringRef = useRef<Position>({ x: 0, y: 0 });
-	const animationFrameRef = useRef<number | null>(null);
-
-	// Smooth interpolation (lerp) for ring trailing effect
-	const lerp = useCallback((start: number, end: number, factor: number) => {
-		return start + (end - start) * factor;
-	}, []);
-
-	// Animate ring position with trailing effect
-	const animateRing = useRef<FrameRequestCallback>(() => {});
-
-	useEffect(() => {
-		animateRing.current = () => {
-			const lerpFactor = 0.15;
-			ringRef.current.x = lerp(ringRef.current.x, mouseRef.current.x, lerpFactor);
-			ringRef.current.y = lerp(ringRef.current.y, mouseRef.current.y, lerpFactor);
-			ringX.set(ringRef.current.x);
-			ringY.set(ringRef.current.y);
-			animationFrameRef.current = requestAnimationFrame(animateRing.current);
-		};
-	}, [lerp, ringX, ringY]);
 
 	// Initialize - check if desktop
 	useEffect(() => {
@@ -64,9 +37,10 @@ export function useCustomCursor() {
 		if (!isDesktop) return;
 
 		const handleMouseMove = (e: MouseEvent) => {
-			mouseRef.current = { x: e.clientX, y: e.clientY };
 			mouseX.set(e.clientX);
 			mouseY.set(e.clientY);
+			ringX.set(e.clientX);
+			ringY.set(e.clientY);
 		};
 
 		const handleMouseEnter = () => {
@@ -82,18 +56,12 @@ export function useCustomCursor() {
 		window.addEventListener('mouseenter', handleMouseEnter);
 		window.addEventListener('mouseleave', handleMouseLeave);
 
-		// Start animation loop
-		animationFrameRef.current = requestAnimationFrame(animateRing.current);
-
 		return () => {
 			window.removeEventListener('mousemove', handleMouseMove);
 			window.removeEventListener('mouseenter', handleMouseEnter);
 			window.removeEventListener('mouseleave', handleMouseLeave);
-			if (animationFrameRef.current) {
-				cancelAnimationFrame(animationFrameRef.current);
-			}
 		};
-	}, [isDesktop, mouseX, mouseY]);
+	}, [isDesktop, mouseX, mouseY, ringX, ringY]);
 
 	// Handle interactive element hover - OPTIMIZED with consolidated handlers
 	useEffect(() => {
